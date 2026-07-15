@@ -1,0 +1,16 @@
+{
+  "name": "Best Website Awards",
+  "short_name": "BWA",
+  "description": "Recognition for exceptional websites shaped with purpose, craft and measurable impact.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1746d1",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
