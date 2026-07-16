@@ -4,16 +4,27 @@ import '@fontsource-variable/funnel-sans/index.css';
 import '../styles/global.css';
 import PageLoader from '../components/PageLoader.astro';
 import SeoHead from '../components/SeoHead.astro';
+import type { PageSeo, UtilitySection } from '../lib/content/types';
 
 interface Props {
   title: string;
   description: string;
   image: URL;
-  pageType?: 'WebPage' | 'AboutPage' | 'ContactPage';
+  imageAlt?: string;
+  pageType?: PageSeo['pageType'];
   noIndex?: boolean;
+  faqItems?: UtilitySection[];
 }
 
-const { title, description, image, pageType = 'WebPage', noIndex = false } = Astro.props;
+const {
+  title,
+  description,
+  image,
+  imageAlt = 'Best Website Awards — global recognition for website excellence',
+  pageType = 'WebPage',
+  noIndex = false,
+  faqItems
+} = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -28,7 +39,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <SeoHead {title} {description} {canonical} {image} {pageType} {noIndex} />
+    <SeoHead {title} {description} {canonical} {image} {imageAlt} {pageType} {noIndex} {faqItems} />
     <script is:inline>
       document.documentElement.classList.add('js');
     </script>

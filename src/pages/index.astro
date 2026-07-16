@@ -20,7 +20,12 @@ const socialImage = new URL(
 );
 ---
 
-<BaseLayout title={content.seo.title} description={content.seo.description} image={socialImage}>
+<BaseLayout
+  title={content.seo.title}
+  description={content.seo.description}
+  image={socialImage}
+  imageAlt={content.hero.image.alt}
+>
   <div id="top"></div>
   <SiteHeader navigation={content.navigation} currentPath="/" />
   <main id="main-content">

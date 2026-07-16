@@ -18,9 +18,9 @@ export const editorialPages = {
   awards: {
     slug: 'awards',
     seo: {
-      title: 'The Awards | Best Website Awards',
+      title: 'Website Awards & Global Recognition | Best Website Awards',
       description:
-        'Discover a business-led award for websites with clear purpose, considered execution and meaningful value.'
+        'Discover how Best Website Awards recognises purposeful, accessible and effective websites through evidence-led review and meaningful global recognition.'
     },
     hero: {
       title: 'Recognition built on the work.',
@@ -125,9 +125,10 @@ export const editorialPages = {
   work: {
     slug: 'work',
     seo: {
-      title: 'Work We Recognise | Best Website Awards',
+      title: 'Websites We Recognise | Best Website Awards',
       description:
-        'Explore the kinds of organisational, brand, commercial and independent websites considered through the Best Website Awards standard.'
+        'Explore the organisational, brand, commerce, service and portfolio websites considered through the Best Website Awards evaluation standard.',
+      pageType: 'CollectionPage'
     },
     hero: {
       title: 'Different websites. One serious standard.',
@@ -253,9 +254,9 @@ export const editorialPages = {
   standard: {
     slug: 'standard',
     seo: {
-      title: 'The Standard | Best Website Awards',
+      title: 'Website Evaluation Criteria | Best Website Awards',
       description:
-        'Understand the four connected measures used to consider purposeful, effective and distinctive website work.'
+        'Understand the Best Website Awards criteria for design and experience, performance and accessibility, content and purpose, innovation and impact.'
     },
     hero: {
       title: 'A standard designed to see the whole website.',
@@ -365,9 +366,9 @@ export const editorialPages = {
   process: {
     slug: 'process',
     seo: {
-      title: 'Recognition Process | Best Website Awards',
+      title: 'Website Award Review Process | Best Website Awards',
       description:
-        'Follow the clear path from presenting a website and its evidence to considered recognition.'
+        'Learn how websites are presented, reviewed against four connected measures and considered for recognition through Best Website Awards.'
     },
     hero: {
       title: 'Make the work understandable.',
@@ -469,9 +470,9 @@ export const editorialPages = {
   about: {
     slug: 'about',
     seo: {
-      title: 'About | Best Website Awards',
+      title: 'About Best Website Awards | Global Digital Recognition',
       description:
-        'Learn how Best Website Awards brings a focused digital perspective to the Global Business Excellence Awards platform.',
+        'Learn how Best Website Awards brings a focused website excellence programme to the global business perspective of Global Business Excellence Awards.',
       pageType: 'AboutPage'
     },
     hero: {
@@ -581,8 +582,9 @@ export const utilityPages = {
   contact: {
     slug: 'contact',
     seo: {
-      title: 'Contact | Best Website Awards',
-      description: 'Contact Best Website Awards for programme and general enquiries.',
+      title: 'Contact Best Website Awards | Programme Enquiries',
+      description:
+        'Contact Best Website Awards about website eligibility, evaluation criteria, presenting work, recognition or official programme information.',
       pageType: 'ContactPage'
     },
     title: 'Start a clear conversation.',
@@ -609,52 +611,163 @@ export const utilityPages = {
   faq: {
     slug: 'faq',
     seo: {
-      title: 'Frequently Asked Questions | Best Website Awards',
+      title: 'Website Award FAQs | Eligibility, Criteria & Review',
       description:
-        'Clear answers about the work, standard, review approach and official programme information for Best Website Awards.'
+        'Find answers about Best Website Awards eligibility, website types, evaluation criteria, evidence, review, public voting, recognition and programme details.',
+      pageType: 'FAQPage'
     },
     title: 'Questions, answered with clarity.',
     introduction:
-      'A concise guide to the award, the work it recognises and the information that supports a meaningful review.',
+      'A complete guide to who can present work, what is considered and how website excellence is recognised.',
     sections: [
       {
-        title: 'What kind of work is relevant?',
+        title: 'What is Best Website Awards?',
         body: [
-          'Best Website Awards is focused on websites and the connected digital experiences through which organisations, brands, services, commerce and independent practices reach people.',
-          'The work page describes broad kinds of work, while formal programme eligibility will be set out in official entry guidance.'
+          'Best Website Awards is a global recognition programme for websites that demonstrate purposeful design, strong experience, dependable execution, useful content and meaningful impact.',
+          'It is powered by Global Business Excellence Awards and considers websites in the wider context of how organisations communicate, serve people and create value.'
         ]
       },
       {
-        title: 'What is considered?',
+        title: 'Is Best Website Awards open globally?',
         body: [
-          'The standard brings together Design & Experience, Performance & Accessibility, Content & Purpose, and Innovation & Impact.',
-          'Each measure is considered in relation to the website’s audience, purpose, context and responsibility.'
+          'Yes. Websites from any country or market may be presented, subject to the eligibility requirements published for the relevant programme.',
+          'The work is considered on its own purpose, audience and context rather than being judged by where the organisation is based.'
         ]
       },
       {
-        title: 'How is the work reviewed?',
+        title: 'Who can present a website?',
         body: [
-          'Recognition is based on considered review against the published standard.',
-          'The website, its purpose and the evidence behind it remain at the centre of the process.'
+          'A website may be presented by its owner, an authorised internal team, or an agency, studio, developer or specialist partner acting with the owner’s permission.',
+          'The presentation should identify the organisation that owns the website and the contributors whose work should be credited.'
         ]
       },
       {
-        title: 'What makes a strong presentation?',
+        title: 'Is a prior nomination required?',
         body: [
-          'Explain why the website exists, who it serves, the important decisions behind it and the outcomes it supports.',
-          'Relevant evidence is more useful than unsupported claims or presentation language alone.'
+          'No prior nomination is required. An eligible website may be presented by its owner or an authorised contributor when the relevant programme is open for entries.'
         ]
       },
       {
-        title: 'Who may contact the awards?',
+        title: 'What kinds of websites can be considered?',
         body: [
-          'Website owners, internal teams and authorised creative or technical partners may contact the team with a relevant enquiry.'
+          'The programme can consider corporate and organisational websites, brand and campaign experiences, commerce and service platforms, public-interest and purpose-led websites, portfolios, specialist practices and other substantial web experiences.',
+          'These descriptions explain the range of relevant work. Formal award categories, where used, are published with the programme information for each cycle.'
         ]
       },
       {
-        title: 'Where are official programme details published?',
+        title: 'Can both new websites and redesigns be presented?',
         body: [
-          'Confirmed dates, requirements, eligibility and any other programme-specific information are published only through official Best Website Awards and Global Business Excellence Awards channels.'
+          'Yes. A newly launched website, a substantial redesign or a meaningful redevelopment may be considered when the work is complete enough to be experienced and reviewed as a coherent website.'
+        ]
+      },
+      {
+        title: 'Does the website need to be live?',
+        body: [
+          'The website should be live, functional and available for review during the assessment period. Reviewers need to experience the real responsive website rather than only static mock-ups or a presentation video.',
+          'If essential parts of the experience require controlled access, contact the awards team before presenting the work.'
+        ]
+      },
+      {
+        title: 'Can websites in languages other than English be considered?',
+        body: [
+          'Yes. Websites may serve audiences in any language. The supporting presentation and evidence should be provided in English, or include a clear English translation, so the purpose and outcomes can be understood consistently.'
+        ]
+      },
+      {
+        title: 'Is there public voting?',
+        body: [
+          'No. Best Website Awards does not use public voting to determine recognition.',
+          'Websites are considered through a structured review against the published standard, keeping the result focused on the work, its context and its evidence.'
+        ]
+      },
+      {
+        title: 'What are the evaluation criteria?',
+        body: [
+          'The standard brings together four connected measures: Design & Experience, Performance & Accessibility, Content & Purpose, and Innovation & Impact.',
+          'No single measure is treated as a substitute for the others. The complete website is considered as one experience.'
+        ]
+      },
+      {
+        title: 'How is the website’s context taken into account?',
+        body: [
+          'Review considers what the website exists to do, who it serves, the responsibility it carries, the constraints behind it and the outcomes it is intended to support.',
+          'A public-service website, an international brand platform and an independent portfolio can therefore demonstrate excellence in different but equally credible ways.'
+        ]
+      },
+      {
+        title: 'How important are accessibility and performance?',
+        body: [
+          'They are core parts of the standard. A recognised website should respect different devices, connection conditions and user abilities through responsive, stable and inclusive execution.',
+          'Accessibility and performance are considered as qualities of the experience, not as optional technical extras.'
+        ]
+      },
+      {
+        title: 'What evidence should support the work?',
+        body: [
+          'A strong presentation explains the website’s purpose, audience, challenge, important decisions, delivery and outcomes. Useful evidence may include research findings, accessibility work, performance improvements, audience response or measurable organisational results.',
+          'Evidence should be relevant, accurate and attributable. Unsupported promotional claims do not carry the same weight as a clear account of the work.'
+        ]
+      },
+      {
+        title: 'Do traffic, budget or organisation size determine the result?',
+        body: [
+          'No. Scale can provide context, but a large audience or budget does not by itself demonstrate website excellence.',
+          'The review focuses on how intelligently and completely the website fulfils its purpose for the people it is intended to serve.'
+        ]
+      },
+      {
+        title: 'Who reviews the websites?',
+        body: [
+          'Websites are considered by reviewers selected for relevant professional experience across digital strategy, design, content, technology, accessibility, user experience and business.',
+          'Reviewers apply the same published framework and are expected to consider conflicts of interest before taking part in an assessment.'
+        ]
+      },
+      {
+        title: 'How are agencies and project contributors credited?',
+        body: [
+          'The website owner remains central to the recognition record, while authorised agencies, studios, internal teams and specialist contributors may be credited for the roles confirmed in the presentation.',
+          'Entrants are responsible for supplying accurate names, roles and permissions.'
+        ]
+      },
+      {
+        title: 'Can websites using AI or third-party platforms be considered?',
+        body: [
+          'Yes. The use of artificial intelligence, content-management systems, commerce platforms, design systems or other third-party technology does not prevent consideration.',
+          'The presenting team remains responsible for lawful use, originality where claimed, accessibility, accuracy and the quality of the final experience. Material use of AI should be disclosed when it is relevant to understanding the work.'
+        ]
+      },
+      {
+        title: 'What happens if the website changes after it is presented?',
+        body: [
+          'Websites naturally evolve. The review is based on the version available during the assessment period together with the evidence supplied in the presentation.',
+          'A material change that affects the purpose, ownership or core experience should be disclosed to the awards team.'
+        ]
+      },
+      {
+        title: 'How are intellectual property and confidential information handled?',
+        body: [
+          'The person presenting the work must have permission to share the website, project information, images, results and contributor details included in the presentation.',
+          'Only information suitable for review and, where recognition is granted, public attribution should be supplied. Sensitive commercial or personal information should not be included unless an approved process expressly requests it.'
+        ]
+      },
+      {
+        title: 'What does recognition communicate?',
+        body: [
+          'Recognition communicates that the website demonstrated meaningful quality against the published standard in its own context.',
+          'The resulting record is intended to help audiences, clients, partners and teams understand what was achieved and why the work deserves attention. Programme-specific recognition materials are confirmed in the official guidance.'
+        ]
+      },
+      {
+        title: 'When are programme dates, fees and entry instructions published?',
+        body: [
+          'The entry period, submission method, eligibility details, any applicable fees and programme-specific requirements are published together through official Best Website Awards and Global Business Excellence Awards channels.',
+          'Information from third-party listings should be checked against the current official programme guidance before action is taken.'
+        ]
+      },
+      {
+        title: 'How can I ask a question about a website?',
+        body: [
+          'Contact info@gbeaward.com with the website address, the organisation or team involved and a concise explanation of what you would like to confirm.'
         ]
       }
     ],
@@ -664,7 +777,9 @@ export const utilityPages = {
     slug: 'privacy-policy',
     seo: {
       title: 'Privacy Policy | Best Website Awards',
-      description: 'How the Best Website Awards public website handles information and privacy.'
+      description:
+        'Read how the Best Website Awards public website handles contact information, technical request data, external services and privacy enquiries.',
+      noIndex: true
     },
     title: 'Privacy, explained clearly.',
     introduction:
@@ -707,7 +822,9 @@ export const utilityPages = {
     slug: 'terms',
     seo: {
       title: 'Terms of Use | Best Website Awards',
-      description: 'Terms governing use of the Best Website Awards public website.'
+      description:
+        'Read the terms governing use of the Best Website Awards public website, programme information, intellectual property and external links.',
+      noIndex: true
     },
     title: 'Terms built for clarity.',
     introduction:
@@ -751,7 +868,9 @@ export const utilityPages = {
     slug: 'cookies',
     seo: {
       title: 'Cookie Notice | Best Website Awards',
-      description: 'Cookie and similar-technology information for the Best Website Awards website.'
+      description:
+        'Read how the Best Website Awards public website approaches cookies, technical delivery mechanisms and future consent-controlled services.',
+      noIndex: true
     },
     title: 'A minimal approach to cookies.',
     introduction:

@@ -13,14 +13,24 @@ interface Props {
 
 const { content } = Astro.props;
 const socialImage = new URL(iconmark.src, Astro.site);
+const getSectionId = (title: string, index: number) => {
+  const slug = title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+
+  return `${content.slug}-${slug || `section-${index + 1}`}`;
+};
 ---
 
 <BaseLayout
   title={content.seo.title}
   description={content.seo.description}
   image={socialImage}
+  imageAlt={`Best Website Awards — ${content.title}`}
   pageType={content.seo.pageType}
   noIndex={content.seo.noIndex}
+  faqItems={content.slug === 'faq' ? content.sections : undefined}
 >
   <div id="top"></div>
   <SiteHeader navigation={siteNavigation} currentPath={Astro.url.pathname} />
@@ -51,14 +61,18 @@ const socialImage = new URL(iconmark.src, Astro.site);
         {
           content.sections.map((section, index) => (
             <section
-              class="tw:grid tw:gap-6 tw:border-b tw:border-line tw:py-[clamp(2.5rem,5vw,4.5rem)] tw:lg:grid-cols-[5rem_minmax(15rem,.65fr)_1fr]"
-              aria-labelledby={`${content.slug}-section-${index}`}
+              class="tw:scroll-mt-32 tw:grid tw:gap-6 tw:border-b tw:border-line tw:py-[clamp(2.5rem,5vw,4.5rem)] tw:lg:grid-cols-[5rem_minmax(15rem,.65fr)_1fr]"
+              id={getSectionId(section.title, index)}
+              aria-labelledby={`${getSectionId(section.title, index)}-title`}
               data-reveal
             >
               <span class="tw:text-[.75rem] tw:font-bold tw:tracking-[.12em] tw:text-lapis">
                 {String(index + 1).padStart(2, '0')}
               </span>
-              <h2 id={`${content.slug}-section-${index}`} class="tw:text-[clamp(1.8rem,3vw,3rem)]">
+              <h2
+                id={`${getSectionId(section.title, index)}-title`}
+                class="tw:text-[clamp(1.8rem,3vw,3rem)]"
+              >
                 {section.title}
               </h2>
               <div class="tw:grid tw:gap-4">

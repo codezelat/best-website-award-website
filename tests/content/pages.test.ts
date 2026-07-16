@@ -4,7 +4,8 @@ import { getEditorialPage, getUtilityPage } from '../../src/lib/content/pages';
 import type {
   EditorialCollection,
   EditorialPageContent,
-  ManagedImage
+  ManagedImage,
+  UtilityPageContent
 } from '../../src/lib/content/types';
 
 describe('public page content contract', () => {
@@ -52,6 +53,37 @@ describe('public page content contract', () => {
       expect(new Set(ids).size).toBe(ids.length);
       expect(images.every((image) => image?.alt.trim().length)).toBe(true);
     });
+  });
+
+  it('publishes a complete, non-repetitive programme FAQ', () => {
+    const questions = utilityPages.faq.sections.map((section) => section.title);
+
+    expect(questions.length).toBeGreaterThanOrEqual(20);
+    expect(new Set(questions).size).toBe(questions.length);
+    expect(utilityPages.faq.seo.pageType).toBe('FAQPage');
+    expect(JSON.stringify(utilityPages.faq).toLowerCase()).toContain('no public voting');
+  });
+
+  it('keeps indexable page metadata unique and descriptive', () => {
+    const pages = [
+      ...(Object.values(editorialPages) as EditorialPageContent[]),
+      ...(Object.values(utilityPages) as UtilityPageContent[])
+    ].filter((page) => !page.seo.noIndex);
+    const titles = pages.map((page) => page.seo.title);
+    const descriptions = pages.map((page) => page.seo.description);
+
+    expect(new Set(titles).size).toBe(titles.length);
+    expect(new Set(descriptions).size).toBe(descriptions.length);
+    expect(titles.every((title) => title.length >= 30 && title.length <= 65)).toBe(true);
+    expect(
+      descriptions.every((description) => description.length >= 100 && description.length <= 170)
+    ).toBe(true);
+  });
+
+  it('keeps legal utility pages out of the search index', () => {
+    expect(utilityPages.privacy.seo.noIndex).toBe(true);
+    expect(utilityPages.terms.seo.noIndex).toBe(true);
+    expect(utilityPages.cookies.seo.noIndex).toBe(true);
   });
 
   it('contains no draft markers or manufactured programme specifics', () => {

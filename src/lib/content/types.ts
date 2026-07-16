@@ -18,7 +18,7 @@ export interface NavigationItem {
 export interface PageSeo {
   title: string;
   description: string;
-  pageType?: 'WebPage' | 'AboutPage' | 'ContactPage';
+  pageType?: 'WebPage' | 'AboutPage' | 'ContactPage' | 'CollectionPage' | 'FAQPage';
   noIndex?: boolean;
 }
 

@@ -8,9 +8,9 @@ import { siteNavigation } from './site';
 
 export const homepageContent = {
   seo: {
-    title: 'Best Website Awards | Recognition for Exceptional Websites',
+    title: 'Best Website Awards | Global Website Excellence',
     description:
-      'Best Website Awards recognises exceptional digital work shaped with purpose, craft and measurable impact.'
+      'Best Website Awards recognises outstanding websites worldwide through a clear standard covering design, experience, performance, accessibility, content and impact.'
   },
   navigation: siteNavigation,
   hero: {

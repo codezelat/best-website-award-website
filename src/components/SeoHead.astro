@@ -1,51 +1,121 @@
 ---
+import type { PageSeo, UtilitySection } from '../lib/content/types';
+
 interface Props {
   title: string;
   description: string;
   canonical: URL;
   image: URL;
-  pageType?: 'WebPage' | 'AboutPage' | 'ContactPage';
+  imageAlt: string;
+  pageType?: PageSeo['pageType'];
   noIndex?: boolean;
+  faqItems?: UtilitySection[];
 }
 
-const { title, description, canonical, image, pageType = 'WebPage', noIndex = false } = Astro.props;
+const {
+  title,
+  description,
+  canonical,
+  image,
+  imageAlt,
+  pageType = 'WebPage',
+  noIndex = false,
+  faqItems = []
+} = Astro.props;
+
+const siteId = `${canonical.origin}/#website`;
+const organizationId = `${canonical.origin}/#organization`;
+const pageId = `${canonical.href}#webpage`;
+const isHomepage = canonical.pathname === '/';
+const breadcrumbId = `${canonical.href}#breadcrumb`;
+const pageName = title.replace(/\s*\|\s*Best Website Awards$/, '');
+
+const pageNode: Record<string, unknown> = {
+  '@type': pageType,
+  '@id': pageId,
+  url: canonical.href,
+  name: title,
+  description,
+  inLanguage: 'en-GB',
+  isPartOf: { '@id': siteId },
+  about: { '@id': organizationId },
+  primaryImageOfPage: {
+    '@type': 'ImageObject',
+    url: image.href,
+    caption: imageAlt
+  }
+};
+
+if (!isHomepage) {
+  pageNode.breadcrumb = { '@id': breadcrumbId };
+}
+
+if (pageType === 'FAQPage' && faqItems.length > 0) {
+  pageNode.mainEntity = faqItems.map((item) => ({
+    '@type': 'Question',
+    name: item.title,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.body.join('\n\n')
+    }
+  }));
+}
 
 const structuredData = {
   '@context': 'https://schema.org',
   '@graph': [
     {
       '@type': 'WebSite',
-      '@id': `${canonical.origin}/#website`,
+      '@id': siteId,
       url: `${canonical.origin}/`,
       name: 'Best Website Awards',
-      description,
-      publisher: { '@id': `${canonical.origin}/#organization` }
+      alternateName: 'BWA',
+      description:
+        'A global awards platform recognising website excellence across design, experience, performance, accessibility, content, purpose, innovation and impact.',
+      inLanguage: 'en-GB',
+      publisher: { '@id': organizationId }
     },
     {
       '@type': 'Organization',
-      '@id': `${canonical.origin}/#organization`,
+      '@id': organizationId,
       name: 'Best Website Awards',
+      alternateName: 'BWA',
       url: `${canonical.origin}/`,
-      logo: `${canonical.origin}/favicon.png`,
+      email: 'info@gbeaward.com',
+      areaServed: 'Worldwide',
+      logo: {
+        '@type': 'ImageObject',
+        url: `${canonical.origin}/favicon.png`
+      },
       parentOrganization: {
         '@type': 'Organization',
         name: 'Global Business Excellence Awards',
         url: 'https://gbeaward.com/'
       }
     },
-    {
-      '@type': pageType,
-      '@id': `${canonical.href}#webpage`,
-      url: canonical.href,
-      name: title,
-      description,
-      isPartOf: { '@id': `${canonical.origin}/#website` },
-      about: { '@id': `${canonical.origin}/#organization` },
-      primaryImageOfPage: {
-        '@type': 'ImageObject',
-        url: image.href
-      }
-    }
+    ...(!isHomepage
+      ? [
+          {
+            '@type': 'BreadcrumbList',
+            '@id': breadcrumbId,
+            itemListElement: [
+              {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Best Website Awards',
+                item: `${canonical.origin}/`
+              },
+              {
+                '@type': 'ListItem',
+                position: 2,
+                name: pageName,
+                item: canonical.href
+              }
+            ]
+          }
+        ]
+      : []),
+    pageNode
   ]
 };
 ---
@@ -59,19 +129,19 @@ const structuredData = {
 <link rel="canonical" href={canonical} />
 
 <meta property="og:type" content="website" />
+<meta property="og:locale" content="en_GB" />
 <meta property="og:site_name" content="Best Website Awards" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
 <meta property="og:image" content={image} />
-<meta
-  property="og:image:alt"
-  content="Best Website Awards — recognition for exceptional websites"
-/>
+<meta property="og:image:secure_url" content={image} />
+<meta property="og:image:alt" content={imageAlt} />
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={image} />
+<meta name="twitter:image:alt" content={imageAlt} />
 
 <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />

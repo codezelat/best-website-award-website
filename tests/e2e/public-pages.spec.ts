@@ -26,6 +26,9 @@ for (const [route, heading] of [...editorialRoutes, ...utilityRoutes]) {
       `https://bestwebsiteaward.com${route}`
     );
     await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /\S/);
+    await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', /\S/);
+    await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute('content', /\S/);
+    await expect(page.locator('meta[name="twitter:image:alt"]')).toHaveAttribute('content', /\S/);
     await expect(page.getByRole('contentinfo')).toBeVisible();
 
     const overflow = await page.evaluate(
@@ -34,6 +37,46 @@ for (const [route, heading] of [...editorialRoutes, ...utilityRoutes]) {
     expect(overflow).toBeLessThanOrEqual(1);
   });
 }
+
+test('FAQ publishes complete visible answers and matching structured data', async ({ page }) => {
+  await page.goto('/faq');
+
+  const questions = page.locator('main section');
+  await expect(questions).toHaveCount(22);
+
+  const structuredDataText = await page
+    .locator('script[type="application/ld+json"]')
+    .textContent();
+  const structuredData = JSON.parse(structuredDataText ?? '{}');
+  const faqPage = structuredData['@graph']?.find(
+    (item: { '@type'?: string }) => item['@type'] === 'FAQPage'
+  );
+
+  expect(faqPage?.mainEntity).toHaveLength(22);
+  expect(faqPage?.mainEntity?.[0]?.name).toBe('What is Best Website Awards?');
+  expect(faqPage?.mainEntity?.[8]?.acceptedAnswer?.text).toContain(
+    'does not use public voting'
+  );
+});
+
+for (const route of ['/privacy-policy', '/terms', '/cookies']) {
+  test(`${route} is deliberately excluded from search indexing`, async ({ page }) => {
+    await page.goto(route);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow');
+  });
+}
+
+test('sitemap contains only indexable public routes', async ({ request }) => {
+  const response = await request.get('/sitemap-0.xml');
+  const sitemap = await response.text();
+
+  expect(response.ok()).toBe(true);
+  expect(sitemap).toContain('https://bestwebsiteaward.com/faq');
+  expect(sitemap).toContain('https://bestwebsiteaward.com/standard');
+  expect(sitemap).not.toContain('/privacy-policy');
+  expect(sitemap).not.toContain('/terms');
+  expect(sitemap).not.toContain('/cookies');
+});
 
 test('unknown routes use the branded, non-indexable not-found page', async ({ page }) => {
   const response = await page.goto('/a-page-that-does-not-exist');
