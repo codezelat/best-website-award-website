@@ -1,0 +1,29 @@
+---
+import {
+  faFacebookF,
+  faInstagram,
+  faLinkedinIn,
+  faWhatsapp,
+  faXTwitter
+} from '@fortawesome/free-brands-svg-icons';
+import type { SocialNetwork } from '../lib/content/types';
+
+interface Props {
+  network: SocialNetwork;
+}
+
+const { network } = Astro.props;
+const icons = {
+  facebook: faFacebookF,
+  instagram: faInstagram,
+  x: faXTwitter,
+  linkedin: faLinkedinIn,
+  whatsapp: faWhatsapp
+};
+const [width, height, , , path] = icons[network].icon;
+const paths = Array.isArray(path) ? path : [path];
+---
+
+<svg aria-hidden="true" viewBox={`0 0 ${width} ${height}`} focusable="false">
+  {paths.map((segment) => <path fill="currentColor" d={segment} />)}
+</svg>

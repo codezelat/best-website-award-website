@@ -1,6 +1,8 @@
 ---
 import type { NavigationItem } from '../lib/content/types';
+import { contactDetails, socialLinks } from '../data/site';
 import BrandLogo from './BrandLogo.astro';
+import SocialIcon from './SocialIcon.astro';
 
 interface Props {
   navigation: NavigationItem[];
@@ -14,14 +16,45 @@ const year = new Date().getFullYear();
 
 <footer class="site-footer">
   <div class="container site-footer__top">
-    <a href="#top" class="site-footer__brand" aria-label="Back to top">
-      <BrandLogo variant="reversed" loading="lazy" />
-    </a>
+    <div class="site-footer__identity">
+      <a href="#top" class="site-footer__brand" aria-label="Back to top">
+        <BrandLogo variant="reversed" loading="lazy" />
+      </a>
+      <p>
+        Powered by <a href={contactDetails.parentWebsite} rel="external"
+          >{contactDetails.parentOrganisation}</a
+        >
+      </p>
+    </div>
     <nav class="site-footer__nav" aria-label="Footer navigation">
       {
         navigation.map((item) => (
           <a href={item.href} aria-current={currentPath === item.href ? 'page' : undefined}>
             {item.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+  <div class="container site-footer__contact">
+    <div>
+      <p class="site-footer__label">Programme enquiries</p>
+      <a class="site-footer__email" href={`mailto:${contactDetails.email}`}
+        >{contactDetails.email}</a
+      >
+      <p class="site-footer__location">{contactDetails.location}</p>
+    </div>
+    <nav class="site-footer__social" aria-label="Global Business Excellence Awards social media">
+      {
+        socialLinks.map((item) => (
+          <a
+            href={item.href}
+            target="_blank"
+            rel="external noopener noreferrer"
+            aria-label={`${item.label} — opens in a new tab`}
+            title={item.label}
+          >
+            <SocialIcon network={item.network} />
           </a>
         ))
       }

@@ -15,6 +15,21 @@ export interface NavigationItem {
   href: string;
 }
 
+export type SocialNetwork = 'facebook' | 'instagram' | 'x' | 'linkedin' | 'whatsapp';
+
+export interface SocialLink {
+  label: string;
+  href: string;
+  network: SocialNetwork;
+}
+
+export interface ContactDetails {
+  email: string;
+  location: string;
+  parentOrganisation: string;
+  parentWebsite: string;
+}
+
 export interface PageSeo {
   title: string;
   description: string;
