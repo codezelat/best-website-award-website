@@ -1,0 +1,46 @@
+---
+import type { EditorialFeature as EditorialFeatureContent } from '../lib/content/types';
+import BrowserFrame from './BrowserFrame.astro';
+
+interface Props {
+  content: EditorialFeatureContent;
+}
+
+const { content } = Astro.props;
+const imageFirst = content.imagePosition === 'left';
+---
+
+<section
+  class:list={[
+    'tw:py-[clamp(6rem,10vw,10rem)]',
+    content.tone === 'soft' ? 'tw:bg-blue-soft' : 'tw:bg-white'
+  ]}
+>
+  <div
+    class="container tw:grid tw:items-center tw:gap-[clamp(3rem,9vw,10rem)] tw:lg:grid-cols-2"
+    data-reveal-group
+  >
+    <div class:list={[imageFirst && 'tw:lg:order-2']}>
+      <h2 class="tw:max-w-[11ch]" data-reveal>{content.title}</h2>
+      <div class="tw:mt-8 tw:grid tw:gap-5">
+        {
+          content.body.map((paragraph) => (
+            <p
+              class="tw:max-w-[38rem] tw:text-[1.1rem] tw:leading-[1.65] tw:text-ink-soft"
+              data-reveal
+            >
+              {paragraph}
+            </p>
+          ))
+        }
+      </div>
+    </div>
+    {
+      content.image && (
+        <div class:list={[imageFirst && 'tw:lg:order-1']} data-reveal>
+          <BrowserFrame image={content.image} label="In context" />
+        </div>
+      )
+    }
+  </div>
+</section>

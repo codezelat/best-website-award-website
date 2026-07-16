@@ -1,0 +1,9 @@
+---
+import UtilityPageLayout from '../layouts/UtilityPageLayout.astro';
+import { getUtilityPage } from '../lib/content/pages';
+
+const content = await getUtilityPage('terms');
+if (!content) throw new Error('Terms page content is unavailable.');
+---
+
+<UtilityPageLayout {content} />

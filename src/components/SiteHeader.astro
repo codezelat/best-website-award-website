@@ -5,24 +5,32 @@ import ButtonLink from './ButtonLink.astro';
 
 interface Props {
   navigation: NavigationItem[];
+  currentPath?: string;
 }
 
-const { navigation } = Astro.props;
+const { navigation, currentPath = '/' } = Astro.props;
+const homeHref = currentPath === '/' ? '#top' : '/';
 ---
 
 <header class="site-header" data-site-header>
   <div class="container site-header__inner">
-    <a class="site-header__brand" href="#top" aria-label="Best Website Awards home">
+    <a class="site-header__brand" href={homeHref} aria-label="Best Website Awards home">
       <BrandLogo />
     </a>
 
     <nav class="site-header__nav" aria-label="Primary navigation">
-      {navigation.map((item) => <a href={item.href}>{item.label}</a>)}
+      {
+        navigation.map((item) => (
+          <a href={item.href} aria-current={currentPath === item.href ? 'page' : undefined}>
+            {item.label}
+          </a>
+        ))
+      }
     </nav>
 
     <ButtonLink
       class="site-header__cta"
-      href="#introduction"
+      href="/awards"
       label="Explore the awards"
       variant="primary"
     />
@@ -43,13 +51,17 @@ const { navigation } = Astro.props;
     <nav class="container mobile-navigation__inner" aria-label="Mobile navigation">
       {
         navigation.map((item, index) => (
-          <a href={item.href} style={`--nav-index:${index}`}>
+          <a
+            href={item.href}
+            style={`--nav-index:${index}`}
+            aria-current={currentPath === item.href ? 'page' : undefined}
+          >
             <span>0{index + 1}</span>
             {item.label}
           </a>
         ))
       }
-      <ButtonLink href="#introduction" label="Explore the awards" variant="primary" />
+      <ButtonLink href="/awards" label="Explore the awards" variant="primary" />
     </nav>
   </div>
 </header>

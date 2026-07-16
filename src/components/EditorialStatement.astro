@@ -1,0 +1,49 @@
+---
+import type { EditorialPageContent } from '../lib/content/types';
+import BrandLogo from './BrandLogo.astro';
+
+interface Props {
+  content: EditorialPageContent['statement'];
+  showBrand?: boolean;
+}
+
+const { content, showBrand = false } = Astro.props;
+---
+
+<section
+  class="tw:relative tw:isolate tw:overflow-hidden tw:bg-lapis-deep tw:py-[clamp(5rem,9vw,9rem)] tw:text-white"
+>
+  <div
+    class="tw:absolute tw:inset-0 tw:-z-10 tw:opacity-30 [background-image:linear-gradient(rgba(255,255,255,.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.08)_1px,transparent_1px)] [background-size:5rem_5rem]"
+    aria-hidden="true"
+  >
+  </div>
+  <div
+    class="container tw:grid tw:items-end tw:gap-[clamp(3rem,9vw,10rem)] tw:lg:grid-cols-[1fr_.75fr]"
+    data-reveal-group
+  >
+    <div>
+      <h2 class="tw:max-w-[14ch]" data-reveal>{content.title}</h2>
+      <p
+        class="tw:mt-8 tw:max-w-[41rem] tw:text-[clamp(1.08rem,1.5vw,1.3rem)] tw:leading-[1.6] tw:text-white/70"
+        data-reveal
+      >
+        {content.summary}
+      </p>
+    </div>
+    {
+      showBrand ? (
+        <div class="tw:w-full tw:max-w-[28rem] tw:justify-self-end" data-reveal>
+          <BrandLogo variant="reversed" loading="lazy" />
+        </div>
+      ) : (
+        <div class="tw:flex tw:items-center tw:gap-4 tw:pb-2" data-reveal>
+          <span class="tw:h-px tw:w-14 tw:bg-brass" aria-hidden="true" />
+          <span class="tw:text-[.72rem] tw:font-semibold tw:tracking-[.1em] tw:text-white/65 tw:uppercase">
+            Best Website Awards
+          </span>
+        </div>
+      )
+    }
+  </div>
+</section>

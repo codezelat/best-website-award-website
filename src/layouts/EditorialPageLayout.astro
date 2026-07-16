@@ -1,0 +1,56 @@
+---
+import EditorialClosing from '../components/EditorialClosing.astro';
+import EditorialCollection from '../components/EditorialCollection.astro';
+import EditorialFeature from '../components/EditorialFeature.astro';
+import EditorialIntroduction from '../components/EditorialIntroduction.astro';
+import EditorialPageHero from '../components/EditorialPageHero.astro';
+import EditorialStatement from '../components/EditorialStatement.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import { legalNavigation, siteNavigation } from '../data/site';
+import type { EditorialPageContent } from '../lib/content/types';
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  content: EditorialPageContent;
+}
+
+const { content } = Astro.props;
+const imageSource = content.hero.image.src;
+const socialImage = new URL(
+  typeof imageSource === 'string' ? imageSource : imageSource.src,
+  Astro.site
+);
+---
+
+<BaseLayout
+  title={content.seo.title}
+  description={content.seo.description}
+  image={socialImage}
+  pageType={content.seo.pageType}
+  noIndex={content.seo.noIndex}
+>
+  <div id="top"></div>
+  <SiteHeader navigation={siteNavigation} currentPath={Astro.url.pathname} />
+  <main id="main-content">
+    <EditorialPageHero content={content.hero} />
+    <EditorialIntroduction content={content.introduction} />
+    <EditorialCollection content={content.primaryCollection} />
+    {
+      content.secondaryCollection && (
+        <EditorialCollection content={content.secondaryCollection} secondary />
+      )
+    }
+    {content.feature && <EditorialFeature content={content.feature} />}
+    <EditorialStatement
+      content={content.statement}
+      showBrand={content.slug === 'awards' || content.slug === 'about'}
+    />
+    <EditorialClosing content={content.closing} />
+  </main>
+  <SiteFooter
+    navigation={siteNavigation}
+    legalNavigation={legalNavigation}
+    currentPath={Astro.url.pathname}
+  />
+</BaseLayout>

@@ -1,0 +1,57 @@
+---
+import type { EditorialPageContent } from '../lib/content/types';
+import BrowserFrame from './BrowserFrame.astro';
+import ButtonLink from './ButtonLink.astro';
+
+interface Props {
+  content: EditorialPageContent['hero'];
+}
+
+const { content } = Astro.props;
+---
+
+<section
+  class="tw:relative tw:min-h-[calc(100svh-var(--header-height))] tw:overflow-hidden tw:bg-white tw:py-[clamp(3.5rem,8vw,8rem)]"
+  aria-labelledby="page-title"
+>
+  <div
+    class="container tw:grid tw:items-center tw:gap-[clamp(3rem,8vw,9rem)] tw:lg:grid-cols-[minmax(19rem,.86fr)_minmax(28rem,1.14fr)]"
+  >
+    <div class="tw:relative tw:z-10">
+      <h1 id="page-title" class="tw:max-w-[9.6ch]" data-hero-reveal>{content.title}</h1>
+      <p
+        class="tw:mt-8 tw:max-w-[31rem] tw:text-[clamp(1.08rem,1.5vw,1.33rem)] tw:leading-[1.55] tw:text-ink-soft"
+        data-hero-reveal
+      >
+        {content.summary}
+      </p>
+      <div class="tw:mt-10 tw:flex tw:flex-wrap tw:gap-3" data-hero-reveal>
+        <ButtonLink {...content.primaryAction} variant="primary" />
+        {content.secondaryAction && <ButtonLink {...content.secondaryAction} variant="secondary" />}
+      </div>
+    </div>
+
+    <div
+      class="tw:relative tw:isolate tw:mx-auto tw:w-full tw:max-w-[52rem] tw:p-[clamp(.75rem,2.4vw,2.5rem)]"
+      data-hero-visual
+    >
+      <div
+        class="tw:absolute tw:inset-[0_6%_11%_2%] tw:-z-10 tw:rotate-[3deg] tw:rounded-[.5rem] tw:border tw:border-lapis/25 tw:bg-blue-soft"
+        aria-hidden="true"
+      >
+      </div>
+      <div
+        class="tw:absolute tw:inset-[11%_0_0_11%] tw:-z-10 tw:-rotate-[3deg] tw:rounded-[.5rem] tw:border tw:border-lapis/20"
+        aria-hidden="true"
+      >
+      </div>
+      <BrowserFrame image={content.image} label={content.frameLabel} priority />
+      <span
+        class="tw:absolute tw:right-2 tw:bottom-0 tw:text-[.65rem] tw:font-bold tw:tracking-[.14em] tw:text-lapis"
+        aria-hidden="true"
+      >
+        {content.visualIndex}
+      </span>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,31 @@
+---
+import type { EditorialPageContent } from '../lib/content/types';
+import ButtonLink from './ButtonLink.astro';
+
+interface Props {
+  content: EditorialPageContent['closing'];
+}
+
+const { content } = Astro.props;
+---
+
+<section class="tw:bg-white tw:py-[clamp(5.5rem,9vw,9rem)]">
+  <div
+    class="container tw:grid tw:items-end tw:gap-12 tw:lg:grid-cols-[1fr_auto]"
+    data-reveal-group
+  >
+    <div>
+      <h2 class="tw:max-w-[12ch]" data-reveal>{content.title}</h2>
+      <p
+        class="tw:mt-5 tw:max-w-[38rem] tw:text-[1.08rem] tw:leading-[1.6] tw:text-ink-soft"
+        data-reveal
+      >
+        {content.summary}
+      </p>
+    </div>
+    <div class="tw:flex tw:flex-wrap tw:gap-3" data-reveal>
+      <ButtonLink {...content.primaryAction} variant="primary" />
+      {content.secondaryAction && <ButtonLink {...content.secondaryAction} variant="secondary" />}
+    </div>
+  </div>
+</section>

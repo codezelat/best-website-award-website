@@ -8,6 +8,7 @@ import RecognitionProcess from '../components/RecognitionProcess.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import WorkGallery from '../components/WorkGallery.astro';
+import { legalNavigation } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getHomepageContent } from '../lib/content/homepage';
 
@@ -21,7 +22,7 @@ const socialImage = new URL(
 
 <BaseLayout title={content.seo.title} description={content.seo.description} image={socialImage}>
   <div id="top"></div>
-  <SiteHeader navigation={content.navigation} />
+  <SiteHeader navigation={content.navigation} currentPath="/" />
   <main id="main-content">
     <HeroSection content={content.hero} />
     <IntroductionBand content={content.introduction} />
@@ -31,5 +32,5 @@ const socialImage = new URL(
     <ParentBrandBand content={content.parentBrand} />
     <ClosingSection content={content.closing} />
   </main>
-  <SiteFooter navigation={content.navigation} />
+  <SiteFooter navigation={content.navigation} legalNavigation={legalNavigation} currentPath="/" />
 </BaseLayout>

@@ -19,7 +19,7 @@ test('renders the complete homepage and its landmark content', async ({ page }) 
   expect(overflow).toBeLessThanOrEqual(1);
 });
 
-test('connects primary navigation to page sections', async ({ page, isMobile }) => {
+test('connects primary navigation to the full standard page', async ({ page, isMobile }) => {
   await page.goto('/');
 
   if (isMobile) {
@@ -37,7 +37,10 @@ test('connects primary navigation to page sections', async ({ page, isMobile }) 
       .click();
   }
 
-  await expect(page.locator('#standard')).toBeInViewport();
+  await expect(page).toHaveURL(/\/standard$/);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    'A clear standard for exceptional work.'
+  );
 });
 
 test('publishes canonical, social and structured metadata', async ({ page }) => {

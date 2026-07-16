@@ -1,0 +1,120 @@
+---
+import type { EditorialCollection as EditorialCollectionContent } from '../lib/content/types';
+import ManagedPicture from './ManagedPicture.astro';
+
+interface Props {
+  content: EditorialCollectionContent;
+  secondary?: boolean;
+}
+
+const { content, secondary = false } = Astro.props;
+---
+
+<section
+  class:list={[
+    'tw:bg-white tw:py-[clamp(6rem,10vw,11rem)]',
+    secondary && 'tw:border-t tw:border-line'
+  ]}
+  aria-labelledby={`${content.items[0]?.id ?? 'collection'}-title`}
+>
+  <div class="container">
+    <header
+      class="tw:grid tw:gap-5 tw:border-t tw:border-carbon tw:pt-6 tw:lg:grid-cols-[1fr_.65fr] tw:lg:gap-24"
+      data-reveal-group
+    >
+      <h2 id={`${content.items[0]?.id ?? 'collection'}-title`} class="tw:max-w-[12ch]" data-reveal>
+        {content.title}
+      </h2>
+      {
+        content.summary && (
+          <p
+            class="tw:max-w-[34rem] tw:pt-2 tw:text-[1.1rem] tw:leading-[1.55] tw:text-ink-soft"
+            data-reveal
+          >
+            {content.summary}
+          </p>
+        )
+      }
+    </header>
+
+    {
+      content.variant === 'columns' && (
+        <ol
+          class="tw:mt-[clamp(4rem,7vw,7rem)] tw:grid tw:gap-px tw:bg-line tw:lg:grid-cols-3"
+          data-reveal-group
+        >
+          {content.items.map((item) => (
+            <li
+              class="tw:group tw:min-h-[22rem] tw:bg-white tw:p-[clamp(1.5rem,3vw,2.5rem)] tw:transition-colors tw:duration-300 tw:hover:bg-blue-soft"
+              data-reveal
+            >
+              <span class="tw:text-[.75rem] tw:font-bold tw:tracking-[.12em] tw:text-lapis">
+                {item.index}
+              </span>
+              <h3 class="tw:mt-24 tw:max-w-[12ch]">{item.title}</h3>
+              <p class="tw:mt-4 tw:max-w-[24rem] tw:leading-[1.55] tw:text-ink-soft">
+                {item.summary}
+              </p>
+              <span
+                class="tw:mt-8 tw:block tw:h-px tw:w-12 tw:bg-brass tw:transition-[width] tw:duration-500 tw:group-hover:w-full"
+                aria-hidden="true"
+              />
+            </li>
+          ))}
+        </ol>
+      )
+    }
+
+    {
+      content.variant === 'rows' && (
+        <ol class="tw:mt-[clamp(4rem,7vw,7rem)] tw:border-t tw:border-line" data-reveal-group>
+          {content.items.map((item) => (
+            <li
+              class="tw:group tw:grid tw:gap-6 tw:border-b tw:border-line tw:py-[clamp(2rem,4vw,3.5rem)] tw:lg:grid-cols-[7rem_minmax(14rem,.7fr)_1fr_5rem] tw:lg:items-start"
+              data-reveal
+            >
+              <span class="tw:text-[clamp(2.5rem,5vw,5rem)] tw:font-[430] tw:leading-none tw:tracking-[-.06em] tw:text-lapis">
+                {item.index}
+              </span>
+              <h3 class="tw:max-w-[13ch]">{item.title}</h3>
+              <p class="tw:max-w-[36rem] tw:leading-[1.6] tw:text-ink-soft">{item.summary}</p>
+              <span
+                class="tw:mt-3 tw:hidden tw:h-px tw:w-full tw:origin-left tw:bg-lapis tw:transition-transform tw:duration-500 tw:group-hover:scale-x-75 tw:lg:block"
+                aria-hidden="true"
+              />
+            </li>
+          ))}
+        </ol>
+      )
+    }
+
+    {
+      content.variant === 'media' && (
+        <ol class="tw:mt-[clamp(4rem,7vw,7rem)] tw:border-t tw:border-line" data-reveal-group>
+          {content.items.map((item) => (
+            <li
+              class="tw:group tw:grid tw:gap-6 tw:border-b tw:border-line tw:py-8 tw:lg:grid-cols-[5rem_minmax(14rem,.7fr)_1fr_minmax(16rem,.7fr)] tw:lg:items-center"
+              data-reveal
+            >
+              <span class="tw:text-[clamp(2.4rem,4vw,4.5rem)] tw:font-[430] tw:leading-none tw:tracking-[-.06em] tw:text-lapis">
+                {item.index}
+              </span>
+              <h3 class="tw:max-w-[13ch]">{item.title}</h3>
+              <p class="tw:max-w-[32rem] tw:leading-[1.55] tw:text-ink-soft">{item.summary}</p>
+              {item.image && (
+                <div class="tw:aspect-[16/8] tw:overflow-hidden tw:bg-blue-soft" data-image-reveal>
+                  <ManagedPicture
+                    image={item.image}
+                    class="tw:h-full tw:w-full tw:object-cover tw:transition-transform tw:duration-700 tw:group-hover:scale-[1.025]"
+                    sizes="(min-width: 1024px) 26vw, 92vw"
+                    widths={[480, 720, 960]}
+                  />
+                </div>
+              )}
+            </li>
+          ))}
+        </ol>
+      )
+    }
+  </div>
+</section>

@@ -1,0 +1,12 @@
+---
+import UtilityPageLayout from '../layouts/UtilityPageLayout.astro';
+import { getUtilityPage } from '../lib/content/pages';
+
+const content = await getUtilityPage('notFound');
+
+if (!content) {
+  throw new Error('Missing content for the not-found page.');
+}
+---
+
+<UtilityPageLayout {content} />

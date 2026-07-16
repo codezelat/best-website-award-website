@@ -5,22 +5,29 @@ const root = document.documentElement;
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const loader = document.querySelector<HTMLElement>('[data-page-loader]');
 let loadingFinished = false;
+const loaderFailsafe = window.setTimeout(() => loader?.remove(), 4000);
 
 const finishLoading = async () => {
   if (!loader || loadingFinished) return;
   loadingFinished = true;
+  loader.style.pointerEvents = 'none';
 
   if (reduceMotion) {
+    window.clearTimeout(loaderFailsafe);
     loader.remove();
     return;
   }
 
-  await animate(
-    loader,
-    { opacity: [1, 0] },
-    { duration: 0.55, delay: 0.25, ease: [0.65, 0, 0.35, 1] }
-  ).finished;
-  loader.remove();
+  try {
+    await animate(
+      loader,
+      { opacity: [1, 0] },
+      { duration: 0.55, delay: 0.25, ease: [0.65, 0, 0.35, 1] }
+    ).finished;
+  } finally {
+    window.clearTimeout(loaderFailsafe);
+    loader.remove();
+  }
 };
 
 const runMotion = () => {

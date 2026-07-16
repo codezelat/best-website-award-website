@@ -4,6 +4,7 @@ import workDigitalProducts from '../assets/generated/work-digital-products.png';
 import workOrganisations from '../assets/generated/work-organisations.png';
 import workPortfolios from '../assets/generated/work-portfolios.png';
 import type { HomepageContent } from '../lib/content/types';
+import { siteNavigation } from './site';
 
 export const homepageContent = {
   seo: {
@@ -11,12 +12,7 @@ export const homepageContent = {
     description:
       'Best Website Awards recognises exceptional digital work shaped with purpose, craft and measurable impact.'
   },
-  navigation: [
-    { label: 'The awards', href: '#awards' },
-    { label: 'Work we recognise', href: '#work' },
-    { label: 'The standard', href: '#standard' },
-    { label: 'About', href: '#about' }
-  ],
+  navigation: siteNavigation,
   hero: {
     title: 'Exceptional websites belong in view.',
     summary: 'Recognition for digital work shaped with purpose, craft and measurable impact.',

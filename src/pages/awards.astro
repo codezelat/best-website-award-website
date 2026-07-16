@@ -1,0 +1,9 @@
+---
+import EditorialPageLayout from '../layouts/EditorialPageLayout.astro';
+import { getEditorialPage } from '../lib/content/pages';
+
+const content = await getEditorialPage('awards');
+if (!content) throw new Error('Awards page content is unavailable.');
+---
+
+<EditorialPageLayout {content} />

@@ -1,4 +1,21 @@
-@layer reset, base, components, sections, utilities;
+@import 'tailwindcss/theme.css' layer(tw-theme) prefix(tw);
+@import 'tailwindcss/utilities.css' layer(tw-utilities) prefix(tw);
+
+@layer tw-theme, reset, base, components, sections, utilities, tw-utilities;
+
+@theme {
+  --font-display: 'Funnel Display Variable', 'Helvetica Neue', sans-serif;
+  --font-body: 'Funnel Sans Variable', 'Helvetica Neue', sans-serif;
+  --color-white: #ffffff;
+  --color-surface: #f6f8fc;
+  --color-carbon: #0d1117;
+  --color-ink-soft: #59616e;
+  --color-lapis: #1746d1;
+  --color-lapis-deep: #102a66;
+  --color-blue-soft: #edf3ff;
+  --color-brass: #b48636;
+  --color-line: #dde3ed;
+}
 
 @layer reset {
   *,
@@ -431,6 +448,7 @@
   }
 
   .site-header__nav a:hover::after,
+  .site-header__nav a[aria-current='page']::after,
   .site-footer__nav a:hover::after {
     transform: scaleX(1);
     transform-origin: left;
@@ -930,6 +948,21 @@
     font-size: 0.78rem;
   }
 
+  .site-footer__legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding-block: 1.4rem;
+    border-top: 1px solid var(--line-dark);
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 0.78rem;
+  }
+
+  .site-footer__legal a:hover,
+  .site-footer__legal a[aria-current='page'] {
+    color: var(--white);
+  }
+
   .site-footer__bottom a:hover {
     color: var(--white);
   }
@@ -1036,6 +1069,10 @@
       font-size: 0.65rem;
       font-weight: 700;
       letter-spacing: 0.08em;
+    }
+
+    .mobile-navigation__inner > a[aria-current='page'] {
+      color: var(--lapis);
     }
 
     .mobile-navigation .button-link {

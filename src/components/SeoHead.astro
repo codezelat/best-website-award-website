@@ -4,9 +4,11 @@ interface Props {
   description: string;
   canonical: URL;
   image: URL;
+  pageType?: 'WebPage' | 'AboutPage' | 'ContactPage';
+  noIndex?: boolean;
 }
 
-const { title, description, canonical, image } = Astro.props;
+const { title, description, canonical, image, pageType = 'WebPage', noIndex = false } = Astro.props;
 
 const structuredData = {
   '@context': 'https://schema.org',
@@ -30,6 +32,19 @@ const structuredData = {
         name: 'Global Business Excellence Awards',
         url: 'https://gbeaward.com/'
       }
+    },
+    {
+      '@type': pageType,
+      '@id': `${canonical.href}#webpage`,
+      url: canonical.href,
+      name: title,
+      description,
+      isPartOf: { '@id': `${canonical.origin}/#website` },
+      about: { '@id': `${canonical.origin}/#organization` },
+      primaryImageOfPage: {
+        '@type': 'ImageObject',
+        url: image.href
+      }
     }
   ]
 };
@@ -37,7 +52,10 @@ const structuredData = {
 
 <title>{title}</title>
 <meta name="description" content={description} />
-<meta name="robots" content="index, follow, max-image-preview:large" />
+<meta
+  name="robots"
+  content={noIndex ? 'noindex, follow' : 'index, follow, max-image-preview:large'}
+/>
 <link rel="canonical" href={canonical} />
 
 <meta property="og:type" content="website" />

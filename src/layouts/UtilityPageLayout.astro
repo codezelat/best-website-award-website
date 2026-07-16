@@ -1,0 +1,80 @@
+---
+import ButtonLink from '../components/ButtonLink.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import { legalNavigation, siteNavigation } from '../data/site';
+import type { UtilityPageContent } from '../lib/content/types';
+import iconmark from '../assets/brand/iconmark.png';
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  content: UtilityPageContent;
+}
+
+const { content } = Astro.props;
+const socialImage = new URL(iconmark.src, Astro.site);
+---
+
+<BaseLayout
+  title={content.seo.title}
+  description={content.seo.description}
+  image={socialImage}
+  pageType={content.seo.pageType}
+  noIndex={content.seo.noIndex}
+>
+  <div id="top"></div>
+  <SiteHeader navigation={siteNavigation} currentPath={Astro.url.pathname} />
+  <main id="main-content" class="tw:bg-white">
+    <header class="tw:border-b tw:border-line tw:py-[clamp(5rem,10vw,10rem)]">
+      <div class="container tw:grid tw:gap-10 tw:lg:grid-cols-[1fr_.75fr] tw:lg:items-end">
+        <h1 class="tw:max-w-[10ch]" data-hero-reveal>{content.title}</h1>
+        <div>
+          <p
+            class="tw:max-w-[40rem] tw:text-[clamp(1.15rem,1.8vw,1.5rem)] tw:leading-[1.55] tw:text-ink-soft"
+            data-hero-reveal
+          >
+            {content.introduction}
+          </p>
+          {
+            content.action && (
+              <div class="tw:mt-8" data-hero-reveal>
+                <ButtonLink {...content.action} variant="primary" />
+              </div>
+            )
+          }
+        </div>
+      </div>
+    </header>
+
+    <div class="container tw:py-[clamp(5rem,9vw,9rem)]">
+      <div class="tw:mx-auto tw:max-w-[72rem] tw:border-t tw:border-carbon" data-reveal-group>
+        {
+          content.sections.map((section, index) => (
+            <section
+              class="tw:grid tw:gap-6 tw:border-b tw:border-line tw:py-[clamp(2.5rem,5vw,4.5rem)] tw:lg:grid-cols-[5rem_minmax(15rem,.65fr)_1fr]"
+              aria-labelledby={`${content.slug}-section-${index}`}
+              data-reveal
+            >
+              <span class="tw:text-[.75rem] tw:font-bold tw:tracking-[.12em] tw:text-lapis">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <h2 id={`${content.slug}-section-${index}`} class="tw:text-[clamp(1.8rem,3vw,3rem)]">
+                {section.title}
+              </h2>
+              <div class="tw:grid tw:gap-4">
+                {section.body.map((paragraph) => (
+                  <p class="tw:max-w-[42rem] tw:leading-[1.7] tw:text-ink-soft">{paragraph}</p>
+                ))}
+              </div>
+            </section>
+          ))
+        }
+      </div>
+    </div>
+  </main>
+  <SiteFooter
+    navigation={siteNavigation}
+    legalNavigation={legalNavigation}
+    currentPath={Astro.url.pathname}
+  />
+</BaseLayout>

@@ -12,7 +12,82 @@ export interface ManagedImage {
 
 export interface NavigationItem {
   label: string;
-  href: `#${string}`;
+  href: string;
+}
+
+export interface PageSeo {
+  title: string;
+  description: string;
+  pageType?: 'WebPage' | 'AboutPage' | 'ContactPage';
+  noIndex?: boolean;
+}
+
+export interface EditorialItem {
+  id: string;
+  index: string;
+  title: string;
+  summary: string;
+  image?: ManagedImage;
+}
+
+export interface EditorialCollection {
+  title: string;
+  summary?: string;
+  variant: 'columns' | 'rows' | 'media';
+  items: EditorialItem[];
+}
+
+export interface EditorialFeature {
+  title: string;
+  body: string[];
+  image?: ManagedImage;
+  imagePosition?: 'left' | 'right';
+  tone: 'white' | 'soft';
+}
+
+export interface EditorialPageContent {
+  slug: string;
+  seo: PageSeo;
+  hero: {
+    title: string;
+    summary: string;
+    primaryAction: NavigationItem;
+    secondaryAction?: NavigationItem;
+    image: ManagedImage;
+    frameLabel: string;
+    visualIndex: string;
+  };
+  introduction: {
+    title: string;
+    body: string[];
+  };
+  primaryCollection: EditorialCollection;
+  secondaryCollection?: EditorialCollection;
+  feature?: EditorialFeature;
+  statement: {
+    title: string;
+    summary: string;
+  };
+  closing: {
+    title: string;
+    summary: string;
+    primaryAction: NavigationItem;
+    secondaryAction?: NavigationItem;
+  };
+}
+
+export interface UtilitySection {
+  title: string;
+  body: string[];
+}
+
+export interface UtilityPageContent {
+  slug: string;
+  seo: PageSeo;
+  title: string;
+  introduction: string;
+  sections: UtilitySection[];
+  action?: NavigationItem;
 }
 
 export interface WorkStudy {

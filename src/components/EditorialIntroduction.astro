@@ -1,0 +1,33 @@
+---
+import type { EditorialPageContent } from '../lib/content/types';
+
+interface Props {
+  content: EditorialPageContent['introduction'];
+}
+
+const { content } = Astro.props;
+---
+
+<section class="tw:border-y tw:border-line tw:bg-white tw:py-[clamp(5rem,9vw,9rem)]">
+  <div
+    class="container tw:grid tw:gap-[clamp(2rem,8vw,10rem)] tw:lg:grid-cols-[minmax(18rem,.82fr)_minmax(22rem,1.18fr)]"
+    data-reveal-group
+  >
+    <h2 class="tw:max-w-[11ch]" data-reveal>{content.title}</h2>
+    <div class="tw:grid tw:gap-5 tw:pt-2">
+      {
+        content.body.map((paragraph, index) => (
+          <p
+            class:list={[
+              'tw:max-w-[45rem] tw:text-[clamp(1.15rem,1.8vw,1.55rem)] tw:leading-[1.5]',
+              index === 0 ? 'tw:text-carbon' : 'tw:text-ink-soft'
+            ]}
+            data-reveal
+          >
+            {paragraph}
+          </p>
+        ))
+      }
+    </div>
+  </div>
+</section>
