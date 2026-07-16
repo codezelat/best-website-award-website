@@ -64,8 +64,12 @@ for (const [route, heading] of [...editorialRoutes, ...utilityRoutes]) {
 test('FAQ publishes complete visible answers and matching structured data', async ({ page }) => {
   await page.goto('/faq');
 
-  const questions = page.locator('main section');
+  const questions = page.locator('main details');
   await expect(questions).toHaveCount(24);
+  await expect(questions.filter({ hasText: 'What is Best Website Awards 2026?' })).toHaveAttribute(
+    'open',
+    ''
+  );
 
   const structuredDataText = await page.locator('script[type="application/ld+json"]').textContent();
   const structuredData = JSON.parse(structuredDataText ?? '{}');

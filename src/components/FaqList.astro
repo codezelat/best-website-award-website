@@ -1,0 +1,32 @@
+---
+import type { UtilitySection } from '../lib/content/types';
+
+interface Props {
+  sections: UtilitySection[];
+}
+
+const { sections } = Astro.props;
+---
+
+<section class="faq-list" aria-label="Frequently asked questions">
+  <div class="container">
+    <div class="faq-list__inner">
+      {
+        sections.map((section, index) => (
+          <details class="faq-item" open={index === 0} data-reveal>
+            <summary>
+              <span class="faq-item__index">{String(index + 1).padStart(2, '0')}</span>
+              <h2>{section.title}</h2>
+              <span class="faq-item__toggle" aria-hidden="true" />
+            </summary>
+            <div class="faq-item__answer">
+              {section.body.map((paragraph) => (
+                <p>{paragraph}</p>
+              ))}
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
