@@ -3,17 +3,20 @@ import { resolve } from 'node:path';
 
 const origin = 'https://bestwebsiteaward.com';
 const root = resolve(import.meta.dirname, '..');
+const buildRoot = resolve(root, 'dist/client');
 const indexableRoutes = [
   '/',
   '/about',
   '/awards',
   '/contact',
+  '/cookies',
   '/faq',
+  '/privacy-policy',
   '/process',
   '/standard',
+  '/terms',
   '/work'
 ];
-const noIndexRoutes = ['/privacy-policy', '/terms', '/cookies'];
 
 const fail = (message) => {
   throw new Error(`[SEO verification] ${message}`);
@@ -22,7 +25,7 @@ const fail = (message) => {
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 const routeFile = (route) =>
-  route === '/' ? resolve(root, 'dist/index.html') : resolve(root, `dist${route}/index.html`);
+  route === '/' ? resolve(buildRoot, 'index.html') : resolve(buildRoot, `.${route}/index.html`);
 
 const readRoute = async (route) => readFile(routeFile(route), 'utf8');
 
@@ -87,14 +90,7 @@ for (const route of indexableRoutes) {
   }
 }
 
-for (const route of noIndexRoutes) {
-  const html = await readRoute(route);
-  if (getMetaContent(html, 'name="robots"') !== 'noindex, follow') {
-    fail(`${route} must remain noindex`);
-  }
-}
-
-const sitemap = await readFile(resolve(root, 'dist/sitemap-0.xml'), 'utf8');
+const sitemap = await readFile(resolve(buildRoot, 'sitemap-0.xml'), 'utf8');
 const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
 const expectedUrls = indexableRoutes.map((route) => (route === '/' ? origin : `${origin}${route}`));
 
@@ -106,13 +102,7 @@ for (const url of expectedUrls) {
   if (!sitemapUrls.includes(url)) fail(`sitemap is missing ${url}`);
 }
 
-for (const route of noIndexRoutes) {
-  if (new RegExp(`${escapeRegExp(origin + route)}(?:<|/)`).test(sitemap)) {
-    fail(`sitemap includes noindex route ${route}`);
-  }
-}
-
-const robots = await readFile(resolve(root, 'dist/robots.txt'), 'utf8');
+const robots = await readFile(resolve(buildRoot, 'robots.txt'), 'utf8');
 if (!robots.includes(`Sitemap: ${origin}/sitemap-index.xml`)) {
   fail('robots.txt does not advertise the sitemap index');
 }
@@ -132,7 +122,7 @@ for (const consentSignal of [
   }
 }
 
-const assetDirectory = resolve(root, 'dist/_astro');
+const assetDirectory = resolve(buildRoot, '_astro');
 const scriptFiles = (await readdir(assetDirectory)).filter((file) => file.endsWith('.js'));
 const bundledScripts = [
   homepage,
@@ -168,10 +158,16 @@ for (const analyticsOrigin of [
   }
 }
 
+for (const turnstileDirective of ['script-src', 'frame-src https://challenges.cloudflare.com']) {
+  if (!contentSecurityPolicy?.includes(turnstileDirective)) {
+    fail(`Content Security Policy is missing Turnstile directive ${turnstileDirective}`);
+  }
+}
+
 if (!documentCacheControl?.includes('no-transform')) {
   fail('document cache policy must prevent CDN script injection with no-transform');
 }
 
 console.log(
-  `SEO and analytics verification passed for ${indexableRoutes.length} indexable routes, ${noIndexRoutes.length} noindex routes and ${sitemapUrls.length} sitemap URLs.`
+  `SEO, privacy and analytics verification passed for ${indexableRoutes.length} indexable routes and ${sitemapUrls.length} sitemap URLs.`
 );

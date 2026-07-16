@@ -1,5 +1,6 @@
 ---
 import type { PageSeo, UtilitySection } from '../lib/content/types';
+import { socialLinks } from '../data/site';
 
 interface Props {
   title: string;
@@ -83,6 +84,7 @@ const structuredData = {
       url: `${canonical.origin}/`,
       email: 'info@gbeaward.com',
       areaServed: 'Worldwide',
+      sameAs: socialLinks.filter((item) => item.network !== 'whatsapp').map((item) => item.href),
       logo: {
         '@type': 'ImageObject',
         url: `${canonical.origin}/favicon.png`

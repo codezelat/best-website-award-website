@@ -589,24 +589,23 @@ export const utilityPages = {
     },
     title: 'Start a clear conversation.',
     introduction:
-      'For questions about Best Website Awards, the recognition standard or programme information, contact the team through the official channel below.',
+      'Present a website or ask a programme question through one simple, secure form. The official awards team will reply directly.',
     sections: [
       {
-        title: 'General enquiries',
+        title: 'What happens next',
         body: [
-          'Email info@gbeaward.com for enquiries connected to Best Website Awards.',
-          'Messages are handled through Global Business Excellence Awards, which powers this initiative.'
+          'The awards team reviews the website address, organisation and context you provide, then responds by email with the relevant official guidance.',
+          'Sending an enquiry is the easiest way to confirm suitability before any programme-specific requirements are published or completed.'
         ]
       },
       {
-        title: 'Help us understand the enquiry',
+        title: 'Official channels',
         body: [
-          'You may include your name, organisation, website address and a concise explanation of what you would like to discuss.',
-          'Current programme details are published through official Best Website Awards and Global Business Excellence Awards channels.'
+          'Messages are handled through Global Business Excellence Awards, which powers Best Website Awards. Programme correspondence is sent through an official GBE Awards channel.',
+          'You can also contact info@gbeaward.com or use the verified social channels linked on this page and in the footer.'
         ]
       }
-    ],
-    action: { label: 'Email the team', href: 'mailto:info@gbeaward.com' }
+    ]
   },
   faq: {
     slug: 'faq',
@@ -792,8 +791,7 @@ export const utilityPages = {
     seo: {
       title: 'Privacy Policy | Best Website Awards',
       description:
-        'Read how the Best Website Awards public website handles contact information, technical request data, external services and privacy enquiries.',
-      noIndex: true
+        'Read how the Best Website Awards website handles contact submissions, technical request data, analytics choices, security services and privacy enquiries.'
     },
     title: 'Privacy, explained clearly.',
     introduction:
@@ -802,8 +800,8 @@ export const utilityPages = {
       {
         title: 'Information you provide',
         body: [
-          'If you contact us by email, we receive the information you choose to include in that correspondence.',
-          'This public website does not currently provide account registration or online forms.'
+          'If you use the contact form or email us, we receive the details you choose to provide, which may include your name, email address, phone number, organisation, website address and message.',
+          'Contact information is used to review and respond to the enquiry, provide relevant official guidance, maintain an appropriate correspondence record and protect the service from misuse.'
         ]
       },
       {
@@ -827,9 +825,16 @@ export const utilityPages = {
         ]
       },
       {
+        title: 'Contact delivery and security',
+        body: [
+          'The contact form uses Cloudflare Turnstile to distinguish legitimate submissions from automated abuse. Turnstile may process technical request and device information for this security purpose.',
+          'Form submissions are delivered to the awards team using Resend. The information supplied in the form is transmitted in the resulting email so the team can respond.'
+        ]
+      },
+      {
         title: 'External services and links',
         body: [
-          'Links to Global Business Excellence Awards and other external services are governed by their own privacy practices.'
+          'This website links to Global Business Excellence Awards, verified social channels and other external services. Those services are governed by their own privacy practices.'
         ]
       },
       {
@@ -844,8 +849,7 @@ export const utilityPages = {
     seo: {
       title: 'Terms of Use | Best Website Awards',
       description:
-        'Read the terms governing use of the Best Website Awards public website, programme information, intellectual property and external links.',
-      noIndex: true
+        'Read the terms governing use of the Best Website Awards public website, programme information, contact submissions, intellectual property and external links.'
     },
     title: 'Terms built for clarity.',
     introduction:
@@ -890,8 +894,7 @@ export const utilityPages = {
     seo: {
       title: 'Cookie Notice | Best Website Awards',
       description:
-        'Read how Best Website Awards uses consent-controlled Google Analytics, stores your preference and keeps advertising technologies disabled.',
-      noIndex: true
+        'Read how Best Website Awards uses consent-controlled analytics, stores privacy choices and uses essential security technology for contact submissions.'
     },
     title: 'A minimal approach to cookies.',
     introduction:
@@ -909,6 +912,13 @@ export const utilityPages = {
         body: [
           'If you select Allow analytics, Google Analytics 4 is loaded using measurement ID G-L2FR8JR6ZJ. It may set _ga and _ga_* cookies to distinguish site usage over time.',
           'We limit analytics cookies to 90 days and disable Google advertising storage, advertising personalisation and Google Signals. Declining analytics leaves the measurement tag unloaded.'
+        ]
+      },
+      {
+        title: 'Contact form security',
+        body: [
+          'Cloudflare Turnstile is used only where the contact form appears to protect the service from automated abuse. This security check is treated as necessary for the form to operate safely.',
+          'Turnstile may use technical storage or signals required to complete the check. It is separate from the optional analytics choice described above.'
         ]
       },
       {

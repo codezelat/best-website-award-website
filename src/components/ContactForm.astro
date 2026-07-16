@@ -1,0 +1,307 @@
+---
+import { ArrowUpRight, Check, Mail, MapPin, ShieldCheck } from '@lucide/astro';
+import { contactDetails, socialLinks } from '../data/site';
+import SocialIcon from './SocialIcon.astro';
+
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+---
+
+<section class="contact-application" aria-labelledby="contact-form-title">
+  <div class="container contact-application__grid">
+    <aside class="contact-application__aside" data-reveal>
+      <p class="contact-application__kicker">Official contact</p>
+      <h2>Present the website.<br />We’ll guide the next step.</h2>
+      <p class="contact-application__intro">
+        Share the essentials in a few minutes. The awards team will review your enquiry and reply
+        through the official channel.
+      </p>
+
+      <div class="contact-application__details">
+        <a href={`mailto:${contactDetails.email}`}>
+          <Mail aria-hidden="true" size={20} stroke-width={1.7} />
+          <span><small>Email</small>{contactDetails.email}</span>
+        </a>
+        <p>
+          <MapPin aria-hidden="true" size={20} stroke-width={1.7} />
+          <span><small>Organisation</small>{contactDetails.location}</span>
+        </p>
+      </div>
+
+      <nav class="contact-application__social" aria-label="Official social channels">
+        {
+          socialLinks.map((item) => (
+            <a
+              href={item.href}
+              target="_blank"
+              rel="external noopener noreferrer"
+              aria-label={`${item.label} — opens in a new tab`}
+              title={item.label}
+            >
+              <SocialIcon network={item.network} />
+            </a>
+          ))
+        }
+      </nav>
+
+      <a
+        class="contact-application__parent"
+        href={contactDetails.parentWebsite}
+        target="_blank"
+        rel="external noopener noreferrer"
+      >
+        Global Business Excellence Awards
+        <ArrowUpRight aria-hidden="true" size={17} stroke-width={1.8} />
+      </a>
+    </aside>
+
+    <div class="contact-form-shell" data-reveal>
+      <div class="contact-form-shell__heading">
+        <div>
+          <p>Website enquiry</p>
+          <h2 id="contact-form-title">Start with the essentials.</h2>
+        </div>
+        <span>About 2 minutes</span>
+      </div>
+
+      <form class="contact-form" action="/api/contact" method="post" data-contact-form>
+        <input type="hidden" name="submissionId" data-submission-id />
+        <div class="contact-form__honeypot" aria-hidden="true">
+          <label for="website-confirmation">Leave this field empty</label>
+          <input
+            id="website-confirmation"
+            name="websiteConfirmation"
+            type="text"
+            tabindex="-1"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="contact-form__field contact-form__field--wide">
+          <label for="enquiry-type">How can we help?</label>
+          <select id="enquiry-type" name="enquiryType" data-enquiry-type>
+            <option value="present">I’d like to present a website</option>
+            <option value="eligibility">Eligibility or evaluation question</option>
+            <option value="programme">Programme information</option>
+            <option value="media">Media or partnership enquiry</option>
+            <option value="other">Something else</option>
+          </select>
+        </div>
+
+        <div class="contact-form__field">
+          <label for="contact-name">Your name <span aria-hidden="true">*</span></label>
+          <input
+            id="contact-name"
+            name="name"
+            type="text"
+            required
+            autocomplete="name"
+            maxlength="100"
+            placeholder="Full name"
+          />
+        </div>
+
+        <div class="contact-form__field">
+          <label for="contact-email">Work email <span aria-hidden="true">*</span></label>
+          <input
+            id="contact-email"
+            name="email"
+            type="email"
+            required
+            autocomplete="email"
+            maxlength="254"
+            placeholder="name@organisation.com"
+          />
+        </div>
+
+        <div class="contact-form__field">
+          <label for="contact-organisation">Organisation <span aria-hidden="true">*</span></label>
+          <input
+            id="contact-organisation"
+            name="organisation"
+            type="text"
+            required
+            autocomplete="organization"
+            maxlength="140"
+            placeholder="Organisation or studio"
+          />
+        </div>
+
+        <div class="contact-form__field">
+          <label for="contact-phone">Phone <span>Optional</span></label>
+          <input
+            id="contact-phone"
+            name="phone"
+            type="tel"
+            autocomplete="tel"
+            inputmode="tel"
+            maxlength="40"
+            placeholder="Country code + number"
+          />
+        </div>
+
+        <div class="contact-form__field contact-form__field--wide" data-website-field>
+          <label for="contact-website">Website address <span aria-hidden="true">*</span></label>
+          <input
+            id="contact-website"
+            name="website"
+            type="url"
+            required
+            inputmode="url"
+            autocomplete="url"
+            maxlength="500"
+            placeholder="https://example.com"
+          />
+        </div>
+
+        <div class="contact-form__field contact-form__field--wide">
+          <label for="contact-message">What should we know? <span>Optional</span></label>
+          <textarea
+            id="contact-message"
+            name="message"
+            rows="4"
+            maxlength="2000"
+            placeholder="A brief note about the website, its purpose or your question"></textarea>
+        </div>
+
+        <label class="contact-form__consent">
+          <input type="checkbox" name="privacyAccepted" value="yes" required />
+          <span>
+            I agree that the awards team may use these details to respond to my enquiry. See the
+            <a href="/privacy-policy">privacy policy</a>.
+          </span>
+        </label>
+
+        <div class="contact-form__verification">
+          <div>
+            <ShieldCheck aria-hidden="true" size={19} stroke-width={1.7} />
+            <span>Secure verification</span>
+          </div>
+          {
+            turnstileSiteKey ? (
+              <div
+                class="cf-turnstile"
+                data-sitekey={turnstileSiteKey}
+                data-theme="light"
+                data-size="flexible"
+                data-action="contact_form"
+              />
+            ) : (
+              <p class="contact-form__unavailable">Verification is temporarily unavailable.</p>
+            )
+          }
+        </div>
+
+        <div class="contact-form__submit-row">
+          <button type="submit" class="contact-form__submit" disabled={!turnstileSiteKey}>
+            <span data-submit-label>Send website details</span>
+            <ArrowUpRight aria-hidden="true" size={19} stroke-width={1.8} />
+          </button>
+          <p>We’ll reply to the email you provide.</p>
+        </div>
+
+        <div class="contact-form__status" data-form-status role="status" aria-live="polite" hidden>
+          <Check aria-hidden="true" size={22} stroke-width={2} />
+          <p></p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+{
+  turnstileSiteKey && (
+    <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js" />
+  )
+}
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  const enquiryType = form?.querySelector<HTMLSelectElement>('[data-enquiry-type]');
+  const websiteField = form?.querySelector<HTMLElement>('[data-website-field]');
+  const websiteInput = websiteField?.querySelector<HTMLInputElement>('input');
+  const status = form?.querySelector<HTMLElement>('[data-form-status]');
+  const statusCopy = status?.querySelector<HTMLParagraphElement>('p');
+  const submitButton = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+  const submitLabel = form?.querySelector<HTMLElement>('[data-submit-label]');
+  const submissionId = form?.querySelector<HTMLInputElement>('[data-submission-id]');
+  const turnstileWindow = window as typeof window & {
+    turnstile?: { reset: (container?: string | HTMLElement) => void };
+  };
+
+  const renewSubmissionId = () => {
+    if (submissionId) submissionId.value = crypto.randomUUID();
+  };
+
+  const updateWebsiteRequirement = () => {
+    const isWebsitePresentation = enquiryType?.value === 'present';
+    if (websiteInput) websiteInput.required = isWebsitePresentation;
+    websiteField?.classList.toggle('contact-form__field--optional', !isWebsitePresentation);
+
+    const requirement = websiteField?.querySelector('label span');
+    if (requirement) requirement.textContent = isWebsitePresentation ? '*' : 'Optional';
+  };
+
+  const showStatus = (message: string, kind: 'success' | 'error') => {
+    if (!status || !statusCopy) return;
+    status.hidden = false;
+    status.dataset.kind = kind;
+    statusCopy.textContent = message;
+    status.focus({ preventScroll: true });
+  };
+
+  renewSubmissionId();
+  updateWebsiteRequirement();
+  enquiryType?.addEventListener('change', updateWebsiteRequirement);
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!form.reportValidity() || !submitButton || !submitLabel) return;
+
+    const token = form.querySelector<HTMLInputElement>(
+      'input[name="cf-turnstile-response"]'
+    )?.value;
+    if (!token) {
+      showStatus('Please complete the secure verification before sending.', 'error');
+      return;
+    }
+
+    submitButton.disabled = true;
+    submitButton.setAttribute('aria-busy', 'true');
+    submitLabel.textContent = 'Sending…';
+    if (status) status.hidden = true;
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' }
+      });
+      const result = (await response.json()) as { ok?: boolean; message?: string };
+
+      if (!response.ok || !result.ok) {
+        throw new Error(result.message || 'We could not send your enquiry. Please try again.');
+      }
+
+      form.reset();
+      renewSubmissionId();
+      updateWebsiteRequirement();
+      turnstileWindow.turnstile?.reset('.cf-turnstile');
+      showStatus(
+        result.message || 'Thank you. Your website details are now with the awards team.',
+        'success'
+      );
+    } catch (error) {
+      turnstileWindow.turnstile?.reset('.cf-turnstile');
+      showStatus(
+        error instanceof Error
+          ? error.message
+          : 'We could not send your enquiry. Please try again.',
+        'error'
+      );
+    } finally {
+      submitButton.disabled = false;
+      submitButton.removeAttribute('aria-busy');
+      submitLabel.textContent = 'Send website details';
+    }
+  });
+</script>

@@ -35,6 +35,29 @@ for (const [route, heading] of [...editorialRoutes, ...utilityRoutes]) {
       () => document.documentElement.scrollWidth - window.innerWidth
     );
     expect(overflow).toBeLessThanOrEqual(1);
+
+    if (utilityRoutes.some(([utilityRoute]) => utilityRoute === route)) {
+      const collisions = await page.locator('main section').evaluateAll((sections) =>
+        sections
+          .map((section) => {
+            const heading = section.querySelector('[data-utility-heading]');
+            const copy = section.querySelector('[data-utility-copy]');
+            if (!(heading instanceof HTMLElement) || !(copy instanceof HTMLElement)) return null;
+
+            const headingBox = heading.getBoundingClientRect();
+            const copyBox = copy.getBoundingClientRect();
+            const overlaps = !(
+              headingBox.right <= copyBox.left ||
+              headingBox.left >= copyBox.right ||
+              headingBox.bottom <= copyBox.top ||
+              headingBox.top >= copyBox.bottom
+            );
+            return overlaps ? heading.textContent?.trim() : null;
+          })
+          .filter(Boolean)
+      );
+      expect(collisions).toEqual([]);
+    }
   });
 }
 
@@ -55,7 +78,7 @@ test('FAQ publishes complete visible answers and matching structured data', asyn
   expect(faqPage?.mainEntity?.[10]?.acceptedAnswer?.text).toContain('does not use public voting');
 });
 
-test('Google Analytics remains off until consent and preference can be changed', async ({
+test('optional analytics remains off until consent and preference can be changed', async ({
   page
 }) => {
   await page.route('https://www.googletagmanager.com/**', (route) =>
@@ -63,11 +86,11 @@ test('Google Analytics remains off until consent and preference can be changed',
   );
   await page.goto('/');
 
-  const consent = page.getByRole('dialog', { name: 'Help us improve the website.' });
+  const consent = page.getByRole('dialog', { name: 'A better website, with your help.' });
   await expect(consent).toBeVisible();
   await expect(page.locator('script[data-google-analytics]')).toHaveCount(0);
 
-  await page.getByRole('button', { name: 'Allow analytics' }).click();
+  await page.getByRole('button', { name: 'Yes, help improve' }).click();
   await expect(consent).toBeHidden();
   await expect(page.locator('script[data-google-analytics]')).toHaveCount(1);
   await expect
@@ -76,18 +99,69 @@ test('Google Analytics remains off until consent and preference can be changed',
 
   await page.getByRole('button', { name: 'Cookie settings' }).click();
   await expect(consent).toBeVisible();
-  await page.getByRole('button', { name: 'Decline analytics' }).click();
+  await page.getByRole('button', { name: 'Not now' }).click();
   await expect
     .poll(() => page.evaluate(() => localStorage.getItem('bwa_analytics_consent_v1')))
     .toBe('denied');
 });
 
 for (const route of ['/privacy-policy', '/terms', '/cookies']) {
-  test(`${route} is deliberately excluded from search indexing`, async ({ page }) => {
+  test(`${route} is indexable and available to search engines`, async ({ page }) => {
     await page.goto(route);
-    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow');
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+      'content',
+      'index, follow, max-image-preview:large'
+    );
   });
 }
+
+test('contact page publishes official channels and completes a website enquiry', async ({
+  page
+}) => {
+  await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js', (route) =>
+    route.fulfill({
+      contentType: 'application/javascript',
+      body: `
+        window.turnstile = { reset() {} };
+        document.querySelectorAll('.cf-turnstile').forEach((container) => {
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = 'cf-turnstile-response';
+          input.value = 'test-token';
+          container.append(input);
+        });
+      `
+    })
+  );
+  await page.route('**/api/contact', async (route) => {
+    const request = route.request();
+    expect(request.method()).toBe('POST');
+    expect(request.postData()).toContain('example.com');
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        ok: true,
+        message: 'Thank you. Your website details are now with the awards team.'
+      })
+    });
+  });
+  await page.goto('/contact');
+
+  await expect(
+    page.locator('.contact-application__social').getByRole('link', { name: /Facebook/ })
+  ).toHaveAttribute('href', 'https://www.facebook.com/gbeaward/');
+  await page.getByLabel('Your name *').fill('Test Entrant');
+  await page.getByLabel('Work email *').fill('entrant@example.com');
+  await page.getByLabel('Organisation *').fill('Example Studio');
+  await page.getByLabel('Website address *').fill('https://example.com');
+  await page.getByRole('checkbox').check();
+  await page.getByRole('button', { name: 'Send website details' }).click();
+
+  await expect(page.getByRole('status')).toContainText(
+    'Thank you. Your website details are now with the awards team.'
+  );
+});
 
 test('unknown routes use the branded, non-indexable not-found page', async ({ page }) => {
   const response = await page.goto('/a-page-that-does-not-exist');

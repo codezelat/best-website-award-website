@@ -90,10 +90,10 @@ describe('public page content contract', () => {
     expect(editorialPages.about.seo.description).toContain('GBE Awards 2026');
   });
 
-  it('keeps legal utility pages out of the search index', () => {
-    expect(utilityPages.privacy.seo.noIndex).toBe(true);
-    expect(utilityPages.terms.seo.noIndex).toBe(true);
-    expect(utilityPages.cookies.seo.noIndex).toBe(true);
+  it('keeps substantive legal utility pages discoverable', () => {
+    expect('noIndex' in utilityPages.privacy.seo).toBe(false);
+    expect('noIndex' in utilityPages.terms.seo).toBe(false);
+    expect('noIndex' in utilityPages.cookies.seo).toBe(false);
   });
 
   it('publishes accurate analytics and consent disclosures', () => {
@@ -104,6 +104,8 @@ describe('public page content contract', () => {
     expect(cookieCopy).toContain('G-L2FR8JR6ZJ');
     expect(cookieCopy).toContain('90 days');
     expect(cookieCopy).toContain('Cookie settings');
+    expect(privacyCopy).toContain('Cloudflare Turnstile');
+    expect(privacyCopy).toContain('Resend');
   });
 
   it('contains no draft markers or manufactured programme specifics', () => {

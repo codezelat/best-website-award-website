@@ -1,5 +1,6 @@
 ---
 import ButtonLink from '../components/ButtonLink.astro';
+import ContactForm from '../components/ContactForm.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import { legalNavigation, siteNavigation } from '../data/site';
@@ -56,12 +57,14 @@ const getSectionId = (title: string, index: number) => {
       </div>
     </header>
 
+    {content.slug === 'contact' && <ContactForm />}
+
     <div class="container tw:py-[clamp(5rem,9vw,9rem)]">
       <div class="tw:mx-auto tw:max-w-[72rem] tw:border-t tw:border-carbon" data-reveal-group>
         {
           content.sections.map((section, index) => (
             <section
-              class="tw:scroll-mt-32 tw:grid tw:gap-6 tw:border-b tw:border-line tw:py-[clamp(2.5rem,5vw,4.5rem)] tw:lg:grid-cols-[5rem_minmax(15rem,.65fr)_1fr]"
+              class="tw:scroll-mt-32 tw:grid tw:min-w-0 tw:gap-6 tw:border-b tw:border-line tw:py-[clamp(2.5rem,5vw,4.5rem)] tw:xl:grid-cols-[4.5rem_minmax(0,.78fr)_minmax(0,1.22fr)] tw:xl:gap-x-[clamp(2rem,4vw,4.5rem)]"
               id={getSectionId(section.title, index)}
               aria-labelledby={`${getSectionId(section.title, index)}-title`}
               data-reveal
@@ -71,11 +74,12 @@ const getSectionId = (title: string, index: number) => {
               </span>
               <h2
                 id={`${getSectionId(section.title, index)}-title`}
-                class="tw:text-[clamp(1.8rem,3vw,3rem)]"
+                class="tw:min-w-0 tw:max-w-[15ch] tw:text-[clamp(1.8rem,3vw,3rem)] tw:[overflow-wrap:anywhere]"
+                data-utility-heading
               >
                 {section.title}
               </h2>
-              <div class="tw:grid tw:gap-4">
+              <div class="tw:grid tw:min-w-0 tw:gap-4" data-utility-copy>
                 {section.body.map((paragraph) => (
                   <p class="tw:max-w-[42rem] tw:leading-[1.7] tw:text-ink-soft">{paragraph}</p>
                 ))}
