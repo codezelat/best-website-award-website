@@ -39,7 +39,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
     <SeoHead {title} {description} {canonical} {image} {imageAlt} {pageType} {noIndex} {faqItems} />
     <script is:inline>
       document.documentElement.classList.add('js');

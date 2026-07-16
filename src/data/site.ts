@@ -41,3 +41,17 @@ export const socialLinks = [
   },
   { label: 'WhatsApp', href: 'https://wa.link/4f21fy', network: 'whatsapp' }
 ] satisfies SocialLink[];
+
+export const publicRoutes = [
+  '/',
+  '/about',
+  '/awards',
+  '/contact',
+  '/cookies',
+  '/faq',
+  '/privacy-policy',
+  '/process',
+  '/standard',
+  '/terms',
+  '/work'
+] as const;

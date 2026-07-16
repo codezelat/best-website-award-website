@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { editorialPages, utilityPages } from '../../src/data/pages';
+import { publicRoutes } from '../../src/data/site';
 import { getEditorialPage, getUtilityPage } from '../../src/lib/content/pages';
 import type {
   EditorialCollection,
@@ -94,6 +95,13 @@ describe('public page content contract', () => {
     expect('noIndex' in utilityPages.privacy.seo).toBe(false);
     expect('noIndex' in utilityPages.terms.seo).toBe(false);
     expect('noIndex' in utilityPages.cookies.seo).toBe(false);
+  });
+
+  it('publishes every indexable page through the direct public sitemap contract', () => {
+    expect(publicRoutes).toHaveLength(11);
+    expect(publicRoutes).toEqual(
+      expect.arrayContaining(['/privacy-policy', '/terms', '/cookies', '/contact'])
+    );
   });
 
   it('publishes accurate analytics and consent disclosures', () => {

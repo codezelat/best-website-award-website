@@ -90,9 +90,11 @@ for (const route of indexableRoutes) {
   }
 }
 
-const sitemap = await readFile(resolve(buildRoot, 'sitemap-0.xml'), 'utf8');
+const sitemap = await readFile(resolve(buildRoot, 'sitemap.xml'), 'utf8');
 const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
-const expectedUrls = indexableRoutes.map((route) => (route === '/' ? origin : `${origin}${route}`));
+const expectedUrls = indexableRoutes.map((route) =>
+  route === '/' ? `${origin}/` : `${origin}${route}`
+);
 
 if (sitemapUrls.length !== expectedUrls.length) {
   fail(`sitemap contains ${sitemapUrls.length} URLs instead of ${expectedUrls.length}`);
@@ -103,8 +105,8 @@ for (const url of expectedUrls) {
 }
 
 const robots = await readFile(resolve(buildRoot, 'robots.txt'), 'utf8');
-if (!robots.includes(`Sitemap: ${origin}/sitemap-index.xml`)) {
-  fail('robots.txt does not advertise the sitemap index');
+if (!robots.includes(`Sitemap: ${origin}/sitemap.xml`)) {
+  fail('robots.txt does not advertise the public sitemap');
 }
 
 const homepage = await readRoute('/');
