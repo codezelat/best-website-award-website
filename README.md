@@ -220,7 +220,6 @@ Accessibility is part of the component contract: semantic landmarks, keyboard na
 | ------------------------ | ---------------------------------------------------------------- |
 | `npm run dev`            | Start the Astro development server                               |
 | `npm run build`          | Build production output and harden the generated Vercel manifest |
-| `npm run preview`        | Preview the production build locally                             |
 | `npm run check`          | Run Astro and TypeScript diagnostics                             |
 | `npm run test`           | Run Vitest content and endpoint tests                            |
 | `npm run test:e2e`       | Run desktop and mobile Playwright tests                          |
