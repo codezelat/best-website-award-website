@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { homepageContent } from '../../src/data/homepage';
+import { programmeDetails } from '../../src/data/site';
 
 describe('homepage content contract', () => {
   it('keeps managed collection identifiers unique', () => {
@@ -34,5 +35,7 @@ describe('homepage content contract', () => {
     expect(homepageContent.seo.description.length).toBeLessThanOrEqual(170);
     expect(homepageContent.hero.title).toContain('Best Website Awards 2026');
     expect(homepageContent.introduction.statements.join(' ')).toContain('Sri Lanka');
+    expect(JSON.stringify(homepageContent)).toContain(programmeDetails.date);
+    expect(homepageContent.hero.primaryAction).toEqual({ label: 'Apply now', href: '/contact' });
   });
 });

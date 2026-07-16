@@ -9,9 +9,15 @@ interface Props {
 }
 
 const { href, label, variant = 'primary', class: className } = Astro.props;
+const isExternal = /^https?:\/\//.test(href);
 ---
 
-<a class:list={['button-link', `button-link--${variant}`, className]} href={href}>
+<a
+  class:list={['button-link', `button-link--${variant}`, className]}
+  href={href}
+  target={isExternal ? '_blank' : undefined}
+  rel={isExternal ? 'external noopener noreferrer' : undefined}
+>
   <span>{label}</span>
   <span class="button-link__arrow"><ArrowIcon /></span>
 </a>

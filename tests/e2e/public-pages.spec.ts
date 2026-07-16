@@ -155,6 +155,11 @@ test('contact page publishes official channels and completes a website enquiry',
   await expect(
     page.locator('.contact-application__social').getByRole('link', { name: /Facebook/ })
   ).toHaveAttribute('href', 'https://www.facebook.com/gbeaward/');
+  await expect(page.getByText('28 August 2026', { exact: true }).first()).toBeVisible();
+  await expect(page.getByRole('link', { name: /Confirm on WhatsApp/ }).first()).toHaveAttribute(
+    'href',
+    'https://wa.link/4f21fy'
+  );
   await page.getByLabel('Your name *').fill('Test Entrant');
   await page.getByLabel('Work email *').fill('entrant@example.com');
   await page.getByLabel('Organisation *').fill('Example Studio');

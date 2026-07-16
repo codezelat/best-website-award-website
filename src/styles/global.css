@@ -1221,6 +1221,45 @@
     margin-top: 1.4rem;
   }
 
+  .contact-application__whatsapp {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 1.2rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--line);
+    color: var(--carbon);
+    background: var(--white);
+    font-size: 0.86rem;
+    font-weight: 650;
+    transition:
+      border-color 220ms ease,
+      color 220ms ease,
+      transform 220ms var(--ease-out);
+  }
+
+  .contact-application__whatsapp:hover {
+    transform: translateY(-2px);
+    border-color: var(--lapis);
+    color: var(--lapis);
+  }
+
+  .contact-application__whatsapp > svg:first-child {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+
+  .contact-application__whatsapp small {
+    display: block;
+    margin-bottom: 0.05rem;
+    color: var(--ink-soft);
+    font-size: 0.62rem;
+    font-weight: 650;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
   .contact-application__social a {
     border-color: var(--line);
     color: var(--carbon);

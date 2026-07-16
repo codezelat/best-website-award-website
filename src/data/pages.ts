@@ -13,14 +13,14 @@ import workHeroStudio from '../assets/generated/work-hero-studio.png';
 import workOrganisations from '../assets/generated/work-organisations.png';
 import workPortfolios from '../assets/generated/work-portfolios.png';
 import type { EditorialPageContent, UtilityPageContent } from '../lib/content/types';
+import { programmeDetails } from './site';
 
 export const editorialPages = {
   awards: {
     slug: 'awards',
     seo: {
       title: 'Best Website Awards 2026 | Global Website Recognition',
-      description:
-        'Discover how Best Website Awards 2026 recognises purposeful, accessible and effective websites through evidence-led review and meaningful global recognition.'
+      description: `Apply to Best Website Awards 2026 for the ${programmeDetails.date} programme and discover the evidence-led standard for purposeful, accessible and effective websites.`
     },
     hero: {
       title: 'Recognition built on the work.',
@@ -152,7 +152,7 @@ export const editorialPages = {
     },
     primaryCollection: {
       title: 'Work with a reason to be recognised',
-      summary: 'These are broad kinds of work, not confirmed award categories.',
+      summary: 'These are broad forms of eligible work rather than fixed award categories.',
       variant: 'media',
       items: [
         {
@@ -367,8 +367,7 @@ export const editorialPages = {
     slug: 'process',
     seo: {
       title: 'Best Website Awards 2026 Review Process | BWA',
-      description:
-        'Learn how websites are presented, reviewed against four connected measures and considered for recognition through Best Website Awards.'
+      description: `Follow the Best Website Awards 2026 application and review process for ${programmeDetails.date}, from presenting a live website to evidence-led consideration.`
     },
     hero: {
       title: 'Make the work understandable.',
@@ -447,7 +446,7 @@ export const editorialPages = {
       title: 'Show the reasoning, not only the result.',
       body: [
         'A polished page can show the outcome. A useful case for recognition also explains the challenge, the choices and what changed.',
-        'Programme-specific entry requirements will be published through the official awards channels.'
+        `${programmeDetails.status} for ${programmeDetails.date}. Present a live website, its purpose, audience, contributors and credible evidence through the official contact process.`
       ],
       image: {
         src: processFeatureEvidence,
@@ -464,7 +463,7 @@ export const editorialPages = {
       title: 'Begin with the standard.',
       summary: 'Understand the connected measures before presenting the work.',
       primaryAction: { label: 'Explore the standard', href: '/standard' },
-      secondaryAction: { label: 'Contact us', href: '/contact' }
+      secondaryAction: { label: 'Apply now', href: '/contact' }
     }
   },
   about: {
@@ -582,37 +581,35 @@ export const utilityPages = {
   contact: {
     slug: 'contact',
     seo: {
-      title: 'Contact Best Website Awards | Programme Enquiries',
-      description:
-        'Contact Best Website Awards about website eligibility, evaluation criteria, presenting work, recognition or official programme information.',
+      title: 'Apply Now | Best Website Awards 2026',
+      description: `Apply now for Best Website Awards 2026 on ${programmeDetails.date}, confirm eligibility, present a live website or contact the official team about the entry fee.`,
       pageType: 'ContactPage'
     },
-    title: 'Start a clear conversation.',
-    introduction:
-      'Present a website or ask a programme question through one simple, secure form. The official awards team will reply directly.',
+    title: 'Present your website for 2026.',
+    introduction: `Apply for the ${programmeDetails.date} programme or ask a question through one simple, secure form. The official awards team will reply directly.`,
     sections: [
       {
         title: 'What happens next',
         body: [
-          'The awards team reviews the website address, organisation and context you provide, then responds by email with the relevant official guidance.',
-          'Sending an enquiry is the easiest way to confirm suitability before any programme-specific requirements are published or completed.'
+          `Applications are open for the official programme date of ${programmeDetails.date}. The awards team reviews the website address, organisation and context you provide, then responds by email with the next step.`,
+          'Eligible work must be a live, functional website presented by its owner or an authorised contributor. New websites and substantial redesigns from any country may be considered.'
         ]
       },
       {
-        title: 'Official channels',
+        title: 'Entry fee and official channels',
         body: [
-          'Messages are handled through Global Business Excellence Awards, which powers Best Website Awards. Programme correspondence is sent through an official GBE Awards channel.',
-          'You can also contact info@gbeaward.com or use the verified social channels linked on this page and in the footer.'
+          `${programmeDetails.feeGuidance} The official WhatsApp action is available on this page and in the footer.`,
+          'Messages are handled through Global Business Excellence Awards, which powers Best Website Awards. You can also contact info@gbeaward.com or use the verified social channels.'
         ]
       }
-    ]
+    ],
+    action: { label: 'Confirm fee on WhatsApp', href: programmeDetails.whatsappHref }
   },
   faq: {
     slug: 'faq',
     seo: {
       title: 'Best Website Awards 2026 FAQs | Eligibility & Criteria',
-      description:
-        'Find answers about Best Website Awards Sri Lanka 2026 eligibility, website types, evaluation criteria, evidence, review, recognition and programme details.',
+      description: `Find confirmed Best Website Awards Sri Lanka 2026 details for ${programmeDetails.date}, including eligibility, website types, criteria, evidence, entry fee and review.`,
       pageType: 'FAQPage'
     },
     title: 'Questions, answered with clarity.',
@@ -622,7 +619,7 @@ export const utilityPages = {
       {
         title: 'What is Best Website Awards 2026?',
         body: [
-          'Best Website Awards is a global recognition programme for websites that demonstrate purposeful design, strong experience, dependable execution, useful content and meaningful impact.',
+          `Best Website Awards is a global recognition programme for websites that demonstrate purposeful design, strong experience, dependable execution, useful content and meaningful impact. ${programmeDetails.status} for ${programmeDetails.date}.`,
           'It is powered by Global Business Excellence Awards and considers websites in the wider context of how organisations communicate, serve people and create value.'
         ]
       },
@@ -643,7 +640,7 @@ export const utilityPages = {
       {
         title: 'Is Best Website Awards open globally?',
         body: [
-          'Yes. Websites from any country or market may be presented, subject to the eligibility requirements published for the relevant programme.',
+          'Yes. Websites from any country or market may be presented for the 2026 programme.',
           'The work is considered on its own purpose, audience and context rather than being judged by where the organisation is based.'
         ]
       },
@@ -657,14 +654,14 @@ export const utilityPages = {
       {
         title: 'Is a prior nomination required?',
         body: [
-          'No prior nomination is required. An eligible website may be presented by its owner or an authorised contributor when the relevant programme is open for entries.'
+          'No prior nomination is required. Entries are now open, and an eligible website may be presented by its owner or an authorised contributor.'
         ]
       },
       {
         title: 'What kinds of websites can be considered?',
         body: [
           'The programme can consider corporate and organisational websites, brand and campaign experiences, commerce and service platforms, public-interest and purpose-led websites, portfolios, specialist practices and other substantial web experiences.',
-          'These descriptions explain the range of relevant work. Formal award categories, where used, are published with the programme information for each cycle.'
+          'These descriptions explain the confirmed range of eligible work and are not a restrictive list of fixed categories.'
         ]
       },
       {
@@ -767,14 +764,14 @@ export const utilityPages = {
         title: 'What does recognition communicate?',
         body: [
           'Recognition communicates that the website demonstrated meaningful quality against the published standard in its own context.',
-          'The resulting record is intended to help audiences, clients, partners and teams understand what was achieved and why the work deserves attention. Programme-specific recognition materials are confirmed in the official guidance.'
+          'The resulting record is intended to help audiences, clients, partners and teams understand what was achieved and why the work deserves attention. Recognition details are shared directly with successful entrants through an official awards channel.'
         ]
       },
       {
-        title: 'When are programme dates, fees and entry instructions published?',
+        title: 'What are the confirmed 2026 date, fee and entry instructions?',
         body: [
-          'The entry period, submission method, eligibility details, any applicable fees and programme-specific requirements are published together through official Best Website Awards and Global Business Excellence Awards channels.',
-          'Information from third-party listings should be checked against the current official programme guidance before action is taken.'
+          `${programmeDetails.status}. The official programme date is ${programmeDetails.date}. Begin by using Apply now and sending the live website address, organisation, contact details and a concise account of its purpose and contributors.`,
+          `${programmeDetails.feeGuidance} Information from third-party listings should be checked against this website or an official Global Business Excellence Awards channel.`
         ]
       },
       {
@@ -784,7 +781,7 @@ export const utilityPages = {
         ]
       }
     ],
-    action: { label: 'Contact the team', href: '/contact' }
+    action: { label: 'Confirm fee on WhatsApp', href: programmeDetails.whatsappHref }
   },
   privacy: {
     slug: 'privacy-policy',
@@ -847,9 +844,8 @@ export const utilityPages = {
   terms: {
     slug: 'terms',
     seo: {
-      title: 'Terms of Use | Best Website Awards',
-      description:
-        'Read the terms governing use of the Best Website Awards public website, programme information, contact submissions, intellectual property and external links.'
+      title: 'Best Website Awards 2026 Terms & Entry Information',
+      description: `Read confirmed Best Website Awards 2026 entry information for ${programmeDetails.date}, including eligibility, fee confirmation, website use and intellectual property terms.`
     },
     title: 'Terms built for clarity.',
     introduction:
@@ -858,8 +854,8 @@ export const utilityPages = {
       {
         title: 'Public information',
         body: [
-          'Content on this website explains the purpose and general framework of Best Website Awards.',
-          'Dates, entry requirements, fees, eligibility and other programme-specific details are only confirmed when published through an official channel.'
+          `${programmeDetails.status} for Best Website Awards 2026. The official programme date is ${programmeDetails.date}.`,
+          `Eligible entries are live, functional websites presented by their owner or an authorised contributor. New websites and substantial redesigns from any country may be considered. ${programmeDetails.feeGuidance}`
         ]
       },
       {
@@ -887,7 +883,7 @@ export const utilityPages = {
         ]
       }
     ],
-    action: { label: 'Contact us', href: 'mailto:info@gbeaward.com' }
+    action: { label: 'Confirm fee on WhatsApp', href: programmeDetails.whatsappHref }
   },
   cookies: {
     slug: 'cookies',

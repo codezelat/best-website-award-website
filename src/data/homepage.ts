@@ -4,20 +4,18 @@ import workDigitalProducts from '../assets/generated/work-digital-products.png';
 import workOrganisations from '../assets/generated/work-organisations.png';
 import workPortfolios from '../assets/generated/work-portfolios.png';
 import type { HomepageContent } from '../lib/content/types';
-import { siteNavigation } from './site';
+import { programmeDetails, siteNavigation } from './site';
 
 export const homepageContent = {
   seo: {
     title: 'Best Website Awards Sri Lanka 2026 | Global Recognition',
-    description:
-      'Best Website Awards 2026 recognises outstanding websites from Sri Lanka and worldwide across design, experience, performance, accessibility, content and impact.'
+    description: `Entries are open for Best Website Awards Sri Lanka 2026 on ${programmeDetails.date}, recognising outstanding websites across design, experience, accessibility and impact.`
   },
   navigation: siteNavigation,
   hero: {
     title: 'Best Website Awards 2026.',
-    summary:
-      'Global recognition for exceptional digital work shaped with purpose, craft and measurable impact.',
-    primaryAction: { label: 'Explore the awards', href: '#introduction' },
+    summary: `${programmeDetails.status} for the ${programmeDetails.date} programme—global recognition for exceptional digital work shaped with purpose and measurable impact.`,
+    primaryAction: { label: 'Apply now', href: '/contact' },
     secondaryAction: { label: 'View the standard', href: '#standard' },
     image: {
       src: heroArchitecture,
@@ -30,7 +28,7 @@ export const homepageContent = {
     title: 'A standard for meaningful digital work.',
     statements: [
       'Best Website Awards connects Sri Lanka’s digital excellence with global recognition while welcoming work from every market.',
-      'Clear criteria. Thoughtful review. Recognition with global perspective.'
+      `${programmeDetails.status} for the official programme date of ${programmeDetails.date}.`
     ]
   },
   work: {
@@ -146,9 +144,9 @@ export const homepageContent = {
     attribution: 'Powered by Global Business Excellence Awards'
   },
   closing: {
-    title: 'Build something worth recognising.',
-    summary: 'Explore the standard behind work that deserves to be seen.',
-    primaryAction: { label: 'Explore the awards', href: '#awards' },
-    secondaryAction: { label: 'View the standard', href: '#standard' }
+    title: 'Present your website for 2026.',
+    summary: `${programmeDetails.status} for ${programmeDetails.date}. ${programmeDetails.feeGuidance}`,
+    primaryAction: { label: 'Apply now', href: '/contact' },
+    secondaryAction: { label: 'Confirm fee on WhatsApp', href: programmeDetails.whatsappHref }
   }
 } satisfies HomepageContent;

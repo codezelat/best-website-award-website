@@ -22,6 +22,13 @@ export const contactDetails = {
   parentWebsite: 'https://gbeaward.com/'
 } satisfies ContactDetails;
 
+export const programmeDetails = {
+  status: 'Entries now open',
+  date: '28 August 2026',
+  whatsappHref: 'https://wa.link/4f21fy',
+  feeGuidance: 'Confirm the applicable entry fee directly with the awards team on WhatsApp.'
+} as const;
+
 export const socialLinks = [
   {
     label: 'Facebook',
@@ -39,7 +46,7 @@ export const socialLinks = [
     href: 'https://www.linkedin.com/company/gbeaward/',
     network: 'linkedin'
   },
-  { label: 'WhatsApp', href: 'https://wa.link/4f21fy', network: 'whatsapp' }
+  { label: 'WhatsApp', href: programmeDetails.whatsappHref, network: 'whatsapp' }
 ] satisfies SocialLink[];
 
 export const publicRoutes = [

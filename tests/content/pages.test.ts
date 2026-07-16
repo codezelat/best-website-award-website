@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { editorialPages, utilityPages } from '../../src/data/pages';
 import { publicRoutes } from '../../src/data/site';
+import { programmeDetails } from '../../src/data/site';
 import { getEditorialPage, getUtilityPage } from '../../src/lib/content/pages';
 import type {
   EditorialCollection,
@@ -65,6 +66,23 @@ describe('public page content contract', () => {
     expect(JSON.stringify(utilityPages.faq).toLowerCase()).toContain('does not use public voting');
     expect(JSON.stringify(utilityPages.faq)).toContain('Best Website Awards Sri Lanka');
     expect(editorialPages.standard.seo.title).toContain('Best Web 2026');
+    expect(JSON.stringify(utilityPages.faq)).toContain(programmeDetails.date);
+    expect(utilityPages.faq.action).toEqual({
+      label: 'Confirm fee on WhatsApp',
+      href: programmeDetails.whatsappHref
+    });
+  });
+
+  it('publishes the confirmed 2026 programme state consistently', () => {
+    const copy = JSON.stringify({ homepageDate: programmeDetails, editorialPages, utilityPages });
+
+    expect(programmeDetails.status).toBe('Entries now open');
+    expect(programmeDetails.date).toBe('28 August 2026');
+    expect(programmeDetails.whatsappHref).toBe('https://wa.link/4f21fy');
+    expect(copy).toContain('live, functional website');
+    expect(copy).not.toMatch(
+      /will be published|only confirmed when|when the relevant programme is open/i
+    );
   });
 
   it('keeps indexable page metadata unique and descriptive', () => {

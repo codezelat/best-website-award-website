@@ -1,6 +1,6 @@
 ---
-import { ArrowUpRight, Check, Mail, MapPin, ShieldCheck } from '@lucide/astro';
-import { contactDetails, socialLinks } from '../data/site';
+import { ArrowUpRight, CalendarDays, Check, Mail, MapPin, ShieldCheck } from '@lucide/astro';
+import { contactDetails, programmeDetails, socialLinks } from '../data/site';
 import SocialIcon from './SocialIcon.astro';
 
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
@@ -25,7 +25,22 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
           <MapPin aria-hidden="true" size={20} stroke-width={1.7} />
           <span><small>Organisation</small>{contactDetails.location}</span>
         </p>
+        <p>
+          <CalendarDays aria-hidden="true" size={20} stroke-width={1.7} />
+          <span><small>Programme date</small>{programmeDetails.date}</span>
+        </p>
       </div>
+
+      <a
+        class="contact-application__whatsapp"
+        href={programmeDetails.whatsappHref}
+        target="_blank"
+        rel="external noopener noreferrer"
+      >
+        <SocialIcon network="whatsapp" />
+        <span><small>2026 entry fee</small>Confirm on WhatsApp</span>
+        <ArrowUpRight aria-hidden="true" size={18} stroke-width={1.8} />
+      </a>
 
       <nav class="contact-application__social" aria-label="Official social channels">
         {
