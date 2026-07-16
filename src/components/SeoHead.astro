@@ -1,0 +1,59 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  canonical: URL;
+  image: URL;
+}
+
+const { title, description, canonical, image } = Astro.props;
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${canonical.origin}/#website`,
+      url: `${canonical.origin}/`,
+      name: 'Best Website Awards',
+      description,
+      publisher: { '@id': `${canonical.origin}/#organization` }
+    },
+    {
+      '@type': 'Organization',
+      '@id': `${canonical.origin}/#organization`,
+      name: 'Best Website Awards',
+      url: `${canonical.origin}/`,
+      logo: `${canonical.origin}/favicon.png`,
+      parentOrganization: {
+        '@type': 'Organization',
+        name: 'Global Business Excellence Awards',
+        url: 'https://gbeaward.com/'
+      }
+    }
+  ]
+};
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<link rel="canonical" href={canonical} />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Best Website Awards" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={image} />
+<meta
+  property="og:image:alt"
+  content="Best Website Awards — recognition for exceptional websites"
+/>
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />

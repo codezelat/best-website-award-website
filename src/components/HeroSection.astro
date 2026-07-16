@@ -1,0 +1,36 @@
+---
+import type { HomepageContent } from '../lib/content/types';
+import BrowserFrame from './BrowserFrame.astro';
+import ButtonLink from './ButtonLink.astro';
+
+interface Props {
+  content: HomepageContent['hero'];
+}
+
+const { content } = Astro.props;
+---
+
+<section class="hero section-anchor" id="awards" aria-labelledby="hero-title">
+  <div class="container hero__grid">
+    <div class="hero__content">
+      <h1 id="hero-title" data-hero-reveal>{content.title}</h1>
+      <p class="hero__summary" data-hero-reveal>{content.summary}</p>
+      <div class="hero__actions" data-hero-reveal>
+        <ButtonLink {...content.primaryAction} variant="primary" />
+        <ButtonLink {...content.secondaryAction} variant="secondary" />
+      </div>
+    </div>
+
+    <div class="hero__visual" data-hero-visual>
+      <div class="hero__ghost-frame hero__ghost-frame--one" aria-hidden="true"></div>
+      <div class="hero__ghost-frame hero__ghost-frame--two" aria-hidden="true"></div>
+      <BrowserFrame image={content.image} label="Purpose in view" priority />
+      <span class="hero__visual-index" aria-hidden="true">BWA / 01</span>
+    </div>
+  </div>
+
+  <a class="hero__scroll" href="#introduction" aria-label="Continue to the awards introduction">
+    <span>Scroll to discover</span>
+    <span class="hero__scroll-line" aria-hidden="true"></span>
+  </a>
+</section>

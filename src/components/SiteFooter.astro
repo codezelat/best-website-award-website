@@ -1,0 +1,26 @@
+---
+import type { NavigationItem } from '../lib/content/types';
+import BrandLogo from './BrandLogo.astro';
+
+interface Props {
+  navigation: NavigationItem[];
+}
+
+const { navigation } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__top">
+    <a href="#top" class="site-footer__brand" aria-label="Back to top">
+      <BrandLogo variant="reversed" loading="lazy" />
+    </a>
+    <nav class="site-footer__nav" aria-label="Footer navigation">
+      {navigation.map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+  </div>
+  <div class="container site-footer__bottom">
+    <p>© {year} Best Website Awards. All rights reserved.</p>
+    <a href="#top">Back to top</a>
+  </div>
+</footer>

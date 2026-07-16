@@ -1,0 +1,86 @@
+---
+import type { NavigationItem } from '../lib/content/types';
+import BrandLogo from './BrandLogo.astro';
+import ButtonLink from './ButtonLink.astro';
+
+interface Props {
+  navigation: NavigationItem[];
+}
+
+const { navigation } = Astro.props;
+---
+
+<header class="site-header" data-site-header>
+  <div class="container site-header__inner">
+    <a class="site-header__brand" href="#top" aria-label="Best Website Awards home">
+      <BrandLogo />
+    </a>
+
+    <nav class="site-header__nav" aria-label="Primary navigation">
+      {navigation.map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+
+    <ButtonLink
+      class="site-header__cta"
+      href="#introduction"
+      label="Explore the awards"
+      variant="primary"
+    />
+
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="mobile-navigation"
+      aria-label="Open navigation"
+      data-menu-toggle
+    >
+      <span></span><span></span>
+    </button>
+  </div>
+
+  <div class="mobile-navigation" id="mobile-navigation" data-mobile-navigation hidden>
+    <nav class="container mobile-navigation__inner" aria-label="Mobile navigation">
+      {
+        navigation.map((item, index) => (
+          <a href={item.href} style={`--nav-index:${index}`}>
+            <span>0{index + 1}</span>
+            {item.label}
+          </a>
+        ))
+      }
+      <ButtonLink href="#introduction" label="Explore the awards" variant="primary" />
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-site-header]');
+  const toggle = header?.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const menu = header?.querySelector<HTMLElement>('[data-mobile-navigation]');
+
+  const setMenuState = (open: boolean) => {
+    if (!header || !toggle || !menu) return;
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+    menu.hidden = !open;
+    header.classList.toggle('site-header--menu-open', open);
+    document.documentElement.classList.toggle('menu-open', open);
+  };
+
+  toggle?.addEventListener('click', () => {
+    setMenuState(toggle.getAttribute('aria-expanded') !== 'true');
+  });
+
+  menu
+    ?.querySelectorAll('a')
+    .forEach((link) => link.addEventListener('click', () => setMenuState(false)));
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') setMenuState(false);
+  });
+
+  const updateHeader = () => header?.classList.toggle('site-header--scrolled', window.scrollY > 16);
+  updateHeader();
+  window.addEventListener('scroll', updateHeader, { passive: true });
+</script>

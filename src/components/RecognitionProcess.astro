@@ -1,0 +1,30 @@
+---
+import type { HomepageContent } from '../lib/content/types';
+
+interface Props {
+  content: HomepageContent['process'];
+}
+
+const { content } = Astro.props;
+---
+
+<section class="recognition-process" aria-labelledby="process-title">
+  <div class="container">
+    <header class="section-heading section-heading--center" data-reveal-group>
+      <h2 id="process-title" data-reveal>{content.title}</h2>
+      <p data-reveal>{content.summary}</p>
+    </header>
+
+    <ol class="recognition-process__list" data-reveal-group>
+      {
+        content.items.map((item) => (
+          <li data-reveal>
+            <span>{item.index}</span>
+            <h3>{item.title}</h3>
+            <p>{item.summary}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

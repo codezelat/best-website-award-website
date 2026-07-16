@@ -16,7 +16,8 @@
     "test:e2e": "playwright test",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "verify": "npm run format:check && npm run check && npm run test && npm run build"
+    "verify": "npm run format:check && npm run check && npm run test && npm run build",
+    "verify:full": "npm run verify && npm run test:e2e"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
@@ -32,7 +33,7 @@
     "@types/node": "^26.0.0",
     "prettier": "^3.9.5",
     "prettier-plugin-astro": "^0.14.1",
-    "typescript": "^7.0.2",
+    "typescript": "^6.0.3",
     "vitest": "^4.1.10"
   }
 }

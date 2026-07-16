@@ -1,0 +1,23 @@
+---
+import type { HomepageContent } from '../lib/content/types';
+import ButtonLink from './ButtonLink.astro';
+
+interface Props {
+  content: HomepageContent['closing'];
+}
+
+const { content } = Astro.props;
+---
+
+<section class="closing-section" aria-labelledby="closing-title">
+  <div class="container closing-section__inner" data-reveal-group>
+    <div>
+      <h2 id="closing-title" data-reveal>{content.title}</h2>
+      <p data-reveal>{content.summary}</p>
+    </div>
+    <div class="closing-section__actions" data-reveal>
+      <ButtonLink {...content.primaryAction} variant="primary" />
+      <ButtonLink {...content.secondaryAction} variant="text" />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,35 @@
+---
+import ClosingSection from '../components/ClosingSection.astro';
+import EvaluationFramework from '../components/EvaluationFramework.astro';
+import HeroSection from '../components/HeroSection.astro';
+import IntroductionBand from '../components/IntroductionBand.astro';
+import ParentBrandBand from '../components/ParentBrandBand.astro';
+import RecognitionProcess from '../components/RecognitionProcess.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import WorkGallery from '../components/WorkGallery.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getHomepageContent } from '../lib/content/homepage';
+
+const content = await getHomepageContent();
+const heroSource = content.hero.image.src;
+const socialImage = new URL(
+  typeof heroSource === 'string' ? heroSource : heroSource.src,
+  Astro.site
+);
+---
+
+<BaseLayout title={content.seo.title} description={content.seo.description} image={socialImage}>
+  <div id="top"></div>
+  <SiteHeader navigation={content.navigation} />
+  <main id="main-content">
+    <HeroSection content={content.hero} />
+    <IntroductionBand content={content.introduction} />
+    <WorkGallery content={content.work} />
+    <EvaluationFramework content={content.evaluation} />
+    <RecognitionProcess content={content.process} />
+    <ParentBrandBand content={content.parentBrand} />
+    <ClosingSection content={content.closing} />
+  </main>
+  <SiteFooter navigation={content.navigation} />
+</BaseLayout>

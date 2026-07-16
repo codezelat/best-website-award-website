@@ -1,0 +1,29 @@
+---
+import { Image } from 'astro:assets';
+import iconmark from '../assets/brand/iconmark.png';
+import logoPrimary from '../assets/brand/logo-primary.png';
+import logoReversed from '../assets/brand/logo-reversed.png';
+
+interface Props {
+  variant?: 'primary' | 'reversed' | 'mark';
+  class?: string;
+  loading?: 'eager' | 'lazy';
+}
+
+const { variant = 'primary', class: className, loading = 'eager' } = Astro.props;
+const src = variant === 'mark' ? iconmark : variant === 'reversed' ? logoReversed : logoPrimary;
+const alt =
+  variant === 'mark'
+    ? 'Best Website Awards'
+    : 'Best Website Awards — Powered by Global Business Excellence Awards';
+---
+
+<Image
+  class:list={['brand-logo', `brand-logo--${variant}`, className]}
+  src={src}
+  alt={alt}
+  loading={loading}
+  decoding="async"
+  format="webp"
+  quality={92}
+/>

@@ -1,0 +1,31 @@
+---
+import type { HomepageContent } from '../lib/content/types';
+
+interface Props {
+  content: HomepageContent['evaluation'];
+}
+
+const { content } = Astro.props;
+---
+
+<section class="evaluation section-anchor" id="standard" aria-labelledby="evaluation-title">
+  <div class="container">
+    <header class="section-heading section-heading--split" data-reveal-group>
+      <h2 id="evaluation-title" data-reveal>{content.title}</h2>
+      <p data-reveal>{content.summary}</p>
+    </header>
+
+    <ol class="evaluation__list" data-reveal-group>
+      {
+        content.items.map((item) => (
+          <li data-reveal tabindex="0">
+            <span class="evaluation__index">{item.index}</span>
+            <h3>{item.title}</h3>
+            <p>{item.summary}</p>
+            <span class="evaluation__line" aria-hidden="true" />
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

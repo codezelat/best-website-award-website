@@ -1,0 +1,29 @@
+import { describe, expect, it } from 'vitest';
+import { homepageContent } from '../../src/data/homepage';
+
+describe('homepage content contract', () => {
+  it('keeps managed collection identifiers unique', () => {
+    const ids = [
+      ...homepageContent.work.items.map((item) => item.id),
+      ...homepageContent.evaluation.items.map((item) => item.id),
+      ...homepageContent.process.items.map((item) => item.id)
+    ];
+
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it('keeps every generated image accessible', () => {
+    const images = [
+      homepageContent.hero.image,
+      ...homepageContent.work.items.map((item) => item.image)
+    ];
+
+    expect(images.every((image) => image.alt.trim().length > 0)).toBe(true);
+  });
+
+  it('does not introduce voting or placeholder programme claims', () => {
+    const copy = JSON.stringify(homepageContent).toLowerCase();
+
+    expect(copy).not.toMatch(/public voting|vote now|lorem ipsum|coming soon|sample winner/);
+  });
+});

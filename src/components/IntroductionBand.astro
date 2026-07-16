@@ -1,0 +1,23 @@
+---
+import type { HomepageContent } from '../lib/content/types';
+
+interface Props {
+  content: HomepageContent['introduction'];
+}
+
+const { content } = Astro.props;
+---
+
+<section
+  class="introduction-band section-anchor"
+  id="introduction"
+  aria-labelledby="introduction-title"
+>
+  <div class="container introduction-band__grid" data-reveal-group>
+    <div class="introduction-band__index" data-reveal>{content.index}</div>
+    <h2 id="introduction-title" data-reveal>{content.title}</h2>
+    <div class="introduction-band__statements">
+      {content.statements.map((statement) => <p data-reveal>{statement}</p>)}
+    </div>
+  </div>
+</section>

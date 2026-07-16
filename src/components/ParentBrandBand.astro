@@ -1,0 +1,26 @@
+---
+import type { HomepageContent } from '../lib/content/types';
+import BrandLogo from './BrandLogo.astro';
+
+interface Props {
+  content: HomepageContent['parentBrand'];
+}
+
+const { content } = Astro.props;
+---
+
+<section class="parent-brand section-anchor" id="about" aria-labelledby="parent-brand-title">
+  <div class="parent-brand__grid" aria-hidden="true"></div>
+  <div class="container parent-brand__inner">
+    <div class="parent-brand__content" data-reveal-group>
+      <h2 id="parent-brand-title" data-reveal>{content.title}</h2>
+      <p data-reveal>{content.summary}</p>
+      <div class="parent-brand__attribution" data-reveal>
+        <span aria-hidden="true"></span>{content.attribution}
+      </div>
+    </div>
+    <div class="parent-brand__logo" data-reveal>
+      <BrandLogo variant="reversed" loading="lazy" />
+    </div>
+  </div>
+</section>

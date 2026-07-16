@@ -1,0 +1,54 @@
+---
+import { Picture } from 'astro:assets';
+import type { ManagedImage } from '../lib/content/types';
+
+interface Props {
+  image: ManagedImage;
+  class?: string;
+  loading?: 'eager' | 'lazy';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  sizes?: string;
+  widths?: number[];
+}
+
+const {
+  image,
+  class: className,
+  loading = 'lazy',
+  fetchpriority = 'auto',
+  sizes = '(min-width: 1100px) 50vw, 100vw',
+  widths = [480, 720, 960, 1280, 1600]
+} = Astro.props;
+
+const style = image.position ? `object-position:${image.position}` : undefined;
+---
+
+{
+  typeof image.src === 'string' ? (
+    <img
+      class={className}
+      src={image.src}
+      alt={image.alt}
+      width={image.width}
+      height={image.height}
+      loading={loading}
+      decoding="async"
+      fetchpriority={fetchpriority}
+      style={style}
+    />
+  ) : (
+    <Picture
+      class={className}
+      src={image.src}
+      alt={image.alt}
+      widths={widths}
+      sizes={sizes}
+      formats={['avif', 'webp']}
+      loading={loading}
+      decoding="async"
+      fetchpriority={fetchpriority}
+      quality={88}
+      style={style}
+    />
+  )
+}

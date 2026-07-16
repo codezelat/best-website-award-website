@@ -1,0 +1,157 @@
+import heroArchitecture from '../assets/generated/hero-architecture.png';
+import workBrand from '../assets/generated/work-brand.png';
+import workDigitalProducts from '../assets/generated/work-digital-products.png';
+import workOrganisations from '../assets/generated/work-organisations.png';
+import workPortfolios from '../assets/generated/work-portfolios.png';
+import type { HomepageContent } from '../lib/content/types';
+
+export const homepageContent = {
+  seo: {
+    title: 'Best Website Awards | Recognition for Exceptional Websites',
+    description:
+      'Best Website Awards recognises exceptional digital work shaped with purpose, craft and measurable impact.'
+  },
+  navigation: [
+    { label: 'The awards', href: '#awards' },
+    { label: 'Work we recognise', href: '#work' },
+    { label: 'The standard', href: '#standard' },
+    { label: 'About', href: '#about' }
+  ],
+  hero: {
+    title: 'Exceptional websites belong in view.',
+    summary: 'Recognition for digital work shaped with purpose, craft and measurable impact.',
+    primaryAction: { label: 'Explore the awards', href: '#introduction' },
+    secondaryAction: { label: 'View the standard', href: '#standard' },
+    image: {
+      src: heroArchitecture,
+      alt: 'Sculptural white architecture beneath a clear blue sky',
+      position: 'center 54%'
+    }
+  },
+  introduction: {
+    index: '01',
+    title: 'A standard for meaningful digital work.',
+    statements: [
+      'Recognising websites that create value for businesses, brands and audiences.',
+      'Clear criteria. Thoughtful review. Recognition with global perspective.'
+    ]
+  },
+  work: {
+    title: 'The work we recognise',
+    summary:
+      'Digital work takes many forms. What matters is how clearly it serves its purpose and the people using it.',
+    items: [
+      {
+        id: 'organisations',
+        index: '01',
+        title: 'Websites for organisations',
+        summary: 'Purpose-led experiences built to inform, serve and earn trust.',
+        image: {
+          src: workOrganisations,
+          alt: 'Contemporary glass and timber headquarters in a landscaped setting'
+        },
+        layout: 'wide'
+      },
+      {
+        id: 'brands',
+        index: '02',
+        title: 'Brand-led experiences',
+        summary: 'Distinctive work that turns strategy into something people remember.',
+        image: {
+          src: workBrand,
+          alt: 'Sculptural blue glass form in a precise campaign still life'
+        },
+        layout: 'standard'
+      },
+      {
+        id: 'portfolios',
+        index: '03',
+        title: 'Independent portfolios',
+        summary: 'Focused websites that make skill, thinking and point of view visible.',
+        image: {
+          src: workPortfolios,
+          alt: 'Creative studio table with paper studies and a blue architectural model'
+        },
+        layout: 'standard'
+      },
+      {
+        id: 'products',
+        index: '04',
+        title: 'Digital products',
+        summary: 'Useful interfaces that solve real problems with clarity.',
+        image: {
+          src: workDigitalProducts,
+          alt: 'Modular blue glass and graphite forms arranged as a connected system'
+        },
+        layout: 'wide'
+      }
+    ]
+  },
+  evaluation: {
+    title: 'Four measures of excellence',
+    summary:
+      'A clear framework keeps attention on the qualities that make a website genuinely effective.',
+    items: [
+      {
+        id: 'design-experience',
+        index: '01',
+        title: 'Design & Experience',
+        summary: 'Clarity, craft and intuitive use across every interaction.'
+      },
+      {
+        id: 'performance-accessibility',
+        index: '02',
+        title: 'Performance & Accessibility',
+        summary: 'Fast, reliable and inclusive across devices and abilities.'
+      },
+      {
+        id: 'content-purpose',
+        index: '03',
+        title: 'Content & Purpose',
+        summary: 'Clear communication aligned with a meaningful objective.'
+      },
+      {
+        id: 'innovation-impact',
+        index: '04',
+        title: 'Innovation & Impact',
+        summary: 'Original thinking that creates useful, measurable outcomes.'
+      }
+    ]
+  },
+  process: {
+    title: 'A clear path to recognition',
+    summary: 'A focused journey that keeps the work—and the thinking behind it—at the centre.',
+    items: [
+      {
+        id: 'present',
+        index: '01',
+        title: 'Present the work',
+        summary: 'Share the website and the thinking behind it.'
+      },
+      {
+        id: 'review',
+        index: '02',
+        title: 'Independent review',
+        summary: 'Work is considered against a clear evaluation framework.'
+      },
+      {
+        id: 'recognition',
+        index: '03',
+        title: 'Recognition',
+        summary: 'Exceptional work earns a place in the awards.'
+      }
+    ]
+  },
+  parentBrand: {
+    title: 'Global perspective. Business credibility.',
+    summary:
+      'Best Website Awards is powered by Global Business Excellence Awards, connecting digital craft with a wider standard of business excellence.',
+    attribution: 'Powered by Global Business Excellence Awards'
+  },
+  closing: {
+    title: 'Build something worth recognising.',
+    summary: 'Explore the standard behind work that deserves to be seen.',
+    primaryAction: { label: 'Explore the awards', href: '#awards' },
+    secondaryAction: { label: 'View the standard', href: '#standard' }
+  }
+} satisfies HomepageContent;

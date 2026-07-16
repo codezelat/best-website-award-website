@@ -1,0 +1,42 @@
+---
+import '@fontsource-variable/funnel-display/index.css';
+import '@fontsource-variable/funnel-sans/index.css';
+import '../styles/global.css';
+import PageLoader from '../components/PageLoader.astro';
+import SeoHead from '../components/SeoHead.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  image: URL;
+}
+
+const { title, description, image } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1746d1" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <SeoHead {title} {description} {canonical} {image} />
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+  </head>
+  <body>
+    <PageLoader />
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <slot />
+    <script>
+      import '../scripts/site-motion';
+    </script>
+  </body>
+</html>

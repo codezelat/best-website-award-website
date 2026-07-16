@@ -1,0 +1,40 @@
+---
+import type { HomepageContent } from '../lib/content/types';
+import BrowserFrame from './BrowserFrame.astro';
+
+interface Props {
+  content: HomepageContent['work'];
+}
+
+const { content } = Astro.props;
+---
+
+<section class="work-gallery section-anchor" id="work" aria-labelledby="work-title">
+  <div class="container">
+    <header class="section-heading section-heading--split" data-reveal-group>
+      <h2 id="work-title" data-reveal>{content.title}</h2>
+      <p data-reveal>{content.summary}</p>
+    </header>
+
+    <div class="work-gallery__grid">
+      {
+        content.items.map((item) => (
+          <article
+            class:list={['work-study', `work-study--${item.layout}`, `work-study--${item.id}`]}
+            data-work-study
+            data-reveal
+          >
+            <BrowserFrame image={item.image} label="Visual study" />
+            <div class="work-study__caption">
+              <span>{item.index}</span>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.summary}</p>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

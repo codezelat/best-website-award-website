@@ -1,0 +1,30 @@
+---
+import ManagedPicture from './ManagedPicture.astro';
+import type { ManagedImage } from '../lib/content/types';
+
+interface Props {
+  image: ManagedImage;
+  label?: string;
+  priority?: boolean;
+  class?: string;
+}
+
+const { image, label = 'Website study', priority = false, class: className } = Astro.props;
+---
+
+<div class:list={['browser-frame', className]} data-browser-frame>
+  <div class="browser-frame__bar" aria-hidden="true">
+    <div class="browser-frame__controls"><span></span><span></span><span></span></div>
+    <span class="browser-frame__label">{label}</span>
+    <span class="browser-frame__menu"></span>
+  </div>
+  <div class="browser-frame__media" data-image-reveal>
+    <ManagedPicture
+      image={image}
+      class="browser-frame__image"
+      loading={priority ? 'eager' : 'lazy'}
+      fetchpriority={priority ? 'high' : 'auto'}
+      sizes={priority ? '(min-width: 980px) 54vw, 94vw' : '(min-width: 980px) 44vw, 92vw'}
+    />
+  </div>
+</div>
