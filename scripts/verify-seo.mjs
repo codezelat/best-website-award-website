@@ -90,11 +90,9 @@ for (const route of indexableRoutes) {
   }
 }
 
-const sitemap = await readFile(resolve(buildRoot, 'sitemap.xml'), 'utf8');
+const sitemap = await readFile(resolve(buildRoot, 'sitemap-0.xml'), 'utf8');
 const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
-const expectedUrls = indexableRoutes.map((route) =>
-  route === '/' ? `${origin}/` : `${origin}${route}`
-);
+const expectedUrls = indexableRoutes.map((route) => (route === '/' ? origin : `${origin}${route}`));
 
 if (sitemapUrls.length !== expectedUrls.length) {
   fail(`sitemap contains ${sitemapUrls.length} URLs instead of ${expectedUrls.length}`);

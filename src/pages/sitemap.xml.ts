@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { publicRoutes } from '../data/site';
 
-export const prerender = true;
+export const prerender = false;
 
 const escapeXml = (value: string) =>
   value.replace(/[<>&'"]/g, (character) => {
