@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { publicRoutes } from '../data/site';
 
-export const prerender = false;
+export const prerender = true;
 
 const escapeXml = (value: string) =>
   value.replace(/[<>&'"]/g, (character) => {
@@ -26,7 +26,9 @@ export const GET: APIRoute = ({ site }) => {
     {
       headers: {
         'Content-Type': 'application/xml; charset=utf-8',
-        'Cache-Control': 'public, max-age=0, must-revalidate, no-transform'
+        'Cache-Control': 'public, max-age=300, must-revalidate, no-transform',
+        'CDN-Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+        'Vercel-CDN-Cache-Control': 'public, s-maxage=86400, stale-while-revalidate=604800'
       }
     }
   );

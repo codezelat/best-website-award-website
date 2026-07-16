@@ -7,7 +7,10 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   site: 'https://bestwebsiteaward.com',
   output: 'static',
-  adapter: vercel(),
+  adapter: vercel({
+    maxDuration: 15,
+    excludeFiles: ['node_modules/@img/**', 'node_modules/sharp/**']
+  }),
   trailingSlash: 'never',
   integrations: [
     sitemap({

@@ -146,6 +146,9 @@ const robots = await readFile(resolve(buildRoot, 'robots.txt'), 'utf8');
 if (!robots.includes(`Sitemap: ${origin}/sitemap.xml`)) {
   fail('robots.txt does not advertise the public sitemap');
 }
+for (const privatePath of ['Disallow: /api/', 'Disallow: /_image', 'Disallow: /_server-islands/']) {
+  if (!robots.includes(privatePath)) fail(`robots.txt is missing ${privatePath}`);
+}
 
 const homepage = await readRoute('/');
 if (homepage.includes('src="https://www.googletagmanager.com')) {
@@ -182,6 +185,8 @@ for (const analyticsContract of [
 }
 
 const vercel = JSON.parse(await readFile(resolve(root, 'vercel.json'), 'utf8'));
+const rootHeaders = vercel.headers?.find((rule) => rule.source === '/(.*)')?.headers ?? [];
+const rootHeader = (key) => rootHeaders.find((header) => header.key === key)?.value;
 const contentSecurityPolicy = vercel.headers
   ?.flatMap((rule) => rule.headers ?? [])
   .find((header) => header.key === 'Content-Security-Policy')?.value;
@@ -206,6 +211,28 @@ for (const turnstileDirective of ['script-src', 'frame-src https://challenges.cl
 
 if (!documentCacheControl?.includes('no-transform')) {
   fail('document cache policy must prevent CDN script injection with no-transform');
+}
+if (rootHeader('Cache-Control') !== 'public, max-age=300, must-revalidate, no-transform') {
+  fail('public pages are missing the short browser cache policy');
+}
+if (
+  rootHeader('CDN-Cache-Control') !==
+  'public, s-maxage=3600, stale-while-revalidate=86400'
+) {
+  fail('public pages are missing the shared CDN cache policy');
+}
+if (
+  rootHeader('Vercel-CDN-Cache-Control') !==
+  'public, s-maxage=86400, stale-while-revalidate=604800'
+) {
+  fail('public pages are missing the Vercel CDN cache policy');
+}
+
+const apiHeaders = vercel.headers?.find((rule) => rule.source === '/api/(.*)')?.headers ?? [];
+for (const key of ['Cache-Control', 'CDN-Cache-Control', 'Vercel-CDN-Cache-Control']) {
+  if (apiHeaders.find((header) => header.key === key)?.value !== 'no-store') {
+    fail(`/api routes are missing ${key}: no-store`);
+  }
 }
 
 console.log(

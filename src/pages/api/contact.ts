@@ -5,6 +5,7 @@ export const prerender = false;
 
 const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 const RESEND_EMAIL_URL = 'https://api.resend.com/emails';
+const UPSTREAM_TIMEOUT_MS = 6_000;
 const CONTACT_TO_EMAIL = import.meta.env.CONTACT_TO_EMAIL || 'info@gbeaward.com';
 const CONTACT_FROM_EMAIL =
   import.meta.env.CONTACT_FROM_EMAIL || 'Best Website Awards <website@access.gbeaward.com>';
@@ -15,6 +16,8 @@ const json = (status: number, message: string, ok = false) =>
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Cache-Control': 'no-store',
+      'CDN-Cache-Control': 'no-store',
+      'Vercel-CDN-Cache-Control': 'no-store',
       'X-Robots-Tag': 'noindex, nofollow'
     }
   });
@@ -83,7 +86,8 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     const verificationResponse = await fetch(TURNSTILE_VERIFY_URL, {
       method: 'POST',
       body: verificationBody,
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS)
     });
     if (!verificationResponse.ok) throw new Error('Turnstile request failed');
     verification = (await verificationResponse.json()) as typeof verification;
@@ -139,6 +143,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         'Content-Type': 'application/json',
         'Idempotency-Key': `bwa-contact-${submission.submissionId}`
       },
+      signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
       body: JSON.stringify({
         from: CONTACT_FROM_EMAIL,
         to: [CONTACT_TO_EMAIL],

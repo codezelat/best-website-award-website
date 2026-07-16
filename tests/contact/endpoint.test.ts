@@ -42,6 +42,10 @@ describe('contact API endpoint', () => {
     const result = (await response.json()) as { ok: boolean; message: string };
 
     expect(response.status).toBe(200);
+    expect(response.headers.get('cache-control')).toBe('no-store');
+    expect(response.headers.get('cdn-cache-control')).toBe('no-store');
+    expect(response.headers.get('vercel-cdn-cache-control')).toBe('no-store');
+    expect(response.headers.get('x-robots-tag')).toBe('noindex, nofollow');
     expect(result.ok).toBe(true);
     expect(result.message).toContain('awards team');
     expect(fetchMock).toHaveBeenCalledTimes(2);

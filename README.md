@@ -4,7 +4,7 @@ The public website for Best Website Awards, powered by Global Business Excellenc
 
 ## Stack
 
-- Astro 7 pre-rendered pages with a Vercel server function for contact delivery
+- Astro 7 pre-rendered pages with one isolated Vercel server function for contact delivery
 - Tailwind CSS 4 utilities with the `tw:` prefix and no preflight reset
 - TypeScript strict mode
 - Astro image pipeline with AVIF/WebP output
@@ -28,8 +28,8 @@ npm run verify:full
 ```
 
 The release gate checks formatting, Astro and TypeScript diagnostics, content tests, the production
-build, rendered SEO metadata and structured data, sitemap/noindex rules, the analytics contract,
-and desktop/mobile browser behavior.
+build, generated Vercel function routing and size, rendered SEO metadata and structured data,
+sitemap/noindex rules, the analytics contract, and desktop/mobile browser behavior.
 
 ## Analytics and consent
 
@@ -66,6 +66,12 @@ Page components consume typed contracts from `src/lib/content/types.ts`. The hom
 
 When the admin application is connected, replace those static sources with Neon-backed adapters. Images already accept either Astro image metadata or a remote URL through `ManagedPicture.astro`, allowing an R2-backed media source without rewriting presentation components. Keep content retrieval server-side or build-time, validate remote asset hosts, and continue supplying explicit dimensions and alt text.
 
+The current public content source is static, so all public pages and the direct sitemap are explicitly
+pre-rendered. Future Neon-backed or CMS-backed pages must opt out of prerendering until an invalidation
+strategy exists. They should return a short browser cache, a longer shared CDN cache, and
+`stale-while-revalidate` through `Cache-Control`, `CDN-Cache-Control`, and
+`Vercel-CDN-Cache-Control`.
+
 ## Public routes
 
 - `/`: homepage
@@ -85,6 +91,14 @@ The public site contains no public-voting flow. Programme facts such as dates, f
 ## Deployment
 
 The build output is generated in `dist/`, with pre-rendered files under `dist/client` and the contact
-server function in the Vercel output. `vercel.json` provides clean URLs, immutable asset caching,
-fresh sitemap and robots policies, and security headers. The production domain is
-`https://bestwebsiteaward.com`.
+server function in the Vercel output. A post-build hardening step removes unused runtime image and
+server-island routes because every current programme image is transformed at build time. The release
+gate proves that only `/api/contact` maps to the Vercel function and that Sharp native binaries are
+not included in that function.
+
+`vercel.json` provides clean URLs, layered browser and CDN caching, immutable asset caching, fresh
+sitemap and robots policies, and security headers. The production domain is
+`https://bestwebsiteaward.com` and is proxied through Cloudflare. Cloudflare must have a Cache Rule
+that makes successful GET and HEAD responses for public HTML and `/_astro/*` eligible for caching,
+respects origin cache headers, and bypasses `/api/*`. Without that provider rule, Cloudflare reports
+`DYNAMIC` even though Vercel correctly serves the static pages from its own edge cache.

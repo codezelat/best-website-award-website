@@ -2,6 +2,8 @@
 import UtilityPageLayout from '../layouts/UtilityPageLayout.astro';
 import { getUtilityPage } from '../lib/content/pages';
 
+export const prerender = true;
+
 const content = await getUtilityPage('privacy');
 if (!content) throw new Error('Privacy page content is unavailable.');
 ---

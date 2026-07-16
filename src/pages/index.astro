@@ -12,6 +12,8 @@ import { legalNavigation } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getHomepageContent } from '../lib/content/homepage';
 
+export const prerender = true;
+
 const content = await getHomepageContent();
 const heroSource = content.hero.image.src;
 const socialImage = new URL(
