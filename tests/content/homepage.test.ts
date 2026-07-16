@@ -32,5 +32,7 @@ describe('homepage content contract', () => {
     expect(homepageContent.seo.title.length).toBeLessThanOrEqual(65);
     expect(homepageContent.seo.description.length).toBeGreaterThanOrEqual(100);
     expect(homepageContent.seo.description.length).toBeLessThanOrEqual(170);
+    expect(homepageContent.hero.title).toContain('Best Website Awards 2026');
+    expect(homepageContent.introduction.statements.join(' ')).toContain('Sri Lanka');
   });
 });

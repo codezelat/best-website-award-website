@@ -41,6 +41,8 @@ const getStructuredData = (html) => {
   return JSON.parse(scripts[0][1]);
 };
 
+const pageDocuments = [];
+
 for (const route of indexableRoutes) {
   const html = await readRoute(route);
   const canonical = route === '/' ? `${origin}/` : `${origin}${route}`;
@@ -49,6 +51,14 @@ for (const route of indexableRoutes) {
   const robots = getMetaContent(html, 'name="robots"');
   const openGraphImage = getMetaContent(html, 'property="og:image"');
   const openGraphAlt = getMetaContent(html, 'property="og:image:alt"');
+  const h1Count = [...html.matchAll(/<h1\b/g)].length;
+  const images = [...html.matchAll(/<img\b[^>]*>/g)].map((match) => match[0]);
+  const internalLinks = [...html.matchAll(/<a\b[^>]*href="([^"]+)"/g)]
+    .map((match) => match[1])
+    .filter((href) => href.startsWith('/'))
+    .map((href) => href.split('#')[0] || '/');
+
+  pageDocuments.push({ route, title, description, internalLinks });
 
   if (!title || title.length < 30 || title.length > 70) {
     fail(`${route} has an invalid title length`);
@@ -64,6 +74,19 @@ for (const route of indexableRoutes) {
   }
   if (!openGraphImage?.startsWith(`${origin}/`) || !openGraphAlt) {
     fail(`${route} is missing complete social image metadata`);
+  }
+  if (!html.includes('<html lang="en-GB">')) {
+    fail(`${route} does not declare the site language as en-GB`);
+  }
+  if (h1Count !== 1) fail(`${route} has ${h1Count} h1 elements instead of exactly one`);
+  if (images.some((image) => !/\salt="[^"]*"/.test(image))) {
+    fail(`${route} contains an image without alt text`);
+  }
+  if (images.some((image) => !/\swidth="\d+"/.test(image) || !/\sheight="\d+"/.test(image))) {
+    fail(`${route} contains an image without explicit dimensions`);
+  }
+  if (internalLinks.some((href) => !indexableRoutes.includes(href))) {
+    fail(`${route} contains an internal link to an unpublished route`);
   }
   if (html.includes('@fs') || html.includes('/Users/')) {
     fail(`${route} exposes a local filesystem path`);
@@ -88,6 +111,20 @@ for (const route of indexableRoutes) {
       fail('/faq structured data does not match the 24 visible questions');
     }
   }
+}
+
+const titles = pageDocuments.map((page) => page.title);
+const descriptions = pageDocuments.map((page) => page.description);
+if (new Set(titles).size !== titles.length) fail('indexable pages contain duplicate titles');
+if (new Set(descriptions).size !== descriptions.length) {
+  fail('indexable pages contain duplicate descriptions');
+}
+
+for (const route of indexableRoutes) {
+  const incomingLinks = pageDocuments.filter(
+    (page) => page.route !== route && page.internalLinks.includes(route)
+  );
+  if (incomingLinks.length === 0) fail(`${route} has no incoming internal link from another page`);
 }
 
 const sitemap = await readFile(resolve(buildRoot, 'sitemap-0.xml'), 'utf8');

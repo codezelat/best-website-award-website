@@ -18,7 +18,9 @@ const { content } = Astro.props;
     class="container tw:grid tw:items-center tw:gap-[clamp(3rem,8vw,9rem)] tw:lg:grid-cols-[minmax(19rem,.86fr)_minmax(28rem,1.14fr)]"
   >
     <div class="tw:relative tw:z-10">
-      <h1 id="page-title" class="tw:max-w-[9.6ch]" data-hero-reveal>{content.title}</h1>
+      <h1 id="page-title" class="tw:max-w-none tw:sm:max-w-[9.6ch]" data-hero-reveal>
+        {content.title}
+      </h1>
       <p
         class="tw:mt-8 tw:max-w-[31rem] tw:text-[clamp(1.08rem,1.5vw,1.33rem)] tw:leading-[1.55] tw:text-ink-soft"
         data-hero-reveal
