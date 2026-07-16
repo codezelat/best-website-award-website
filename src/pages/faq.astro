@@ -1,0 +1,9 @@
+---
+import UtilityPageLayout from '../layouts/UtilityPageLayout.astro';
+import { getUtilityPage } from '../lib/content/pages';
+
+const content = await getUtilityPage('faq');
+if (!content) throw new Error('FAQ page content is unavailable.');
+---
+
+<UtilityPageLayout {content} />

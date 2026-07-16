@@ -39,7 +39,7 @@ test('connects primary navigation to the full standard page', async ({ page, isM
 
   await expect(page).toHaveURL(/\/standard$/);
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    'A clear standard for exceptional work.'
+    'A standard designed to see the whole website.'
   );
 });
 

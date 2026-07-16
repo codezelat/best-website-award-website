@@ -1,6 +1,15 @@
-import heroArchitecture from '../assets/generated/hero-architecture.png';
+import aboutFeatureContext from '../assets/generated/about-feature-context.png';
+import aboutHeroConnection from '../assets/generated/about-hero-connection.png';
+import awardsFeatureRecord from '../assets/generated/awards-feature-record.png';
+import awardsHeroRecognition from '../assets/generated/awards-hero-recognition.png';
+import processFeatureEvidence from '../assets/generated/process-feature-evidence.png';
+import processHeroReview from '../assets/generated/process-hero-review.png';
+import standardFeatureTrust from '../assets/generated/standard-feature-trust.png';
+import standardHeroFramework from '../assets/generated/standard-hero-framework.png';
 import workBrand from '../assets/generated/work-brand.png';
 import workDigitalProducts from '../assets/generated/work-digital-products.png';
+import workFeatureAudience from '../assets/generated/work-feature-audience.png';
+import workHeroStudio from '../assets/generated/work-hero-studio.png';
 import workOrganisations from '../assets/generated/work-organisations.png';
 import workPortfolios from '../assets/generated/work-portfolios.png';
 import type { EditorialPageContent, UtilityPageContent } from '../lib/content/types';
@@ -11,64 +20,92 @@ export const editorialPages = {
     seo: {
       title: 'The Awards | Best Website Awards',
       description:
-        'Discover the purpose behind Best Website Awards and the principles that guide meaningful digital recognition.'
+        'Discover a business-led award for websites with clear purpose, considered execution and meaningful value.'
     },
     hero: {
-      title: 'Recognition with meaning.',
-      summary: 'A considered standard for digital work that creates value.',
+      title: 'Recognition built on the work.',
+      summary:
+        'A business-led award for websites with clear purpose, considered execution and meaningful value.',
       primaryAction: { label: 'View the standard', href: '/standard' },
       secondaryAction: { label: 'See the process', href: '/process' },
       image: {
-        src: heroArchitecture,
-        alt: 'Sculptural white architecture beneath a clear blue sky',
-        position: 'center 54%'
+        src: awardsHeroRecognition,
+        alt: 'Cobalt glass portal rising from a precise white architectural plinth'
       },
       frameLabel: 'The awards',
       visualIndex: 'BWA / 01'
     },
     introduction: {
-      title: 'What the awards stand for.',
+      title: 'A website is evidence.',
       body: [
-        'A website is often where an organisation becomes visible, useful and understood.',
-        'Best Website Awards recognises the thinking and execution that turn that responsibility into meaningful digital work.'
+        'It shows how an organisation thinks, communicates and serves the people it needs to reach.',
+        'Best Website Awards recognises the websites that turn that responsibility into clear, useful and memorable digital work.'
       ]
     },
     primaryCollection: {
-      title: 'Three principles behind the recognition',
+      title: 'What gives recognition meaning',
       variant: 'columns',
       items: [
         {
-          id: 'purpose',
+          id: 'merit',
           index: '01',
-          title: 'Purpose before decoration',
+          title: 'Merit in context',
           summary:
-            'Strong work begins with a clear reason to exist and a clear understanding of whom it serves.'
+            'Work is understood through its purpose, audience and responsibility—not by surface style alone.'
         },
         {
-          id: 'experience',
+          id: 'evidence',
           index: '02',
-          title: 'Experience in every detail',
+          title: 'Evidence over claims',
           summary:
-            'Design, content and technology should work together with clarity, care and consistency.'
+            'Clear decisions, complete execution and meaningful outcomes make quality easier to recognise.'
         },
         {
-          id: 'impact',
+          id: 'usefulness',
           index: '03',
-          title: 'Impact beyond the screen',
+          title: 'Recognition with use',
           summary:
-            'The strongest websites make useful connections between people, organisations and opportunity.'
+            'A clear record helps clients, partners, teams and audiences understand why the work matters.'
+        }
+      ]
+    },
+    secondaryCollection: {
+      title: 'What recognition can make visible',
+      summary: 'The value extends beyond a single announcement.',
+      variant: 'rows',
+      items: [
+        {
+          id: 'organisation',
+          index: '01',
+          title: 'Organisational quality',
+          summary:
+            'A strong website can demonstrate clarity, attention and respect for the people an organisation serves.'
+        },
+        {
+          id: 'team',
+          index: '02',
+          title: 'The team behind it',
+          summary:
+            'Recognition gives strategy, design, content and technical craft a shared place in the story.'
+        },
+        {
+          id: 'record',
+          index: '03',
+          title: 'A public record',
+          summary:
+            'A concise, understandable account of the work gives recognition value after the moment has passed.'
         }
       ]
     },
     feature: {
-      title: 'Recognition in context.',
+      title: 'Credibility should be legible.',
       body: [
-        'Digital excellence is not one visual style or one kind of organisation. It is the alignment of purpose, audience, craft and outcome.',
-        'That wider view keeps recognition relevant to the work itself.'
+        'Good recognition explains what was recognised, the context in which it was considered and why the work deserves attention.',
+        'That clarity is what turns an award into useful proof for organisations and the people behind them.'
       ],
       image: {
-        src: workBrand,
-        alt: 'A sculptural blue glass form arranged in a precise studio composition'
+        src: awardsFeatureRecord,
+        alt: 'Layered clear and cobalt glass with a restrained brass datum'
       },
       imagePosition: 'right',
       tone: 'soft'
@@ -76,11 +113,11 @@ export const editorialPages = {
     statement: {
       title: 'Powered by Global Business Excellence Awards.',
       summary:
-        'Best Website Awards connects digital craft with a wider perspective on credible, purposeful business excellence.'
+        'Best Website Awards brings a focused digital lens to a wider perspective on credible, purposeful business excellence.'
     },
     closing: {
-      title: 'See what excellence looks like.',
-      summary: 'Explore the connected measures behind meaningful digital work.',
+      title: 'Understand what strong work demonstrates.',
+      summary: 'Explore the connected measures behind meaningful website excellence.',
       primaryAction: { label: 'View the standard', href: '/standard' },
       secondaryAction: { label: 'Work we recognise', href: '/work' }
     }
@@ -90,37 +127,39 @@ export const editorialPages = {
     seo: {
       title: 'Work We Recognise | Best Website Awards',
       description:
-        'Explore the kinds of websites and digital experiences considered through the Best Website Awards standard.'
+        'Explore the kinds of organisational, brand, commercial and independent websites considered through the Best Website Awards standard.'
     },
     hero: {
-      title: 'Digital work, seen in context.',
-      summary: 'The strongest websites make their purpose clear in every decision.',
+      title: 'Different websites. One serious standard.',
+      summary:
+        'The work may serve different people and ambitions. Its purpose should still be clear in every decision.',
       primaryAction: { label: 'View the standard', href: '/standard' },
       secondaryAction: { label: 'Explore the awards', href: '/awards' },
       image: {
-        src: workOrganisations,
-        alt: 'Contemporary glass and timber headquarters in a landscaped setting'
+        src: workHeroStudio,
+        alt: 'Refined digital design studio with a website composition on screen'
       },
       frameLabel: 'Work in context',
       visualIndex: 'BWA / 02'
     },
     introduction: {
-      title: 'Different work. One clear expectation.',
+      title: 'Quality has to fit the work.',
       body: [
-        'Websites differ in audience, ambition and responsibility. Their value can only be understood in that context.',
-        'What connects exceptional work is clarity of purpose and the quality of the experience built around it.'
+        'A public-service website, an international brand platform and an independent portfolio do not have the same job.',
+        'Each can be exceptional when it understands its audience, fulfils its purpose and delivers the experience with care.'
       ]
     },
     primaryCollection: {
-      title: 'The work we recognise',
-      summary: 'These are kinds of work, not fixed award categories.',
+      title: 'Work with a reason to be recognised',
+      summary: 'These are broad kinds of work, not confirmed award categories.',
       variant: 'media',
       items: [
         {
           id: 'organisations',
           index: '01',
-          title: 'Websites for organisations',
-          summary: 'Purpose-led experiences built to inform, serve and earn trust.',
+          title: 'Organisations & services',
+          summary:
+            'Websites that help people understand, trust or access an organisation and what it provides.',
           image: {
             src: workOrganisations,
             alt: 'Contemporary glass and timber headquarters in a landscaped setting'
@@ -129,56 +168,84 @@ export const editorialPages = {
         {
           id: 'brands',
           index: '02',
-          title: 'Brand-led experiences',
+          title: 'Brands & campaigns',
           summary:
-            'Distinctive work that turns strategy into something people can understand and remember.',
+            'Distinctive experiences that turn positioning and ideas into clear audience connection.',
           image: {
             src: workBrand,
             alt: 'Sculptural blue glass form in a precise campaign still life'
           }
         },
         {
-          id: 'portfolios',
+          id: 'commerce',
           index: '03',
-          title: 'Independent portfolios',
-          summary: 'Focused websites that make skill, thinking and point of view visible.',
-          image: {
-            src: workPortfolios,
-            alt: 'Creative studio table with paper studies and a blue architectural model'
-          }
-        },
-        {
-          id: 'products',
-          index: '04',
-          title: 'Digital products',
-          summary: 'Useful interfaces that solve real problems with clarity and care.',
+          title: 'Commerce & platforms',
+          summary:
+            'Useful digital journeys that make discovery, decisions and action feel coherent and trustworthy.',
           image: {
             src: workDigitalProducts,
             alt: 'Modular blue glass and graphite forms arranged as a connected system'
           }
+        },
+        {
+          id: 'portfolios',
+          index: '04',
+          title: 'Portfolios & practice',
+          summary:
+            'Focused websites that make expertise, thinking and a distinctive point of view visible.',
+          image: {
+            src: workPortfolios,
+            alt: 'Creative studio table with paper studies and a blue architectural model'
+          }
+        }
+      ]
+    },
+    secondaryCollection: {
+      title: 'Context changes the question',
+      variant: 'columns',
+      items: [
+        {
+          id: 'audience',
+          index: '01',
+          title: 'Who must it serve?',
+          summary: 'The needs, abilities and expectations of the people using the website.'
+        },
+        {
+          id: 'job',
+          index: '02',
+          title: 'What must it do?',
+          summary:
+            'The information, decisions or actions the experience is responsible for enabling.'
+        },
+        {
+          id: 'outcome',
+          index: '03',
+          title: 'What changed?',
+          summary:
+            'The useful outcome the work was designed to support or has evidence of creating.'
         }
       ]
     },
     feature: {
-      title: 'More than a surface.',
+      title: 'Built for people, not a judging room.',
       body: [
-        'A website is considered through the relationship between what it communicates, how it behaves and what it enables.',
-        'Visual distinction matters most when it supports a coherent experience.'
+        'The most convincing websites make sense where they are actually used—across devices, moments and levels of familiarity.',
+        'Visual distinction matters. Usefulness, access and trust are what make it last.'
       ],
       image: {
-        src: workPortfolios,
-        alt: 'Paper studies and a blue architectural model on a creative studio table'
+        src: workFeatureAudience,
+        alt: 'A responsive website being used across laptop, tablet and phone'
       },
       imagePosition: 'left',
       tone: 'white'
     },
     statement: {
-      title: 'What matters is how well the work serves its purpose.',
-      summary: 'Context changes. The expectation of clear, thoughtful execution does not.'
+      title: 'The work is not compared to a template.',
+      summary: 'It is understood through what it set out to do and how completely it delivers.'
     },
     closing: {
-      title: 'Understand the measures.',
-      summary: 'See how design, performance, content and impact are considered together.',
+      title: 'See the standard behind the recognition.',
+      summary: 'Four connected measures bring structure to a wide range of digital work.',
       primaryAction: { label: 'View the standard', href: '/standard' },
       secondaryAction: { label: 'See the process', href: '/process' }
     }
@@ -188,29 +255,30 @@ export const editorialPages = {
     seo: {
       title: 'The Standard | Best Website Awards',
       description:
-        'Understand the four connected measures used to consider meaningful website excellence.'
+        'Understand the four connected measures used to consider purposeful, effective and distinctive website work.'
     },
     hero: {
-      title: 'A clear standard for exceptional work.',
-      summary: 'Four measures keep attention on what makes a website genuinely effective.',
+      title: 'A standard designed to see the whole website.',
+      summary:
+        'Four connected measures keep attention on experience, execution, purpose and meaningful value.',
       primaryAction: { label: 'Follow the process', href: '/process' },
       secondaryAction: { label: 'Work we recognise', href: '/work' },
       image: {
-        src: workDigitalProducts,
-        alt: 'Modular blue glass and graphite forms arranged as a connected system'
+        src: standardHeroFramework,
+        alt: 'Four connected cobalt and clear glass modules on a precision grid'
       },
       frameLabel: 'The standard',
       visualIndex: 'BWA / 03'
     },
     introduction: {
-      title: 'Four connected measures.',
+      title: 'Excellence is connected.',
       body: [
-        'No single quality makes a website exceptional. The standard considers how design, technology, content and impact reinforce one another.',
-        'Each measure is viewed in relation to the website’s purpose and audience.'
+        'A beautiful interface cannot compensate for confusion. Strong technology cannot rescue unclear purpose.',
+        'The standard considers how design, performance, content and impact reinforce one another for the audience the website exists to serve.'
       ]
     },
     primaryCollection: {
-      title: 'The evaluation framework',
+      title: 'The four measures',
       variant: 'rows',
       items: [
         {
@@ -218,41 +286,66 @@ export const editorialPages = {
           index: '01',
           title: 'Design & Experience',
           summary:
-            'Clarity of structure, quality of interface and thoughtfulness of interaction across the complete experience.'
+            'Structure, interface and interaction working together to make the experience clear, coherent and distinctive.'
         },
         {
           id: 'performance-accessibility',
           index: '02',
           title: 'Performance & Accessibility',
           summary:
-            'Fast, stable and inclusive by default—respecting people’s time, devices and abilities.'
+            'Fast, stable and inclusive delivery that respects people’s time, devices and abilities.'
         },
         {
           id: 'content-purpose',
           index: '03',
           title: 'Content & Purpose',
           summary:
-            'Clear communication and useful information aligned with a defined purpose and audience.'
+            'Useful communication aligned with a defined audience, organisational need and reason for the website to exist.'
         },
         {
           id: 'innovation-impact',
           index: '04',
           title: 'Innovation & Impact',
           summary:
-            'Original thinking with meaningful relevance and an outcome that extends beyond visual novelty.'
+            'Relevant original thinking and meaningful value that extend beyond visual novelty.'
+        }
+      ]
+    },
+    secondaryCollection: {
+      title: 'The lens around every measure',
+      summary: 'The same quality can look different when the purpose and responsibility change.',
+      variant: 'columns',
+      items: [
+        {
+          id: 'completeness',
+          index: '01',
+          title: 'Complete execution',
+          summary: 'Responsive behaviour, navigation and key journeys working as one system.'
+        },
+        {
+          id: 'trust',
+          index: '02',
+          title: 'Trust by design',
+          summary: 'Clear information, dependable behaviour and appropriate care for the user.'
+        },
+        {
+          id: 'evidence',
+          index: '03',
+          title: 'Evidence in context',
+          summary:
+            'Decisions and outcomes understood in relation to the work’s real constraints and goals.'
         }
       ]
     },
     feature: {
-      title: 'Considered as a whole.',
+      title: 'Quality people can feel.',
       body: [
-        'Websites are complex. The four measures are intentionally connected and considered together.',
-        'Context, audience and purpose shape what effective execution looks like.'
+        'Speed, access, clarity and trust are not background details. They shape whether a website works for the people depending on it.',
+        'Technical quality is considered as part of the experience—not as a separate box to tick.'
       ],
       image: {
-        src: heroArchitecture,
-        alt: 'Sculptural white architecture beneath a clear blue sky',
-        position: 'center 54%'
+        src: standardFeatureTrust,
+        alt: 'Clear and cobalt glass planes aligned on a precise technical grid'
       },
       imagePosition: 'right',
       tone: 'soft'
@@ -260,11 +353,11 @@ export const editorialPages = {
     statement: {
       title: 'Excellence is coherent, not cosmetic.',
       summary:
-        'Strong work performs with clarity, communicates with purpose and leaves a meaningful impression.'
+        'The strongest websites make purpose, experience and execution feel like one considered decision.'
     },
     closing: {
-      title: 'See how recognition works.',
-      summary: 'Follow the simple stages that keep the work and its purpose at the centre.',
+      title: 'See how the work is presented.',
+      summary: 'Follow the focused path from context and evidence to meaningful recognition.',
       primaryAction: { label: 'Follow the process', href: '/process' },
       secondaryAction: { label: 'Explore the awards', href: '/awards' }
     }
@@ -274,25 +367,26 @@ export const editorialPages = {
     seo: {
       title: 'Recognition Process | Best Website Awards',
       description:
-        'Follow the clear three-stage path from presenting digital work to meaningful recognition.'
+        'Follow the clear path from presenting a website and its evidence to considered recognition.'
     },
     hero: {
-      title: 'A considered path to recognition.',
-      summary: 'The work, its purpose and the thinking behind it stay at the centre.',
+      title: 'Make the work understandable.',
+      summary:
+        'A focused path keeps the website, its purpose and the evidence behind it at the centre.',
       primaryAction: { label: 'Explore the standard', href: '/standard' },
-      secondaryAction: { label: 'Contact us', href: '/contact' },
+      secondaryAction: { label: 'Read common questions', href: '/faq' },
       image: {
-        src: workPortfolios,
-        alt: 'Creative studio table with paper studies and a blue architectural model'
+        src: processHeroReview,
+        alt: 'Three-stage website review progression arranged on a white studio table'
       },
       frameLabel: 'Recognition process',
       visualIndex: 'BWA / 04'
     },
     introduction: {
-      title: 'From presentation to recognition.',
+      title: 'Context first. Then consideration.',
       body: [
-        'A clear process makes space for the website, its context and the decisions behind it.',
-        'Three stages keep the journey understandable without distracting from the work itself.'
+        'A website deserves to be understood for the job it had to do—not reduced to a screenshot.',
+        'The process brings the work, its decisions and the evidence of its value into one clear account.'
       ]
     },
     primaryCollection: {
@@ -304,64 +398,66 @@ export const editorialPages = {
           index: '01',
           title: 'Present the work',
           summary:
-            'Share the website and explain the purpose, audience and thinking that shaped it.'
+            'Share the website and explain its purpose, audience, context and the team behind it.'
         },
         {
           id: 'review',
           index: '02',
           title: 'Considered review',
           summary:
-            'The work is considered against the connected measures of the standard and within its context.'
+            'The complete work is considered through the four measures and in relation to what it set out to achieve.'
         },
         {
           id: 'recognition',
           index: '03',
           title: 'Recognition',
           summary:
-            'Work that demonstrates meaningful excellence can earn recognition through the awards.'
+            'Work that demonstrates meaningful excellence can be recognised with a clear account of why it matters.'
         }
       ]
     },
     secondaryCollection: {
-      title: 'What a clear presentation communicates',
+      title: 'What a strong presentation makes clear',
       variant: 'rows',
       items: [
         {
           id: 'purpose',
           index: '01',
-          title: 'The purpose',
-          summary: 'Why the website exists and the change it is intended to support.'
+          title: 'Purpose & audience',
+          summary: 'Why the website exists, who it serves and what those people need from it.'
         },
         {
-          id: 'audience',
+          id: 'decisions',
           index: '02',
-          title: 'The audience',
-          summary: 'Who the experience is for and the needs that guided the work.'
+          title: 'Decisions & delivery',
+          summary:
+            'The important strategic, creative and technical choices visible in the final work.'
         },
         {
-          id: 'outcome',
+          id: 'outcomes',
           index: '03',
-          title: 'The outcome',
-          summary: 'What the website enables and the value its experience is designed to create.'
+          title: 'Outcomes & evidence',
+          summary:
+            'What the website enables and the credible evidence available to support its value.'
         }
       ]
     },
     feature: {
-      title: 'Built around the work.',
+      title: 'Show the reasoning, not only the result.',
       body: [
-        'The process is intentionally straightforward: a clear presentation, a connected standard and considered recognition.',
-        'Published entry guidance will set out the programme-specific requirements for presenting work.'
+        'A polished page can show the outcome. A useful case for recognition also explains the challenge, the choices and what changed.',
+        'Programme-specific entry requirements will be published through the official awards channels.'
       ],
       image: {
-        src: workDigitalProducts,
-        alt: 'Modular blue glass and graphite forms arranged as a connected system'
+        src: processFeatureEvidence,
+        alt: 'Website case-study materials, responsive layouts and abstract evidence charts'
       },
       imagePosition: 'right',
       tone: 'soft'
     },
     statement: {
-      title: 'Clarity makes good work easier to understand.',
-      summary: 'A clear account of purpose and audience helps the value of the work come into view.'
+      title: 'Clarity gives good work the strongest voice.',
+      summary: 'A clear account helps quality, relevance and impact come into view.'
     },
     closing: {
       title: 'Begin with the standard.',
@@ -375,18 +471,18 @@ export const editorialPages = {
     seo: {
       title: 'About | Best Website Awards',
       description:
-        'Learn why Best Website Awards connects digital craft with a wider perspective on business excellence.',
+        'Learn how Best Website Awards brings a focused digital perspective to the Global Business Excellence Awards platform.',
       pageType: 'AboutPage'
     },
     hero: {
-      title: 'Digital excellence, viewed in a wider context.',
+      title: 'Digital excellence in a wider business world.',
       summary:
-        'Best Website Awards connects digital craft with a broader standard of business excellence.',
+        'A focused award for the websites through which organisations are understood, trusted and chosen.',
       primaryAction: { label: 'Explore the awards', href: '/awards' },
       secondaryAction: { label: 'Work we recognise', href: '/work' },
       image: {
-        src: workOrganisations,
-        alt: 'Contemporary glass and timber headquarters in a landscaped setting'
+        src: aboutHeroConnection,
+        alt: 'Cobalt glass architectural bridge connecting two refined environments'
       },
       frameLabel: 'About BWA',
       visualIndex: 'BWA / 05'
@@ -394,47 +490,74 @@ export const editorialPages = {
     introduction: {
       title: 'Why this award exists.',
       body: [
-        'Websites shape how organisations are understood—by their audiences, partners and the wider world.',
-        'Best Website Awards creates a focused space to recognise digital work that approaches that responsibility with purpose and care.'
+        'Websites influence how organisations enter markets, earn confidence, communicate value and serve people.',
+        'Best Website Awards exists to recognise the quality of that work with a standard shaped by both digital craft and business purpose.'
       ]
     },
     primaryCollection: {
-      title: 'A focused point of view',
+      title: 'One focused point of view',
+      variant: 'columns',
+      items: [
+        {
+          id: 'business',
+          index: '01',
+          title: 'Business perspective',
+          summary:
+            'The website is considered as part of how an organisation creates trust and value.'
+        },
+        {
+          id: 'digital',
+          index: '02',
+          title: 'Digital focus',
+          summary: 'Design, technology and content are understood as one connected experience.'
+        },
+        {
+          id: 'recognition',
+          index: '03',
+          title: 'Useful recognition',
+          summary:
+            'The record should explain the achievement clearly enough to matter beyond the event.'
+        }
+      ]
+    },
+    secondaryCollection: {
+      title: 'The wider platform',
+      summary:
+        'Global Business Excellence Awards recognises leadership, enterprise, innovation and service excellence across the UK, Sri Lanka and international markets.',
       variant: 'rows',
       items: [
         {
-          id: 'purpose',
+          id: 'platform',
           index: '01',
-          title: 'Purpose',
+          title: 'Public awards platform',
           summary:
-            'Recognition begins with clarity of intent and a meaningful role for the people being served.'
+            'Global Business Excellence Awards is organised by London Business Consultancy in London, United Kingdom.'
         },
         {
-          id: 'craft',
+          id: 'connection',
           index: '02',
-          title: 'Craft',
+          title: 'Connected markets',
           summary:
-            'Design, technology and content are considered as connected parts of one complete experience.'
+            'Its wider perspective connects business achievement across the United Kingdom, Sri Lanka and international markets.'
         },
         {
-          id: 'value',
+          id: 'focus',
           index: '03',
-          title: 'Value',
+          title: 'A dedicated digital lens',
           summary:
-            'Strong digital work supports trust, connection and outcomes that matter beyond the screen.'
+            'Best Website Awards applies that context to the websites and digital experiences shaping modern organisations.'
         }
       ]
     },
     feature: {
-      title: 'A focused part of a wider standard.',
+      title: 'Global in outlook. Clear in purpose.',
       body: [
-        'Best Website Awards is dedicated to websites and the digital experiences around them.',
-        'Powered by Global Business Excellence Awards, it brings that focus into a broader perspective on credible, purposeful excellence.'
+        'The strongest digital work can emerge from organisations of different sizes, sectors and markets.',
+        'A consistent standard makes that work easier to understand on its own merit and in its own context.'
       ],
       image: {
-        src: heroArchitecture,
-        alt: 'Sculptural white architecture beneath a clear blue sky',
-        position: 'center 54%'
+        src: aboutFeatureContext,
+        alt: 'Refined global business meeting space with cobalt glass and a brass connection line'
       },
       imagePosition: 'right',
       tone: 'soft'
@@ -442,11 +565,12 @@ export const editorialPages = {
     statement: {
       title: 'Powered by Global Business Excellence Awards.',
       summary:
-        'A wider business perspective gives digital recognition context, relevance and credibility.'
+        'A wider business perspective gives digital recognition context, relevance and a useful public purpose.'
     },
     closing: {
       title: 'Explore what we recognise.',
-      summary: 'See the different kinds of digital work considered through one connected standard.',
+      summary:
+        'See how different kinds of digital work are understood through one connected standard.',
       primaryAction: { label: 'Work we recognise', href: '/work' },
       secondaryAction: { label: 'Contact us', href: '/contact' }
     }
@@ -463,7 +587,7 @@ export const utilityPages = {
     },
     title: 'Start a clear conversation.',
     introduction:
-      'For questions about Best Website Awards, the recognition standard or future programme information, contact the team through the official channel below.',
+      'For questions about Best Website Awards, the recognition standard or programme information, contact the team through the official channel below.',
     sections: [
       {
         title: 'General enquiries',
@@ -481,6 +605,60 @@ export const utilityPages = {
       }
     ],
     action: { label: 'Email the team', href: 'mailto:info@gbeaward.com' }
+  },
+  faq: {
+    slug: 'faq',
+    seo: {
+      title: 'Frequently Asked Questions | Best Website Awards',
+      description:
+        'Clear answers about the work, standard, review approach and official programme information for Best Website Awards.'
+    },
+    title: 'Questions, answered with clarity.',
+    introduction:
+      'A concise guide to the award, the work it recognises and the information that supports a meaningful review.',
+    sections: [
+      {
+        title: 'What kind of work is relevant?',
+        body: [
+          'Best Website Awards is focused on websites and the connected digital experiences through which organisations, brands, services, commerce and independent practices reach people.',
+          'The work page describes broad kinds of work, while formal programme eligibility will be set out in official entry guidance.'
+        ]
+      },
+      {
+        title: 'What is considered?',
+        body: [
+          'The standard brings together Design & Experience, Performance & Accessibility, Content & Purpose, and Innovation & Impact.',
+          'Each measure is considered in relation to the website’s audience, purpose, context and responsibility.'
+        ]
+      },
+      {
+        title: 'How is the work reviewed?',
+        body: [
+          'Recognition is based on considered review against the published standard.',
+          'The website, its purpose and the evidence behind it remain at the centre of the process.'
+        ]
+      },
+      {
+        title: 'What makes a strong presentation?',
+        body: [
+          'Explain why the website exists, who it serves, the important decisions behind it and the outcomes it supports.',
+          'Relevant evidence is more useful than unsupported claims or presentation language alone.'
+        ]
+      },
+      {
+        title: 'Who may contact the awards?',
+        body: [
+          'Website owners, internal teams and authorised creative or technical partners may contact the team with a relevant enquiry.'
+        ]
+      },
+      {
+        title: 'Where are official programme details published?',
+        body: [
+          'Confirmed dates, requirements, eligibility and any other programme-specific information are published only through official Best Website Awards and Global Business Excellence Awards channels.'
+        ]
+      }
+    ],
+    action: { label: 'Contact the team', href: '/contact' }
   },
   privacy: {
     slug: 'privacy-policy',

@@ -22,7 +22,7 @@ describe('public page content contract', () => {
   });
 
   it('publishes every supporting page through the content source', async () => {
-    const slugs = ['contact', 'privacy', 'terms', 'cookies', 'notFound'] as const;
+    const slugs = ['contact', 'faq', 'privacy', 'terms', 'cookies', 'notFound'] as const;
 
     await Promise.all(
       slugs.map(async (slug) => {

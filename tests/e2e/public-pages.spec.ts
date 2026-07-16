@@ -1,14 +1,15 @@
 import { expect, test } from '@playwright/test';
 
 const editorialRoutes = [
-  ['/awards', 'Recognition with meaning.'],
-  ['/work', 'Digital work, seen in context.'],
-  ['/standard', 'A clear standard for exceptional work.'],
-  ['/process', 'A considered path to recognition.'],
-  ['/about', 'Digital excellence, viewed in a wider context.']
+  ['/awards', 'Recognition built on the work.'],
+  ['/work', 'Different websites. One serious standard.'],
+  ['/standard', 'A standard designed to see the whole website.'],
+  ['/process', 'Make the work understandable.'],
+  ['/about', 'Digital excellence in a wider business world.']
 ] as const;
 
 const utilityRoutes = [
+  ['/faq', 'Questions, answered with clarity.'],
   ['/contact', 'Start a clear conversation.'],
   ['/privacy-policy', 'Privacy, explained clearly.'],
   ['/terms', 'Terms built for clarity.'],

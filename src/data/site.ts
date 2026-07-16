@@ -8,6 +8,7 @@ export const siteNavigation = [
 ] satisfies NavigationItem[];
 
 export const legalNavigation = [
+  { label: 'FAQ', href: '/faq' },
   { label: 'Contact', href: '/contact' },
   { label: 'Privacy', href: '/privacy-policy' },
   { label: 'Terms', href: '/terms' },

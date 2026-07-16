@@ -45,7 +45,7 @@ When the admin application is connected, replace those static sources with Neon-
 - `/standard` — four-measure evaluation framework
 - `/process` — recognition journey
 - `/about` — organisation and parent-brand context
-- `/contact`, `/privacy-policy`, `/terms`, `/cookies` — supporting pages
+- `/faq`, `/contact`, `/privacy-policy`, `/terms`, `/cookies` — supporting pages
 - `404.astro` — branded, non-indexable not-found experience
 
 The public site contains no public-voting flow. Programme facts such as dates, fees, winners, judges and sponsors must only be added from an approved source.
