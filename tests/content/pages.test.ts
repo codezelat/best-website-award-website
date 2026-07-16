@@ -135,9 +135,11 @@ describe('public page content contract', () => {
   });
 
   it('contains no draft markers or manufactured programme specifics', () => {
-    const copy = JSON.stringify({ editorialPages, utilityPages }).toLowerCase();
+    const sourceCopy = JSON.stringify({ editorialPages, utilityPages });
+    const copy = sourceCopy.toLowerCase();
 
     expect(copy).not.toMatch(/lorem ipsum|coming soon|sample winner|dummy|placeholder|vote now/);
     expect(copy).not.toMatch(/entry fee is|award ceremony on|our judges are|our sponsors are/);
+    expect(sourceCopy).not.toMatch(/[\u2013\u2014]/);
   });
 });

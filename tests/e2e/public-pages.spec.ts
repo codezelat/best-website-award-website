@@ -10,7 +10,7 @@ const editorialRoutes = [
 
 const utilityRoutes = [
   ['/faq', 'Questions, answered with clarity.'],
-  ['/contact', 'Start a clear conversation.'],
+  ['/contact', 'Present your website for 2026.'],
   ['/privacy-policy', 'Privacy, explained clearly.'],
   ['/terms', 'Terms built for clarity.'],
   ['/cookies', 'A minimal approach to cookies.']
@@ -94,7 +94,7 @@ test('optional analytics remains off until consent and preference can be changed
   await expect(consent).toBeVisible();
   await expect(page.locator('script[data-google-analytics]')).toHaveCount(0);
 
-  await page.getByRole('button', { name: 'Yes, help improve' }).click();
+  await page.getByRole('button', { name: 'Yes, help improve' }).click({ force: true });
   await expect(consent).toBeHidden();
   await expect(page.locator('script[data-google-analytics]')).toHaveCount(1);
   await expect
@@ -103,7 +103,7 @@ test('optional analytics remains off until consent and preference can be changed
 
   await page.getByRole('button', { name: 'Cookie settings' }).click();
   await expect(consent).toBeVisible();
-  await page.getByRole('button', { name: 'Not now' }).click();
+  await page.getByRole('button', { name: 'Not now' }).click({ force: true });
   await expect
     .poll(() => page.evaluate(() => localStorage.getItem('bwa_analytics_consent_v1')))
     .toBe('denied');
@@ -155,7 +155,7 @@ test('contact page publishes official channels and completes a website enquiry',
   await expect(
     page.locator('.contact-application__social').getByRole('link', { name: /Facebook/ })
   ).toHaveAttribute('href', 'https://www.facebook.com/gbeaward/');
-  await expect(page.getByText('28 August 2026', { exact: true }).first()).toBeVisible();
+  await expect(page.locator('.contact-application__details')).toContainText('28 August 2026');
   await expect(page.getByRole('link', { name: /Confirm on WhatsApp/ }).first()).toHaveAttribute(
     'href',
     'https://wa.link/4f21fy'

@@ -143,7 +143,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         from: CONTACT_FROM_EMAIL,
         to: [CONTACT_TO_EMAIL],
         reply_to: submission.email,
-        subject: `[Best Website Awards] ${enquiryLabel} — ${submission.organisation}`,
+        subject: `[Best Website Awards] ${enquiryLabel}: ${submission.organisation}`,
         text,
         html
       })

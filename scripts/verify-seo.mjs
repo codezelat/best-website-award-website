@@ -91,6 +91,9 @@ for (const route of indexableRoutes) {
   if (html.includes('@fs') || html.includes('/Users/')) {
     fail(`${route} exposes a local filesystem path`);
   }
+  if (/[\u2013\u2014]|&(?:en|em)dash;|&#0*821[12];|&#x0*201[34];/i.test(html)) {
+    fail(`${route} contains an en dash or em dash`);
+  }
 
   const structuredData = getStructuredData(html);
   const graph = structuredData['@graph'];

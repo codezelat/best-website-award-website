@@ -51,7 +51,7 @@ export const editorialPages = {
           index: '01',
           title: 'Merit in context',
           summary:
-            'Work is understood through its purpose, audience and responsibility—not by surface style alone.'
+            'Work is understood through its purpose, audience and responsibility, not by surface style alone.'
         },
         {
           id: 'evidence',
@@ -230,7 +230,7 @@ export const editorialPages = {
     feature: {
       title: 'Built for people, not a judging room.',
       body: [
-        'The most convincing websites make sense where they are actually used—across devices, moments and levels of familiarity.',
+        'The most convincing websites make sense wherever people use them, across devices, moments and levels of familiarity.',
         'Visual distinction matters. Usefulness, access and trust are what make it last.'
       ],
       image: {
@@ -342,7 +342,7 @@ export const editorialPages = {
       title: 'Quality people can feel.',
       body: [
         'Speed, access, clarity and trust are not background details. They shape whether a website works for the people depending on it.',
-        'Technical quality is considered as part of the experience—not as a separate box to tick.'
+        'Technical quality is considered as part of the experience, not as a separate box to tick.'
       ],
       image: {
         src: standardFeatureTrust,
@@ -385,7 +385,7 @@ export const editorialPages = {
     introduction: {
       title: 'Context first. Then consideration.',
       body: [
-        'A website deserves to be understood for the job it had to do—not reduced to a screenshot.',
+        'A website deserves to be understood for the job it had to do, not reduced to a screenshot.',
         'The process brings the work, its decisions and the evidence of its value into one clear account.'
       ]
     },

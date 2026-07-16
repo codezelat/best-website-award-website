@@ -23,9 +23,11 @@ describe('homepage content contract', () => {
   });
 
   it('does not introduce voting or placeholder programme claims', () => {
-    const copy = JSON.stringify(homepageContent).toLowerCase();
+    const sourceCopy = JSON.stringify(homepageContent);
+    const copy = sourceCopy.toLowerCase();
 
     expect(copy).not.toMatch(/public voting|vote now|lorem ipsum|coming soon|sample winner/);
+    expect(sourceCopy).not.toMatch(/[\u2013\u2014]/);
   });
 
   it('publishes concise, descriptive homepage search metadata', () => {

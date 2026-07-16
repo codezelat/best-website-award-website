@@ -68,14 +68,14 @@ When the admin application is connected, replace those static sources with Neon-
 
 ## Public routes
 
-- `/` — homepage
-- `/awards` — award purpose and principles
-- `/work` — types of work recognised
-- `/standard` — four-measure evaluation framework
-- `/process` — recognition journey
-- `/about` — organisation and parent-brand context
-- `/faq`, `/contact`, `/privacy-policy`, `/terms`, `/cookies` — supporting pages
-- `404.astro` — branded, non-indexable not-found experience
+- `/`: homepage
+- `/awards`: award purpose and principles
+- `/work`: types of work recognised
+- `/standard`: four-measure evaluation framework
+- `/process`: recognition journey
+- `/about`: organisation and parent-brand context
+- `/faq`, `/contact`, `/privacy-policy`, `/terms`, `/cookies`: supporting pages
+- `404.astro`: branded, non-indexable not-found experience
 
 All 11 public routes are indexable, linked from the site, and published at
 `https://bestwebsiteaward.com/sitemap.xml`. The 404 page and `/api/*` remain non-indexable.

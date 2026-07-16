@@ -14,7 +14,7 @@ export const homepageContent = {
   navigation: siteNavigation,
   hero: {
     title: 'Best Website Awards 2026.',
-    summary: `${programmeDetails.status} for the ${programmeDetails.date} programme—global recognition for exceptional digital work shaped with purpose and measurable impact.`,
+    summary: `${programmeDetails.status} for the ${programmeDetails.date} programme. Earn global recognition for exceptional digital work shaped with purpose and measurable impact.`,
     primaryAction: { label: 'Apply now', href: '/contact' },
     secondaryAction: { label: 'View the standard', href: '#standard' },
     image: {
@@ -115,7 +115,7 @@ export const homepageContent = {
   },
   process: {
     title: 'A clear path to recognition',
-    summary: 'A focused journey that keeps the work—and the thinking behind it—at the centre.',
+    summary: 'A focused journey that keeps the work and the thinking behind it at the centre.',
     items: [
       {
         id: 'present',
