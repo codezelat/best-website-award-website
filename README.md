@@ -41,7 +41,9 @@ the consent control through **Cookie settings** in the footer.
 The measurement contract is implemented in `src/components/AnalyticsConsent.astro`, default consent
 is established in `src/layouts/BaseLayout.astro`, and the required production origins are restricted
 through the Content Security Policy in `vercel.json`. Privacy and cookie disclosures are supplied
-through the typed page-content source.
+through the typed page-content source. The document cache policy includes `no-transform` so proxy
+services cannot inject a second analytics beacon or browser-side bot-detection script into the
+production HTML.
 
 ## Content and media architecture
 

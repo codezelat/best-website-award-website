@@ -155,6 +155,9 @@ const vercel = JSON.parse(await readFile(resolve(root, 'vercel.json'), 'utf8'));
 const contentSecurityPolicy = vercel.headers
   ?.flatMap((rule) => rule.headers ?? [])
   .find((header) => header.key === 'Content-Security-Policy')?.value;
+const documentCacheControl = vercel.headers
+  ?.find((rule) => rule.source === '/(.*)')
+  ?.headers?.find((header) => header.key === 'Cache-Control')?.value;
 
 for (const analyticsOrigin of [
   'https://www.googletagmanager.com',
@@ -163,6 +166,10 @@ for (const analyticsOrigin of [
   if (!contentSecurityPolicy?.includes(analyticsOrigin)) {
     fail(`Content Security Policy does not permit ${analyticsOrigin}`);
   }
+}
+
+if (!documentCacheControl?.includes('no-transform')) {
+  fail('document cache policy must prevent CDN script injection with no-transform');
 }
 
 console.log(

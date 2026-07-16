@@ -7,6 +7,10 @@
       "source": "/(.*)",
       "headers": [
         {
+          "key": "Cache-Control",
+          "value": "public, max-age=14400, must-revalidate, no-transform"
+        },
+        {
           "key": "Content-Security-Policy",
           "value": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: https://www.google-analytics.com https://*.google-analytics.com; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://region1.google-analytics.com; upgrade-insecure-requests"
         },
