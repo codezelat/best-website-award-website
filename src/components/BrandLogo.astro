@@ -12,6 +12,8 @@ interface Props {
 
 const { variant = 'primary', class: className, loading = 'eager' } = Astro.props;
 const src = variant === 'mark' ? iconmark : variant === 'reversed' ? logoReversed : logoPrimary;
+const widths = variant === 'mark' ? [72, 144] : [240, 320, 400];
+const sizes = variant === 'mark' ? '4.4rem' : '(max-width: 68rem) 12rem, 15.2rem';
 const alt =
   variant === 'mark'
     ? 'Best Website Awards'
@@ -24,6 +26,8 @@ const alt =
   alt={alt}
   loading={loading}
   decoding="async"
+  widths={widths}
+  sizes={sizes}
   format="webp"
-  quality={92}
+  quality={82}
 />

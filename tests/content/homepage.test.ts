@@ -26,4 +26,11 @@ describe('homepage content contract', () => {
 
     expect(copy).not.toMatch(/public voting|vote now|lorem ipsum|coming soon|sample winner/);
   });
+
+  it('publishes concise, descriptive homepage search metadata', () => {
+    expect(homepageContent.seo.title.length).toBeGreaterThanOrEqual(30);
+    expect(homepageContent.seo.title.length).toBeLessThanOrEqual(65);
+    expect(homepageContent.seo.description.length).toBeGreaterThanOrEqual(100);
+    expect(homepageContent.seo.description.length).toBeLessThanOrEqual(170);
+  });
 });

@@ -8,9 +8,9 @@ import { siteNavigation } from './site';
 
 export const homepageContent = {
   seo: {
-    title: 'Best Website Awards | Global Website Excellence',
+    title: 'Best Website Awards Sri Lanka 2026 | Global Recognition',
     description:
-      'Best Website Awards recognises outstanding websites worldwide through a clear standard covering design, experience, performance, accessibility, content and impact.'
+      'Best Website Awards 2026 recognises outstanding websites from Sri Lanka and worldwide across design, experience, performance, accessibility, content and impact.'
   },
   navigation: siteNavigation,
   hero: {
@@ -28,7 +28,7 @@ export const homepageContent = {
     index: '01',
     title: 'A standard for meaningful digital work.',
     statements: [
-      'Recognising websites that create value for businesses, brands and audiences.',
+      'Connecting Sri Lanka’s digital excellence with global recognition while welcoming work from every market.',
       'Clear criteria. Thoughtful review. Recognition with global perspective.'
     ]
   },
@@ -141,7 +141,7 @@ export const homepageContent = {
   parentBrand: {
     title: 'Global perspective. Business credibility.',
     summary:
-      'Best Website Awards is powered by Global Business Excellence Awards, connecting digital craft with a wider standard of business excellence.',
+      'Best Website Awards 2026 is powered by Global Business Excellence Awards, connecting digital craft with a wider standard of business excellence.',
     attribution: 'Powered by Global Business Excellence Awards'
   },
   closing: {

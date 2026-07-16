@@ -24,12 +24,24 @@ The site is served at `http://localhost:4321`.
 ## Verification
 
 ```sh
-npm run format:check
-npm run check
-npm run test
-npm run build
-npm run test:e2e
+npm run verify:full
 ```
+
+The release gate checks formatting, Astro and TypeScript diagnostics, content tests, the production
+build, rendered SEO metadata and structured data, sitemap/noindex rules, the analytics contract,
+and desktop/mobile browser behavior.
+
+## Analytics and consent
+
+Google Analytics 4 uses measurement ID `G-L2FR8JR6ZJ`. The tag is not requested until a visitor
+selects **Allow analytics**. Consent Mode v2 defaults analytics and advertising storage to denied;
+advertising signals and Google Signals remain disabled after analytics consent. Visitors can reopen
+the consent control through **Cookie settings** in the footer.
+
+The measurement contract is implemented in `src/components/AnalyticsConsent.astro`, default consent
+is established in `src/layouts/BaseLayout.astro`, and the required production origins are restricted
+through the Content Security Policy in `vercel.json`. Privacy and cookie disclosures are supplied
+through the typed page-content source.
 
 ## Content and media architecture
 

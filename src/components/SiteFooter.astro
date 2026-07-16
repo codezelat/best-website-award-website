@@ -35,6 +35,9 @@ const year = new Date().getFullYear();
             {item.label}
           </a>
         ))}
+        <button type="button" data-open-analytics-settings>
+          Cookie settings
+        </button>
       </nav>
     )
   }
@@ -43,3 +46,9 @@ const year = new Date().getFullYear();
     <a href="#top">Back to top</a>
   </div>
 </footer>
+
+<script>
+  document.querySelector('[data-open-analytics-settings]')?.addEventListener('click', () => {
+    document.dispatchEvent(new CustomEvent('bwa:open-analytics-settings'));
+  });
+</script>

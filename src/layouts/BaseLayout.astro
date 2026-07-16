@@ -3,6 +3,7 @@ import '@fontsource-variable/funnel-display/index.css';
 import '@fontsource-variable/funnel-sans/index.css';
 import '../styles/global.css';
 import PageLoader from '../components/PageLoader.astro';
+import AnalyticsConsent from '../components/AnalyticsConsent.astro';
 import SeoHead from '../components/SeoHead.astro';
 import type { PageSeo, UtilitySection } from '../lib/content/types';
 
@@ -42,12 +43,25 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <SeoHead {title} {description} {canonical} {image} {imageAlt} {pageType} {noIndex} {faqItems} />
     <script is:inline>
       document.documentElement.classList.add('js');
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () {
+        window.dataLayer.push(arguments);
+      };
+      window.gtag('consent', 'default', {
+        ad_storage: 'denied',
+        analytics_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        wait_for_update: 500
+      });
+      window.gtag('set', 'ads_data_redaction', true);
     </script>
   </head>
   <body>
     <PageLoader />
     <a class="skip-link" href="#main-content">Skip to content</a>
     <slot />
+    <AnalyticsConsent />
     <script>
       import '../scripts/site-motion';
     </script>

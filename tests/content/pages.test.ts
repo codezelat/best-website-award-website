@@ -61,7 +61,9 @@ describe('public page content contract', () => {
     expect(questions.length).toBeGreaterThanOrEqual(20);
     expect(new Set(questions).size).toBe(questions.length);
     expect(utilityPages.faq.seo.pageType).toBe('FAQPage');
-    expect(JSON.stringify(utilityPages.faq).toLowerCase()).toContain('no public voting');
+    expect(JSON.stringify(utilityPages.faq).toLowerCase()).toContain('does not use public voting');
+    expect(JSON.stringify(utilityPages.faq)).toContain('Best Website Awards Sri Lanka');
+    expect(editorialPages.standard.seo.title).toContain('Best Web 2026');
   });
 
   it('keeps indexable page metadata unique and descriptive', () => {
@@ -80,10 +82,28 @@ describe('public page content contract', () => {
     ).toBe(true);
   });
 
+  it('maps priority search themes to relevant public pages', () => {
+    expect(utilityPages.faq.seo.description).toContain('Best Website Awards Sri Lanka 2026');
+    expect(editorialPages.standard.seo.title).toContain('Best Web 2026');
+    expect(editorialPages.awards.seo.title).toContain('Best Website Awards 2026');
+    expect(editorialPages.about.seo.description).toContain('Global Business Excellence Awards');
+    expect(editorialPages.about.seo.description).toContain('GBE Awards 2026');
+  });
+
   it('keeps legal utility pages out of the search index', () => {
     expect(utilityPages.privacy.seo.noIndex).toBe(true);
     expect(utilityPages.terms.seo.noIndex).toBe(true);
     expect(utilityPages.cookies.seo.noIndex).toBe(true);
+  });
+
+  it('publishes accurate analytics and consent disclosures', () => {
+    const privacyCopy = JSON.stringify(utilityPages.privacy);
+    const cookieCopy = JSON.stringify(utilityPages.cookies);
+
+    expect(privacyCopy).toContain('Google Analytics 4');
+    expect(cookieCopy).toContain('G-L2FR8JR6ZJ');
+    expect(cookieCopy).toContain('90 days');
+    expect(cookieCopy).toContain('Cookie settings');
   });
 
   it('contains no draft markers or manufactured programme specifics', () => {

@@ -42,21 +42,44 @@ test('FAQ publishes complete visible answers and matching structured data', asyn
   await page.goto('/faq');
 
   const questions = page.locator('main section');
-  await expect(questions).toHaveCount(22);
+  await expect(questions).toHaveCount(24);
 
-  const structuredDataText = await page
-    .locator('script[type="application/ld+json"]')
-    .textContent();
+  const structuredDataText = await page.locator('script[type="application/ld+json"]').textContent();
   const structuredData = JSON.parse(structuredDataText ?? '{}');
   const faqPage = structuredData['@graph']?.find(
     (item: { '@type'?: string }) => item['@type'] === 'FAQPage'
   );
 
-  expect(faqPage?.mainEntity).toHaveLength(22);
-  expect(faqPage?.mainEntity?.[0]?.name).toBe('What is Best Website Awards?');
-  expect(faqPage?.mainEntity?.[8]?.acceptedAnswer?.text).toContain(
-    'does not use public voting'
+  expect(faqPage?.mainEntity).toHaveLength(24);
+  expect(faqPage?.mainEntity?.[0]?.name).toBe('What is Best Website Awards 2026?');
+  expect(faqPage?.mainEntity?.[10]?.acceptedAnswer?.text).toContain('does not use public voting');
+});
+
+test('Google Analytics remains off until consent and preference can be changed', async ({
+  page
+}) => {
+  await page.route('https://www.googletagmanager.com/**', (route) =>
+    route.fulfill({ contentType: 'application/javascript', body: '' })
   );
+  await page.goto('/');
+
+  const consent = page.getByRole('dialog', { name: 'Help us improve the website.' });
+  await expect(consent).toBeVisible();
+  await expect(page.locator('script[data-google-analytics]')).toHaveCount(0);
+
+  await page.getByRole('button', { name: 'Allow analytics' }).click();
+  await expect(consent).toBeHidden();
+  await expect(page.locator('script[data-google-analytics]')).toHaveCount(1);
+  await expect
+    .poll(() => page.evaluate(() => localStorage.getItem('bwa_analytics_consent_v1')))
+    .toBe('granted');
+
+  await page.getByRole('button', { name: 'Cookie settings' }).click();
+  await expect(consent).toBeVisible();
+  await page.getByRole('button', { name: 'Decline analytics' }).click();
+  await expect
+    .poll(() => page.evaluate(() => localStorage.getItem('bwa_analytics_consent_v1')))
+    .toBe('denied');
 });
 
 for (const route of ['/privacy-policy', '/terms', '/cookies']) {
@@ -65,18 +88,6 @@ for (const route of ['/privacy-policy', '/terms', '/cookies']) {
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow');
   });
 }
-
-test('sitemap contains only indexable public routes', async ({ request }) => {
-  const response = await request.get('/sitemap-0.xml');
-  const sitemap = await response.text();
-
-  expect(response.ok()).toBe(true);
-  expect(sitemap).toContain('https://bestwebsiteaward.com/faq');
-  expect(sitemap).toContain('https://bestwebsiteaward.com/standard');
-  expect(sitemap).not.toContain('/privacy-policy');
-  expect(sitemap).not.toContain('/terms');
-  expect(sitemap).not.toContain('/cookies');
-});
 
 test('unknown routes use the branded, non-indexable not-found page', async ({ page }) => {
   const response = await page.goto('/a-page-that-does-not-exist');

@@ -22,7 +22,7 @@ const finishLoading = async () => {
     await animate(
       loader,
       { opacity: [1, 0] },
-      { duration: 0.55, delay: 0.25, ease: [0.65, 0, 0.35, 1] }
+      { duration: 0.3, delay: 0.05, ease: [0.65, 0, 0.35, 1] }
     ).finished;
   } finally {
     window.clearTimeout(loaderFailsafe);
@@ -101,9 +101,9 @@ const runMotion = () => {
 
 runMotion();
 
-if (document.readyState === 'complete') {
+if (document.readyState !== 'loading') {
   void finishLoading();
 } else {
-  window.addEventListener('load', () => void finishLoading(), { once: true });
-  window.setTimeout(() => void finishLoading(), 3200);
+  document.addEventListener('DOMContentLoaded', () => void finishLoading(), { once: true });
+  window.setTimeout(() => void finishLoading(), 1600);
 }

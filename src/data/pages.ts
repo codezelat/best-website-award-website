@@ -18,9 +18,9 @@ export const editorialPages = {
   awards: {
     slug: 'awards',
     seo: {
-      title: 'Website Awards & Global Recognition | Best Website Awards',
+      title: 'Best Website Awards 2026 | Global Website Recognition',
       description:
-        'Discover how Best Website Awards recognises purposeful, accessible and effective websites through evidence-led review and meaningful global recognition.'
+        'Discover how Best Website Awards 2026 recognises purposeful, accessible and effective websites through evidence-led review and meaningful global recognition.'
     },
     hero: {
       title: 'Recognition built on the work.',
@@ -254,9 +254,9 @@ export const editorialPages = {
   standard: {
     slug: 'standard',
     seo: {
-      title: 'Website Evaluation Criteria | Best Website Awards',
+      title: 'Best Web 2026 Evaluation Criteria | Best Website Awards',
       description:
-        'Understand the Best Website Awards criteria for design and experience, performance and accessibility, content and purpose, innovation and impact.'
+        'Explore Best Web 2026 evaluation criteria covering design and experience, performance and accessibility, content and purpose, innovation and impact.'
     },
     hero: {
       title: 'A standard designed to see the whole website.',
@@ -366,7 +366,7 @@ export const editorialPages = {
   process: {
     slug: 'process',
     seo: {
-      title: 'Website Award Review Process | Best Website Awards',
+      title: 'Best Website Awards 2026 Review Process | BWA',
       description:
         'Learn how websites are presented, reviewed against four connected measures and considered for recognition through Best Website Awards.'
     },
@@ -472,7 +472,7 @@ export const editorialPages = {
     seo: {
       title: 'About Best Website Awards | Global Digital Recognition',
       description:
-        'Learn how Best Website Awards brings a focused website excellence programme to the global business perspective of Global Business Excellence Awards.',
+        'Learn how Best Website Awards 2026, powered by Global Business Excellence Awards and GBE Awards 2026, connects Sri Lankan craft with global recognition.',
       pageType: 'AboutPage'
     },
     hero: {
@@ -524,7 +524,7 @@ export const editorialPages = {
     secondaryCollection: {
       title: 'The wider platform',
       summary:
-        'Global Business Excellence Awards recognises leadership, enterprise, innovation and service excellence across the UK, Sri Lanka and international markets.',
+        'The GBE Awards 2026 platform recognises leadership, enterprise, innovation and service excellence across the UK, Sri Lanka and international markets.',
       variant: 'rows',
       items: [
         {
@@ -611,9 +611,9 @@ export const utilityPages = {
   faq: {
     slug: 'faq',
     seo: {
-      title: 'Website Award FAQs | Eligibility, Criteria & Review',
+      title: 'Best Website Awards 2026 FAQs | Eligibility & Criteria',
       description:
-        'Find answers about Best Website Awards eligibility, website types, evaluation criteria, evidence, review, public voting, recognition and programme details.',
+        'Find answers about Best Website Awards Sri Lanka 2026 eligibility, website types, evaluation criteria, evidence, review, recognition and programme details.',
       pageType: 'FAQPage'
     },
     title: 'Questions, answered with clarity.',
@@ -621,10 +621,24 @@ export const utilityPages = {
       'A complete guide to who can present work, what is considered and how website excellence is recognised.',
     sections: [
       {
-        title: 'What is Best Website Awards?',
+        title: 'What is Best Website Awards 2026?',
         body: [
           'Best Website Awards is a global recognition programme for websites that demonstrate purposeful design, strong experience, dependable execution, useful content and meaningful impact.',
           'It is powered by Global Business Excellence Awards and considers websites in the wider context of how organisations communicate, serve people and create value.'
+        ]
+      },
+      {
+        title: 'Is Best Website Awards Sri Lanka open to international websites?',
+        body: [
+          'Yes. The programme is based in Sri Lanka and built for global participation and exposure. Eligible websites from Sri Lanka and every other market may be presented for consideration.',
+          'The same published standard is applied to the work in its own purpose, audience and operating context.'
+        ]
+      },
+      {
+        title: 'What defines the best web work in 2026?',
+        body: [
+          'The best web work in 2026 combines a clear purpose with distinctive design, intuitive experience, reliable performance, inclusive access, useful content and evidence of meaningful impact.',
+          'Best Website Awards considers those qualities together, so visual craft is recognised as part of a complete and effective website rather than in isolation.'
         ]
       },
       {
@@ -799,6 +813,13 @@ export const utilityPages = {
         ]
       },
       {
+        title: 'Analytics and consent',
+        body: [
+          'With your permission, this website uses Google Analytics 4 to understand aggregate page use, referring sources, device and browser characteristics, and interaction patterns so the public experience can be improved.',
+          'Analytics is not loaded before consent. Google advertising storage, advertising personalisation and Google Signals are disabled in our configuration. You can change or withdraw your choice at any time through Cookie settings in the footer.'
+        ]
+      },
+      {
         title: 'How information is used',
         body: [
           'Information may be used to respond to enquiries, operate and secure the website, understand technical issues and comply with applicable obligations.',
@@ -869,30 +890,32 @@ export const utilityPages = {
     seo: {
       title: 'Cookie Notice | Best Website Awards',
       description:
-        'Read how the Best Website Awards public website approaches cookies, technical delivery mechanisms and future consent-controlled services.',
+        'Read how Best Website Awards uses consent-controlled Google Analytics, stores your preference and keeps advertising technologies disabled.',
       noIndex: true
     },
     title: 'A minimal approach to cookies.',
     introduction:
-      'The Best Website Awards public website is designed to work without non-essential cookies.',
+      'The Best Website Awards public website works without analytics cookies unless you choose to allow them.',
     sections: [
       {
         title: 'Current use',
         body: [
-          'The current public site does not use advertising or account-session cookies.',
-          'Hosting and security infrastructure may use technical mechanisms needed to deliver and protect requests.'
+          'The site does not use advertising or account-session cookies. Hosting and security infrastructure may use technical mechanisms needed to deliver and protect requests.',
+          'Your analytics preference is saved in local storage as bwa_analytics_consent_v1 so the site can respect your choice on later visits.'
         ]
       },
       {
-        title: 'Future changes',
+        title: 'Optional Google Analytics',
         body: [
-          'If analytics, forms or other services that use non-essential cookies are introduced, this notice and any necessary consent controls will be updated before that use begins.'
+          'If you select Allow analytics, Google Analytics 4 is loaded using measurement ID G-L2FR8JR6ZJ. It may set _ga and _ga_* cookies to distinguish site usage over time.',
+          'We limit analytics cookies to 90 days and disable Google advertising storage, advertising personalisation and Google Signals. Declining analytics leaves the measurement tag unloaded.'
         ]
       },
       {
-        title: 'Browser controls',
+        title: 'Change or withdraw your choice',
         body: [
-          'Most browsers allow you to review, block or remove stored cookies through their privacy settings.'
+          'Use Cookie settings in the footer to allow, decline or withdraw analytics consent. Withdrawing consent updates the analytics consent state and removes Best Website Awards cookies whose names begin with _ga.',
+          'You can also review, block or remove stored cookies through your browser privacy settings.'
         ]
       }
     ],
