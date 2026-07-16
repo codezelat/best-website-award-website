@@ -1,4 +1,4 @@
-import { readFile, readdir, writeFile } from 'node:fs/promises';
+import { readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 const root = resolve(import.meta.dirname, '..');
@@ -21,7 +21,9 @@ const listFiles = async (directory) => {
   return files.flat();
 };
 
-const publicAssets = (await listFiles(staticRoot)).filter((file) => /\.(?:html|css|js)$/i.test(file));
+const publicAssets = (await listFiles(staticRoot)).filter((file) =>
+  /\.(?:html|css|js)$/i.test(file)
+);
 for (const file of publicAssets) {
   const content = await readFile(file, 'utf8');
   if (content.includes('/_image')) fail(`${file} still depends on the runtime image endpoint`);
@@ -45,4 +47,22 @@ for (const expectedRoute of ['^/_image$', '^/_server-islands/']) {
 }
 
 await writeFile(configPath, `${JSON.stringify(config, null, '\t')}\n`);
-console.log(`Removed ${removedRoutes.length} unused runtime routes from Vercel output.`);
+
+const renderFunction = resolve(outputRoot, 'functions/_render.func');
+const unusedImageDependencies = [
+  resolve(renderFunction, 'node_modules/@emnapi'),
+  resolve(renderFunction, 'node_modules/@img'),
+  resolve(renderFunction, 'node_modules/sharp')
+];
+for (const dependency of unusedImageDependencies) {
+  await rm(dependency, { recursive: true, force: true });
+}
+
+const serverChunks = resolve(renderFunction, 'dist/server/chunks');
+for (const file of await readdir(serverChunks)) {
+  if (file.startsWith('sharp_')) await rm(resolve(serverChunks, file), { force: true });
+}
+
+console.log(
+  `Removed ${removedRoutes.length} unused runtime routes and their image dependencies from Vercel output.`
+);

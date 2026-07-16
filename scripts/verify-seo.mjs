@@ -215,15 +215,11 @@ if (!documentCacheControl?.includes('no-transform')) {
 if (rootHeader('Cache-Control') !== 'public, max-age=300, must-revalidate, no-transform') {
   fail('public pages are missing the short browser cache policy');
 }
-if (
-  rootHeader('CDN-Cache-Control') !==
-  'public, s-maxage=3600, stale-while-revalidate=86400'
-) {
+if (rootHeader('CDN-Cache-Control') !== 'public, s-maxage=3600, stale-while-revalidate=86400') {
   fail('public pages are missing the shared CDN cache policy');
 }
 if (
-  rootHeader('Vercel-CDN-Cache-Control') !==
-  'public, s-maxage=86400, stale-while-revalidate=604800'
+  rootHeader('Vercel-CDN-Cache-Control') !== 'public, s-maxage=86400, stale-while-revalidate=604800'
 ) {
   fail('public pages are missing the Vercel CDN cache policy');
 }

@@ -8,8 +8,7 @@ export default defineConfig({
   site: 'https://bestwebsiteaward.com',
   output: 'static',
   adapter: vercel({
-    maxDuration: 15,
-    excludeFiles: ['node_modules/@img/**', 'node_modules/sharp/**']
+    maxDuration: 15
   }),
   trailingSlash: 'never',
   integrations: [

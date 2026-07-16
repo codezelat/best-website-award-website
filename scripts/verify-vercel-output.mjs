@@ -23,7 +23,10 @@ const fail = (message) => {
   throw new Error(`[Vercel output verification] ${message}`);
 };
 
-const exists = async (path) => access(path).then(() => true).catch(() => false);
+const exists = async (path) =>
+  access(path)
+    .then(() => true)
+    .catch(() => false);
 
 const directorySize = async (directory) => {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -37,7 +40,8 @@ const directorySize = async (directory) => {
 };
 
 for (const route of publicRoutes) {
-  const path = route === '/' ? resolve(staticRoot, 'index.html') : resolve(staticRoot, `.${route}/index.html`);
+  const path =
+    route === '/' ? resolve(staticRoot, 'index.html') : resolve(staticRoot, `.${route}/index.html`);
   if (!(await exists(path))) fail(`${route} was not emitted as a static HTML file`);
 }
 
@@ -80,7 +84,9 @@ if (sourceFiles.some((file) => /^middleware\.(?:js|ts|mjs|mts)$/.test(file))) {
 
 const packageJson = JSON.parse(await readFile(resolve(root, 'package.json'), 'utf8'));
 const runtimePackages = Object.keys(packageJson.dependencies ?? {});
-if (runtimePackages.some((name) => /auth|neon|drizzle|prisma|supabase|postgres|database/i.test(name))) {
+if (
+  runtimePackages.some((name) => /auth|neon|drizzle|prisma|supabase|postgres|database/i.test(name))
+) {
   fail('an auth or database dependency has entered the public site runtime');
 }
 
