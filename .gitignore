@@ -6,6 +6,8 @@ dist/
 !.env.example
 coverage/
 playwright-report/
+.playwright-cli/
+output/playwright/
 test-results/
 artifacts/
 .DS_Store
