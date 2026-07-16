@@ -14,8 +14,9 @@ export const homepageContent = {
   },
   navigation: siteNavigation,
   hero: {
-    title: 'Exceptional websites belong in view.',
-    summary: 'Recognition for digital work shaped with purpose, craft and measurable impact.',
+    title: 'Best Website Awards 2026.',
+    summary:
+      'Global recognition for exceptional digital work shaped with purpose, craft and measurable impact.',
     primaryAction: { label: 'Explore the awards', href: '#introduction' },
     secondaryAction: { label: 'View the standard', href: '#standard' },
     image: {
@@ -28,7 +29,7 @@ export const homepageContent = {
     index: '01',
     title: 'A standard for meaningful digital work.',
     statements: [
-      'Connecting Sri Lanka’s digital excellence with global recognition while welcoming work from every market.',
+      'Best Website Awards connects Sri Lanka’s digital excellence with global recognition while welcoming work from every market.',
       'Clear criteria. Thoughtful review. Recognition with global perspective.'
     ]
   },

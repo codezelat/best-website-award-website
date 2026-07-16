@@ -56,7 +56,7 @@ for (const route of indexableRoutes) {
   if (!description || description.length < 100 || description.length > 170) {
     fail(`${route} has an invalid description length`);
   }
-  if (robots !== 'index, follow, max-image-preview:large') {
+  if (robots !== 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1') {
     fail(`${route} has an unexpected robots directive`);
   }
   if (!html.includes(`<link rel="canonical" href="${canonical}">`)) {

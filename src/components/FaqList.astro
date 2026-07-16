@@ -16,7 +16,7 @@ const { sections } = Astro.props;
           <details class="faq-item" open={index === 0} data-reveal>
             <summary>
               <span class="faq-item__index">{String(index + 1).padStart(2, '0')}</span>
-              <h2>{section.title}</h2>
+              <span class="faq-item__question">{section.title}</span>
               <span class="faq-item__toggle" aria-hidden="true" />
             </summary>
             <div class="faq-item__answer">

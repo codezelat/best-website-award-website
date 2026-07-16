@@ -84,6 +84,12 @@ const structuredData = {
       url: `${canonical.origin}/`,
       email: 'info@gbeaward.com',
       areaServed: 'Worldwide',
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'programme enquiries',
+        email: 'info@gbeaward.com',
+        availableLanguage: 'English'
+      },
       sameAs: socialLinks.filter((item) => item.network !== 'whatsapp').map((item) => item.href),
       logo: {
         '@type': 'ImageObject',
@@ -126,7 +132,9 @@ const structuredData = {
 <meta name="description" content={description} />
 <meta
   name="robots"
-  content={noIndex ? 'noindex, follow' : 'index, follow, max-image-preview:large'}
+  content={noIndex
+    ? 'noindex, follow'
+    : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1'}
 />
 <link rel="canonical" href={canonical} />
 

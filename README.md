@@ -1,10 +1,10 @@
 # Best Website Awards
 
-The public website for Best Website Awards, powered by Global Business Excellence Awards. The current release is static and production-oriented, with typed content and managed-image boundaries ready for a future Neon and Cloudflare R2-backed admin application.
+The public website for Best Website Awards, powered by Global Business Excellence Awards. Public pages are pre-rendered for speed and search visibility, while the contact endpoint runs on Vercel. Typed content and managed-image boundaries are ready for a future Neon and Cloudflare R2-backed admin application.
 
 ## Stack
 
-- Astro 7 static output
+- Astro 7 pre-rendered pages with a Vercel server function for contact delivery
 - Tailwind CSS 4 utilities with the `tw:` prefix and no preflight reset
 - TypeScript strict mode
 - Astro image pipeline with AVIF/WebP output
@@ -34,7 +34,7 @@ and desktop/mobile browser behavior.
 ## Analytics and consent
 
 Google Analytics 4 uses measurement ID `G-L2FR8JR6ZJ`. The tag is not requested until a visitor
-selects **Allow analytics**. Consent Mode v2 defaults analytics and advertising storage to denied;
+selects **Yes, help improve**. Consent Mode v2 defaults analytics and advertising storage to denied;
 advertising signals and Google Signals remain disabled after analytics consent. Visitors can reopen
 the consent control through **Cookie settings** in the footer.
 
@@ -44,6 +44,21 @@ through the Content Security Policy in `vercel.json`. Privacy and cookie disclos
 through the typed page-content source. The document cache policy includes `no-transform` so proxy
 services cannot inject a second analytics beacon or browser-side bot-detection script into the
 production HTML.
+
+## Contact delivery
+
+`/api/contact` validates all fields, rejects cross-origin and automated submissions, verifies
+Cloudflare Turnstile on the server, and delivers accepted enquiries through Resend. Configure these
+variables locally in an ignored `.env` file and as encrypted Vercel environment variables:
+
+- `PUBLIC_TURNSTILE_SITE_KEY`
+- `TURNSTILE_SECRET_KEY`
+- `RESEND_API_KEY`
+- `CONTACT_TO_EMAIL`
+- `CONTACT_FROM_EMAIL`
+
+Use `.env.example` as the non-secret template. The API response is never cached and is explicitly
+excluded from indexing.
 
 ## Content and media architecture
 
@@ -62,8 +77,14 @@ When the admin application is connected, replace those static sources with Neon-
 - `/faq`, `/contact`, `/privacy-policy`, `/terms`, `/cookies` — supporting pages
 - `404.astro` — branded, non-indexable not-found experience
 
+All 11 public routes are indexable, linked from the site, and published at
+`https://bestwebsiteaward.com/sitemap.xml`. The 404 page and `/api/*` remain non-indexable.
+
 The public site contains no public-voting flow. Programme facts such as dates, fees, winners, judges and sponsors must only be added from an approved source.
 
 ## Deployment
 
-The build output is generated in `dist/`. `vercel.json` provides clean URLs, immutable asset caching, and baseline security headers. The production domain is `https://bestwebsiteaward.com`.
+The build output is generated in `dist/`, with pre-rendered files under `dist/client` and the contact
+server function in the Vercel output. `vercel.json` provides clean URLs, immutable asset caching,
+fresh sitemap and robots policies, and security headers. The production domain is
+`https://bestwebsiteaward.com`.

@@ -114,7 +114,7 @@ for (const route of ['/privacy-policy', '/terms', '/cookies']) {
     await page.goto(route);
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
       'content',
-      'index, follow, max-image-preview:large'
+      'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1'
     );
   });
 }

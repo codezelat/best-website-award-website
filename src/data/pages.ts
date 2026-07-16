@@ -910,7 +910,7 @@ export const utilityPages = {
       {
         title: 'Optional Google Analytics',
         body: [
-          'If you select Allow analytics, Google Analytics 4 is loaded using measurement ID G-L2FR8JR6ZJ. It may set _ga and _ga_* cookies to distinguish site usage over time.',
+          'If you select Yes, help improve, Google Analytics 4 is loaded using measurement ID G-L2FR8JR6ZJ. It may set _ga and _ga_* cookies to distinguish site usage over time.',
           'We limit analytics cookies to 90 days and disable Google advertising storage, advertising personalisation and Google Signals. Declining analytics leaves the measurement tag unloaded.'
         ]
       },
