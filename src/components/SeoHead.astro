@@ -8,6 +8,8 @@ interface Props {
   canonical: URL;
   image: URL;
   imageAlt: string;
+  imageWidth?: number;
+  imageHeight?: number;
   pageType?: PageSeo['pageType'];
   noIndex?: boolean;
   faqItems?: UtilitySection[];
@@ -25,6 +27,8 @@ const {
   canonical,
   image,
   imageAlt,
+  imageWidth,
+  imageHeight,
   pageType = 'WebPage',
   noIndex = false,
   faqItems = [],
@@ -58,8 +62,11 @@ const pageNode: Record<string, unknown> = {
   about: { '@id': organizationId },
   primaryImageOfPage: {
     '@type': 'ImageObject',
+    contentUrl: image.href,
     url: image.href,
-    caption: imageAlt
+    caption: imageAlt,
+    ...(imageWidth ? { width: imageWidth } : {}),
+    ...(imageHeight ? { height: imageHeight } : {})
   }
 };
 
@@ -168,6 +175,8 @@ const structuredData = {
 <meta property="og:image" content={image} />
 <meta property="og:image:secure_url" content={image} />
 <meta property="og:image:alt" content={imageAlt} />
+{imageWidth && <meta property="og:image:width" content={String(imageWidth)} />}
+{imageHeight && <meta property="og:image:height" content={String(imageHeight)} />}
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />

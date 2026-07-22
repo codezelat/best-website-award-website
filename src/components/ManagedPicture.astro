@@ -9,6 +9,9 @@ interface Props {
   fetchpriority?: 'high' | 'low' | 'auto';
   sizes?: string;
   widths?: number[];
+  quality?: number;
+  formats?: Array<'avif' | 'webp'>;
+  decoding?: 'async' | 'sync' | 'auto';
 }
 
 const {
@@ -17,7 +20,10 @@ const {
   loading = 'lazy',
   fetchpriority = 'auto',
   sizes = '(min-width: 1100px) 50vw, 100vw',
-  widths = [480, 720, 960, 1280, 1600]
+  widths = [480, 640, 720, 960, 1280, 1600],
+  quality = 82,
+  formats = ['avif'],
+  decoding = 'async'
 } = Astro.props;
 
 const style = image.position ? `object-position:${image.position}` : undefined;
@@ -32,7 +38,7 @@ const style = image.position ? `object-position:${image.position}` : undefined;
       width={image.width}
       height={image.height}
       loading={loading}
-      decoding="async"
+      {decoding}
       fetchpriority={fetchpriority}
       style={style}
     />
@@ -43,12 +49,12 @@ const style = image.position ? `object-position:${image.position}` : undefined;
       alt={image.alt}
       widths={widths}
       sizes={sizes}
-      formats={['avif']}
+      {formats}
       fallbackFormat="webp"
       loading={loading}
-      decoding="async"
+      {decoding}
       fetchpriority={fetchpriority}
-      quality={82}
+      {quality}
       style={style}
     />
   )

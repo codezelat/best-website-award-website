@@ -12,31 +12,30 @@ import WorkGallery from '../components/WorkGallery.astro';
 import { legalNavigation } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getHomepageContent } from '../lib/content/homepage';
+import { resolveManagedImage, resolveManagedImages } from '../lib/seo/images';
 
 export const prerender = true;
 
 const content = await getHomepageContent();
-const heroSource = content.hero.image.src;
-const socialImage = new URL(
-  typeof heroSource === 'string' ? heroSource : heroSource.src,
+const primaryHeroImage = content.hero.images[0];
+const primaryImage = resolveManagedImage(primaryHeroImage, Astro.site);
+const structuredImages = resolveManagedImages(
+  [
+    ...content.hero.images.slice(1),
+    ...content.work.items.map((item) => item.image),
+    ...content.gallery.items.map((item) => item.image)
+  ],
   Astro.site
 );
-const structuredImages = content.gallery.items.map((item) => {
-  const source = item.image.src;
-  return {
-    url: new URL(typeof source === 'string' ? source : source.src, Astro.site),
-    caption: item.image.alt,
-    width: typeof source === 'string' ? item.image.width : source.width,
-    height: typeof source === 'string' ? item.image.height : source.height
-  };
-});
 ---
 
 <BaseLayout
   title={content.seo.title}
   description={content.seo.description}
-  image={socialImage}
-  imageAlt={content.hero.image.alt}
+  image={primaryImage.url}
+  imageAlt={primaryHeroImage.alt}
+  imageWidth={primaryImage.width}
+  imageHeight={primaryImage.height}
   {structuredImages}
 >
   <div id="top"></div>

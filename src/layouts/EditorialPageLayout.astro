@@ -9,6 +9,7 @@ import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import { legalNavigation, siteNavigation } from '../data/site';
 import type { EditorialPageContent } from '../lib/content/types';
+import { resolveManagedImage, resolveManagedImages } from '../lib/seo/images';
 import BaseLayout from './BaseLayout.astro';
 
 interface Props {
@@ -16,9 +17,14 @@ interface Props {
 }
 
 const { content } = Astro.props;
-const imageSource = content.hero.image.src;
-const socialImage = new URL(
-  typeof imageSource === 'string' ? imageSource : imageSource.src,
+const primaryImage = resolveManagedImage(content.hero.image, Astro.site);
+const structuredImages = resolveManagedImages(
+  [
+    ...content.primaryCollection.items.flatMap((item) => (item.image ? [item.image] : [])),
+    ...(content.secondaryCollection?.items.flatMap((item) => (item.image ? [item.image] : [])) ??
+      []),
+    ...(content.feature?.image ? [content.feature.image] : [])
+  ],
   Astro.site
 );
 ---
@@ -26,10 +32,13 @@ const socialImage = new URL(
 <BaseLayout
   title={content.seo.title}
   description={content.seo.description}
-  image={socialImage}
+  image={primaryImage.url}
   imageAlt={content.hero.image.alt}
+  imageWidth={primaryImage.width}
+  imageHeight={primaryImage.height}
   pageType={content.seo.pageType}
   noIndex={content.seo.noIndex}
+  {structuredImages}
 >
   <div id="top"></div>
   <SiteHeader navigation={siteNavigation} currentPath={Astro.url.pathname} />

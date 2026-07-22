@@ -1,8 +1,11 @@
-import heroArchitecture from '../assets/generated/hero-architecture.png';
 import workBrand from '../assets/generated/work-brand.png';
 import workDigitalProducts from '../assets/generated/work-digital-products.png';
 import workOrganisations from '../assets/generated/work-organisations.png';
 import workPortfolios from '../assets/generated/work-portfolios.png';
+import heroStagePresentation from '../assets/event/hero-stage-presentation.webp';
+import heroStageRecognitionGreen from '../assets/event/hero-stage-recognition-green.webp';
+import heroStageRecognitionWhite from '../assets/event/hero-stage-recognition-white.webp';
+import heroTeamRecognition from '../assets/event/hero-team-recognition.webp';
 import type { HomepageContent } from '../lib/content/types';
 import { featuredEventGalleryItems } from './gallery';
 import { programmeDetails, siteNavigation } from './site';
@@ -15,14 +18,31 @@ export const homepageContent = {
   navigation: siteNavigation,
   hero: {
     title: 'Best Website Awards 2026.',
-    summary: `${programmeDetails.status} for the ${programmeDetails.date} programme. Earn global recognition for exceptional digital work shaped with purpose and measurable impact.`,
+    summary: `${programmeDetails.status} for the 2026 programme. Earn global recognition for exceptional digital work shaped with purpose and measurable impact.`,
     primaryAction: { label: 'Apply now', href: '/contact' },
     secondaryAction: { label: 'View the standard', href: '#standard' },
-    image: {
-      src: heroArchitecture,
-      alt: 'Sculptural white architecture beneath a clear blue sky',
-      position: 'center 54%'
-    }
+    images: [
+      {
+        src: heroStagePresentation,
+        alt: 'Global Business Excellence Awards recipient accepting a trophy on stage',
+        position: 'center 43%'
+      },
+      {
+        src: heroStageRecognitionWhite,
+        alt: 'Global Business Excellence Awards recipient receiving a trophy during a stage presentation',
+        position: 'center 46%'
+      },
+      {
+        src: heroTeamRecognition,
+        alt: 'Global Business Excellence Awards recipient and team holding a trophy on stage',
+        position: 'center 44%'
+      },
+      {
+        src: heroStageRecognitionGreen,
+        alt: 'Global Business Excellence Awards recipient sharing a recognition moment on stage',
+        position: 'center 45%'
+      }
+    ]
   },
   introduction: {
     index: '01',
@@ -153,7 +173,7 @@ export const homepageContent = {
   },
   closing: {
     title: 'Present your website for 2026.',
-    summary: `${programmeDetails.status} for ${programmeDetails.date}. ${programmeDetails.feeGuidance}`,
+    summary: `${programmeDetails.status} for the 2026 programme. ${programmeDetails.feeGuidance}`,
     primaryAction: { label: 'Apply now', href: '/contact' },
     secondaryAction: { label: 'Confirm fee on WhatsApp', href: programmeDetails.whatsappHref }
   }

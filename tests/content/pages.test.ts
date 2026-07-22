@@ -4,6 +4,7 @@ import {
   featuredEventGalleryItems,
   galleryPageContent
 } from '../../src/data/gallery';
+import { homepageContent } from '../../src/data/homepage';
 import { editorialPages, utilityPages } from '../../src/data/pages';
 import { publicRoutes } from '../../src/data/site';
 import { programmeDetails } from '../../src/data/site';
@@ -46,7 +47,7 @@ describe('public page content contract', () => {
     const gallery = await getGalleryContent();
 
     expect(gallery.slug).toBe('gallery');
-    expect(gallery.gallery.items).toHaveLength(10);
+    expect(gallery.gallery.items).toHaveLength(12);
     expect(new Set(eventGalleryItems.map((item) => item.id)).size).toBe(eventGalleryItems.length);
     expect(eventGalleryItems.every((item) => item.image.alt.trim().length > 0)).toBe(true);
   });
@@ -58,6 +59,7 @@ describe('public page content contract', () => {
       editorialPages.about.feature?.image
     ].filter((image) => image !== undefined);
     const ceremonyImages = [
+      ...homepageContent.hero.images,
       galleryPageContent.hero.image,
       ...editorialCeremonyImages,
       ...featuredEventGalleryItems.map((item) => item.image),
@@ -66,6 +68,20 @@ describe('public page content contract', () => {
     const imageSources = ceremonyImages.map((image) => image.src);
 
     expect(new Set(imageSources).size).toBe(imageSources.length);
+  });
+
+  it('keeps pre-footer programme calls to action date-free', () => {
+    const closingSummaries = [
+      homepageContent.closing.summary,
+      galleryPageContent.closing.summary,
+      ...(Object.values(editorialPages) as EditorialPageContent[]).map(
+        (page) => page.closing.summary
+      )
+    ];
+
+    expect(closingSummaries.every((summary) => !summary.includes(programmeDetails.date))).toBe(
+      true
+    );
   });
 
   it('keeps managed editorial images accessible and item identifiers unique per page', () => {

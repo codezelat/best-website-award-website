@@ -8,31 +8,25 @@ import SiteHeader from '../components/SiteHeader.astro';
 import { legalNavigation, siteNavigation } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getGalleryContent } from '../lib/content/gallery';
+import { resolveManagedImage, resolveManagedImages } from '../lib/seo/images';
 
 export const prerender = true;
 
 const content = await getGalleryContent();
-const heroSource = content.hero.image.src;
-const socialImage = new URL(
-  typeof heroSource === 'string' ? heroSource : heroSource.src,
+const primaryImage = resolveManagedImage(content.hero.image, Astro.site);
+const structuredImages = resolveManagedImages(
+  content.gallery.items.map((item) => item.image),
   Astro.site
 );
-const structuredImages = content.gallery.items.map((item) => {
-  const source = item.image.src;
-  return {
-    url: new URL(typeof source === 'string' ? source : source.src, Astro.site),
-    caption: item.image.alt,
-    width: typeof source === 'string' ? item.image.width : source.width,
-    height: typeof source === 'string' ? item.image.height : source.height
-  };
-});
 ---
 
 <BaseLayout
   title={content.seo.title}
   description={content.seo.description}
-  image={socialImage}
+  image={primaryImage.url}
   imageAlt={content.hero.image.alt}
+  imageWidth={primaryImage.width}
+  imageHeight={primaryImage.height}
   pageType={content.seo.pageType}
   noIndex={content.seo.noIndex}
   {structuredImages}

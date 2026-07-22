@@ -3,28 +3,152 @@ import ManagedPicture from './ManagedPicture.astro';
 import type { ManagedImage } from '../lib/content/types';
 
 interface Props {
-  image: ManagedImage;
+  image?: ManagedImage;
+  images?: readonly ManagedImage[];
   label?: string;
   priority?: boolean;
   class?: string;
 }
 
-const { image, label = 'Website study', priority = false, class: className } = Astro.props;
+const { image, images, label = 'Website study', priority = false, class: className } = Astro.props;
+const slides = images?.length ? images : image ? [image] : [];
+const hasSlideshow = slides.length > 1;
+
+if (slides.length === 0) {
+  throw new Error('BrowserFrame requires an image or images.');
+}
 ---
 
-<div class:list={['browser-frame', className]} data-browser-frame>
+<div
+  class:list={['browser-frame', className]}
+  data-browser-frame
+  data-browser-slideshow={hasSlideshow ? 'true' : undefined}
+>
   <div class="browser-frame__bar" aria-hidden="true">
     <div class="browser-frame__controls"><span></span><span></span><span></span></div>
     <span class="browser-frame__label">{label}</span>
     <span class="browser-frame__menu"></span>
   </div>
-  <div class="browser-frame__media" data-image-reveal>
-    <ManagedPicture
-      image={image}
-      class="browser-frame__image"
-      loading={priority ? 'eager' : 'lazy'}
-      fetchpriority={priority ? 'high' : 'auto'}
-      sizes={priority ? '(min-width: 980px) 54vw, 94vw' : '(min-width: 980px) 44vw, 92vw'}
-    />
+  <div class="browser-frame__media" data-image-reveal={priority ? undefined : true}>
+    {
+      slides.map((slide, index) => (
+        <div
+          class="browser-frame__slide"
+          data-browser-slide
+          data-active={index === 0 ? 'true' : 'false'}
+          aria-hidden={index === 0 ? 'false' : 'true'}
+          hidden={index === 0 ? undefined : true}
+        >
+          <ManagedPicture
+            image={slide}
+            class="browser-frame__image"
+            loading={priority && index === 0 ? 'eager' : 'lazy'}
+            fetchpriority={priority ? (index === 0 ? 'high' : 'low') : 'auto'}
+            sizes={priority ? '(min-width: 980px) 54vw, 88vw' : '(min-width: 980px) 44vw, 92vw'}
+            quality={priority ? 68 : 82}
+            formats={priority ? [] : ['avif']}
+            decoding={priority && index === 0 ? 'sync' : 'async'}
+          />
+        </div>
+      ))
+    }
   </div>
 </div>
+
+<script>
+  const initialiseBrowserSlideshows = () => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    document.querySelectorAll<HTMLElement>('[data-browser-slideshow]').forEach((frame) => {
+      if (frame.dataset.slideshowReady === 'true') return;
+      frame.dataset.slideshowReady = 'true';
+
+      const slides = Array.from(frame.querySelectorAll<HTMLElement>('[data-browser-slide]'));
+      if (reduceMotion || slides.length < 2) return;
+
+      let activeIndex = 0;
+      let cycleId = 0;
+      let preloadTimer: number | undefined;
+      let switchTimer: number | undefined;
+      let hideTimer: number | undefined;
+      const rotationDelay = 4000;
+      const preloadDelay = 2500;
+      const transitionDuration = 650;
+
+      const showSlide = (index: number) => {
+        const previousIndex = activeIndex;
+        slides[index].hidden = false;
+        void slides[index].offsetWidth;
+
+        slides.forEach((slide, slideIndex) => {
+          const isActive = slideIndex === index;
+          slide.dataset.active = String(isActive);
+          slide.setAttribute('aria-hidden', String(!isActive));
+        });
+        activeIndex = index;
+
+        if (hideTimer !== undefined) window.clearTimeout(hideTimer);
+        hideTimer = window.setTimeout(() => {
+          if (previousIndex !== activeIndex) slides[previousIndex].hidden = true;
+          hideTimer = undefined;
+        }, transitionDuration);
+      };
+
+      const stop = () => {
+        cycleId += 1;
+        if (preloadTimer !== undefined) window.clearTimeout(preloadTimer);
+        if (switchTimer !== undefined) window.clearTimeout(switchTimer);
+        preloadTimer = undefined;
+        switchTimer = undefined;
+      };
+
+      const waitForImage = async (image: HTMLImageElement | null) => {
+        if (!image || (image.complete && image.naturalWidth > 0)) return Promise.resolve();
+
+        const preload = new Image();
+        preload.decoding = 'async';
+        preload.fetchPriority = 'low';
+        preload.sizes = image.sizes;
+
+        await new Promise<void>((resolve) => {
+          preload.addEventListener('load', () => resolve(), { once: true });
+          preload.addEventListener('error', () => resolve(), { once: true });
+          preload.srcset = image.srcset;
+          preload.src = image.src;
+        });
+
+        image.loading = 'eager';
+        await image.decode().catch(() => undefined);
+      };
+
+      const start = () => {
+        if (preloadTimer !== undefined || switchTimer !== undefined || document.hidden) return;
+
+        const currentCycle = ++cycleId;
+        const nextIndex = (activeIndex + 1) % slides.length;
+
+        preloadTimer = window.setTimeout(() => {
+          preloadTimer = undefined;
+          void waitForImage(slides[nextIndex].querySelector('img'));
+        }, preloadDelay);
+
+        switchTimer = window.setTimeout(() => {
+          switchTimer = undefined;
+          if (currentCycle !== cycleId || document.hidden) return;
+          showSlide(nextIndex);
+          start();
+        }, rotationDelay);
+      };
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) stop();
+        else start();
+      });
+
+      start();
+    });
+  };
+
+  initialiseBrowserSlideshows();
+  document.addEventListener('astro:page-load', initialiseBrowserSlideshows);
+</script>

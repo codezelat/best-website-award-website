@@ -7,6 +7,8 @@ import culturalWelcome from '../assets/event/cultural-welcome.webp';
 import groupRecognition from '../assets/event/group-recognition.webp';
 import leadershipRecognition from '../assets/event/leadership-recognition.webp';
 import recipientCommunity from '../assets/event/recipient-community.webp';
+import recipientPortraitBlack from '../assets/event/recipient-portrait-black.webp';
+import recipientPortraitBlue from '../assets/event/recipient-portrait-blue.webp';
 import recipientRecognition from '../assets/event/recipient-recognition.webp';
 import recipientTable from '../assets/event/recipient-table.webp';
 import stageHosts from '../assets/event/stage-hosts.webp';
@@ -30,24 +32,24 @@ export const eventGalleryItems = [
     layout: 'wide'
   },
   {
-    id: 'ceremony-welcome',
+    id: 'recipient-portrait-blue',
     index: '02',
+    title: 'A personal record',
+    summary: 'A recipient photographed with the award and certificate presented at the programme.',
+    image: {
+      src: recipientPortraitBlue,
+      alt: 'Global Business Excellence Awards recipient holding a trophy and certificate'
+    },
+    layout: 'standard'
+  },
+  {
+    id: 'ceremony-welcome',
+    index: '03',
     title: 'A ceremonial welcome',
     summary: 'Traditional performance welcoming guests as the awards programme begins.',
     image: {
       src: culturalWelcome,
       alt: 'Traditional dancers welcoming guests at a Global Business Excellence Awards ceremony'
-    },
-    layout: 'standard'
-  },
-  {
-    id: 'winner-certificates',
-    index: '03',
-    title: 'Achievement shared',
-    summary: 'Recipients together with the awards and certificates presented to them.',
-    image: {
-      src: winnerCertificates,
-      alt: 'Three Global Business Excellence Awards recipients holding trophies and certificates'
     },
     layout: 'standard'
   },
@@ -75,13 +77,13 @@ export const eventGalleryItems = [
     layout: 'wide'
   },
   {
-    id: 'women-winners',
+    id: 'winner-certificates',
     index: '06',
-    title: 'Women in recognition',
-    summary: 'Award recipients and guests photographed together at the programme.',
+    title: 'Achievement shared',
+    summary: 'Recipients together with the awards and certificates presented to them.',
     image: {
-      src: womenWinners,
-      alt: 'Women recipients and guests with a Global Business Excellence Award and certificate'
+      src: winnerCertificates,
+      alt: 'Three Global Business Excellence Awards recipients holding trophies and certificates'
     },
     layout: 'standard'
   },
@@ -97,8 +99,19 @@ export const eventGalleryItems = [
     layout: 'wide'
   },
   {
-    id: 'leadership-recognition',
+    id: 'recipient-portrait-black',
     index: '08',
+    title: 'Achievement documented',
+    summary: 'A recipient displaying the award and certificate received at the programme.',
+    image: {
+      src: recipientPortraitBlack,
+      alt: 'Global Business Excellence Awards recipient displaying a trophy and certificate'
+    },
+    layout: 'standard'
+  },
+  {
+    id: 'leadership-recognition',
+    index: '09',
     title: 'Leadership recognised',
     summary: 'A recipient and programme representatives sharing the stage after presentation.',
     image: {
@@ -108,8 +121,19 @@ export const eventGalleryItems = [
     layout: 'wide'
   },
   {
+    id: 'women-winners',
+    index: '10',
+    title: 'Women in recognition',
+    summary: 'Award recipients and guests photographed together at the programme.',
+    image: {
+      src: womenWinners,
+      alt: 'Women recipients and guests with a Global Business Excellence Award and certificate'
+    },
+    layout: 'standard'
+  },
+  {
     id: 'ceremony-audience',
-    index: '09',
+    index: '11',
     title: 'The wider community',
     summary: 'Guests and recipients gathered around the wider awards programme.',
     image: {
@@ -120,7 +144,7 @@ export const eventGalleryItems = [
   },
   {
     id: 'group-recognition',
-    index: '10',
+    index: '12',
     title: 'A collective achievement',
     summary: 'Recipients and programme representatives sharing a formal recognition moment.',
     image: {
@@ -216,7 +240,7 @@ export const galleryPageContent = {
   },
   closing: {
     title: 'Place your work in the next chapter.',
-    summary: `${programmeDetails.status} for ${programmeDetails.date}. Present the website, its purpose and the evidence behind it.`,
+    summary: `${programmeDetails.status} for the 2026 programme. Present the website, its purpose and the evidence behind it.`,
     primaryAction: { label: 'Apply now', href: '/contact' },
     secondaryAction: { label: 'See the process', href: '/process' }
   }

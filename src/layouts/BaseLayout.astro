@@ -12,6 +12,8 @@ interface Props {
   description: string;
   image: URL;
   imageAlt?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   pageType?: PageSeo['pageType'];
   noIndex?: boolean;
   faqItems?: UtilitySection[];
@@ -28,6 +30,8 @@ const {
   description,
   image,
   imageAlt = 'Best Website Awards: global recognition for website excellence',
+  imageWidth,
+  imageHeight,
   pageType = 'WebPage',
   noIndex = false,
   faqItems,
@@ -53,6 +57,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       {canonical}
       {image}
       {imageAlt}
+      {imageWidth}
+      {imageHeight}
       {pageType}
       {noIndex}
       {faqItems}

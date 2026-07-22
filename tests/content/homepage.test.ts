@@ -16,7 +16,7 @@ describe('homepage content contract', () => {
 
   it('keeps every managed image accessible', () => {
     const images = [
-      homepageContent.hero.image,
+      ...homepageContent.hero.images,
       ...homepageContent.work.items.map((item) => item.image),
       ...homepageContent.gallery.items.map((item) => item.image)
     ];
@@ -38,9 +38,26 @@ describe('homepage content contract', () => {
     expect(homepageContent.seo.description.length).toBeGreaterThanOrEqual(100);
     expect(homepageContent.seo.description.length).toBeLessThanOrEqual(170);
     expect(homepageContent.hero.title).toContain('Best Website Awards 2026');
+    expect(homepageContent.hero.summary).toContain('Entries now open for the 2026 programme.');
+    expect(homepageContent.hero.summary).not.toContain(programmeDetails.date);
+    expect(homepageContent.closing.summary).not.toContain(programmeDetails.date);
     expect(homepageContent.introduction.statements.join(' ')).toContain('Sri Lanka');
     expect(JSON.stringify(homepageContent)).toContain(programmeDetails.date);
     expect(homepageContent.hero.primaryAction).toEqual({ label: 'Apply now', href: '/contact' });
     expect(homepageContent.gallery.action).toEqual({ label: 'View the gallery', href: '/gallery' });
+  });
+
+  it('publishes four unique managed hero photographs', () => {
+    const imageSources = homepageContent.hero.images.map((image) => image.src);
+    const imageAlts = homepageContent.hero.images.map((image) => image.alt);
+
+    expect(homepageContent.hero.images).toHaveLength(4);
+    expect(new Set(imageSources).size).toBe(imageSources.length);
+    expect(imageAlts).toEqual([
+      'Global Business Excellence Awards recipient accepting a trophy on stage',
+      'Global Business Excellence Awards recipient receiving a trophy during a stage presentation',
+      'Global Business Excellence Awards recipient and team holding a trophy on stage',
+      'Global Business Excellence Awards recipient sharing a recognition moment on stage'
+    ]);
   });
 });

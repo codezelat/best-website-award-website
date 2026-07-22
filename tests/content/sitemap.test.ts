@@ -6,6 +6,9 @@ describe('direct public sitemap', () => {
     const response = await GET({ site: new URL('https://bestwebsiteaward.com') } as never);
     const xml = await response.text();
     const urls = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
+    const imageUrls = [...xml.matchAll(/<image:loc>([^<]+)<\/image:loc>/g)].map(
+      (match) => match[1]
+    );
 
     expect(response.headers.get('content-type')).toContain('application/xml');
     expect(response.headers.get('cache-control')).toBe(
@@ -26,5 +29,10 @@ describe('direct public sitemap', () => {
         'https://bestwebsiteaward.com/cookies'
       ])
     );
+    expect(xml).toContain('xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"');
+    expect(imageUrls.length).toBeGreaterThanOrEqual(25);
+    expect(imageUrls.every((url) => url.startsWith('https://bestwebsiteaward.com/'))).toBe(true);
+    expect(imageUrls.some((url) => url.includes('hero-stage-presentation'))).toBe(true);
+    expect(imageUrls.some((url) => url.includes('recipient-portrait'))).toBe(true);
   });
 });

@@ -319,19 +319,50 @@
   }
 
   .browser-frame__media {
+    position: relative;
     aspect-ratio: 4 / 3;
     overflow: hidden;
     background: var(--blue-soft);
   }
 
+  .browser-frame__slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+  }
+
+  .browser-frame__slide[data-active='true'] {
+    z-index: 1;
+    opacity: 1;
+  }
+
+  [data-browser-slideshow] .browser-frame__slide {
+    transform: scale(1.025);
+    transition:
+      opacity 600ms var(--ease-out),
+      transform 3.6s ease-out;
+  }
+
+  [data-browser-slideshow] .browser-frame__slide[data-active='true'] {
+    transform: scale(1);
+  }
+
   .browser-frame__media picture,
   .browser-frame__image {
+    display: block;
     width: 100%;
     height: 100%;
   }
 
   .browser-frame__image {
     object-fit: cover;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-browser-slideshow] .browser-frame__slide {
+      transform: none;
+      transition: none;
+    }
   }
 
   .section-heading {

@@ -67,7 +67,7 @@ test('gallery publishes authentic ceremony imagery and matching image structured
 }) => {
   await page.goto('/gallery');
 
-  await expect(page.locator('main figure')).toHaveCount(10);
+  await expect(page.locator('main figure')).toHaveCount(12);
   await expect(page.getByRole('heading', { name: 'Moments of recognition' })).toBeVisible();
 
   const structuredDataText = await page.locator('script[type="application/ld+json"]').textContent();
@@ -76,7 +76,7 @@ test('gallery publishes authentic ceremony imagery and matching image structured
     (item: { '@type'?: string }) => item['@type'] === 'ImageObject'
   );
 
-  expect(imageNodes).toHaveLength(10);
+  expect(imageNodes).toHaveLength(12);
 });
 
 test('FAQ publishes complete visible answers and matching structured data', async ({ page }) => {

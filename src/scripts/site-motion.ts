@@ -44,15 +44,6 @@ const runMotion = () => {
     );
   }
 
-  const heroVisual = document.querySelector<HTMLElement>('[data-hero-visual]');
-  if (heroVisual) {
-    animate(
-      heroVisual,
-      { opacity: [0, 1], transform: ['translateY(36px) scale(.975)', 'translateY(0) scale(1)'] },
-      { duration: 1.15, delay: 0.46, ease: [0.16, 1, 0.3, 1] }
-    );
-  }
-
   const observed = new Set<Element>();
   document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((element) => {
     inView(

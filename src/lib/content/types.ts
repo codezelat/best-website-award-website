@@ -181,7 +181,7 @@ export interface HomepageContent {
     summary: string;
     primaryAction: NavigationItem;
     secondaryAction: NavigationItem;
-    image: ManagedImage;
+    images: readonly [ManagedImage, ...ManagedImage[]];
   };
   introduction: {
     index: string;

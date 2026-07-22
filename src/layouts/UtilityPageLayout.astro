@@ -30,6 +30,8 @@ const getSectionId = (title: string, index: number) => {
   description={content.seo.description}
   image={socialImage}
   imageAlt={`Best Website Awards: ${content.title}`}
+  imageWidth={iconmark.width}
+  imageHeight={iconmark.height}
   pageType={content.seo.pageType}
   noIndex={content.seo.noIndex}
   faqItems={content.slug === 'faq' ? content.sections : undefined}

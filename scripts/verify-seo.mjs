@@ -52,6 +52,8 @@ for (const route of indexableRoutes) {
   const robots = getMetaContent(html, 'name="robots"');
   const openGraphImage = getMetaContent(html, 'property="og:image"');
   const openGraphAlt = getMetaContent(html, 'property="og:image:alt"');
+  const openGraphWidth = getMetaContent(html, 'property="og:image:width"');
+  const openGraphHeight = getMetaContent(html, 'property="og:image:height"');
   const h1Count = [...html.matchAll(/<h1\b/g)].length;
   const images = [...html.matchAll(/<img\b[^>]*>/g)].map((match) => match[0]);
   const internalLinks = [...html.matchAll(/<a\b[^>]*href="([^"]+)"/g)]
@@ -73,7 +75,12 @@ for (const route of indexableRoutes) {
   if (!html.includes(`<link rel="canonical" href="${canonical}">`)) {
     fail(`${route} is missing its canonical URL`);
   }
-  if (!openGraphImage?.startsWith(`${origin}/`) || !openGraphAlt) {
+  if (
+    !openGraphImage?.startsWith(`${origin}/`) ||
+    !openGraphAlt ||
+    !/^\d+$/.test(openGraphWidth ?? '') ||
+    !/^\d+$/.test(openGraphHeight ?? '')
+  ) {
     fail(`${route} is missing complete social image metadata`);
   }
   if (!html.includes('<html lang="en-GB">')) {
@@ -108,6 +115,15 @@ for (const route of indexableRoutes) {
   if (route !== '/' && !graph.some((item) => item['@type'] === 'BreadcrumbList')) {
     fail(`${route} has no breadcrumb structured data`);
   }
+  const pageNode = graph.find((item) => item['@id'] === `${canonical}#webpage`);
+  if (
+    pageNode?.primaryImageOfPage?.contentUrl !== openGraphImage ||
+    pageNode?.primaryImageOfPage?.url !== openGraphImage ||
+    String(pageNode?.primaryImageOfPage?.width) !== openGraphWidth ||
+    String(pageNode?.primaryImageOfPage?.height) !== openGraphHeight
+  ) {
+    fail(`${route} primary image structured data does not match its social image`);
+  }
 
   if (route === '/faq') {
     const faqPage = graph.find((item) => item['@type'] === 'FAQPage');
@@ -119,8 +135,8 @@ for (const route of indexableRoutes) {
   if (route === '/gallery') {
     const galleryPage = graph.find((item) => item['@type'] === 'CollectionPage');
     const galleryImages = graph.filter((item) => item['@type'] === 'ImageObject');
-    if (!galleryPage || galleryPage.hasPart?.length !== 10 || galleryImages.length !== 10) {
-      fail('/gallery structured data does not match the 10 visible ceremony images');
+    if (!galleryPage || galleryPage.hasPart?.length !== 12 || galleryImages.length !== 12) {
+      fail('/gallery structured data does not match the 12 visible ceremony images');
     }
   }
 }
@@ -139,16 +155,59 @@ for (const route of indexableRoutes) {
   if (incomingLinks.length === 0) fail(`${route} has no incoming internal link from another page`);
 }
 
-const sitemap = await readFile(resolve(buildRoot, 'sitemap-0.xml'), 'utf8');
-const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
+const pluginSitemap = await readFile(resolve(buildRoot, 'sitemap-0.xml'), 'utf8');
+const pluginSitemapUrls = [...pluginSitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(
+  (match) => match[1]
+);
 const expectedUrls = indexableRoutes.map((route) => (route === '/' ? origin : `${origin}${route}`));
 
-if (sitemapUrls.length !== expectedUrls.length) {
-  fail(`sitemap contains ${sitemapUrls.length} URLs instead of ${expectedUrls.length}`);
+if (pluginSitemapUrls.length !== expectedUrls.length) {
+  fail(
+    `generated sitemap contains ${pluginSitemapUrls.length} URLs instead of ${expectedUrls.length}`
+  );
 }
 
 for (const url of expectedUrls) {
-  if (!sitemapUrls.includes(url)) fail(`sitemap is missing ${url}`);
+  if (!pluginSitemapUrls.includes(url)) fail(`generated sitemap is missing ${url}`);
+}
+
+const advertisedSitemap = await readFile(resolve(buildRoot, 'sitemap.xml'), 'utf8');
+const advertisedSitemapUrls = [...advertisedSitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(
+  (match) => match[1]
+);
+const advertisedImageUrls = [...advertisedSitemap.matchAll(/<image:loc>([^<]+)<\/image:loc>/g)].map(
+  (match) => match[1]
+);
+const expectedAdvertisedUrls = indexableRoutes.map((route) => new URL(route, `${origin}/`).href);
+
+if (!advertisedSitemap.includes('xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"')) {
+  fail('advertised sitemap is missing the Google image namespace');
+}
+if (advertisedSitemapUrls.length !== expectedAdvertisedUrls.length) {
+  fail(
+    `advertised sitemap contains ${advertisedSitemapUrls.length} page URLs instead of ${expectedAdvertisedUrls.length}`
+  );
+}
+for (const url of expectedAdvertisedUrls) {
+  if (!advertisedSitemapUrls.includes(url)) fail(`advertised sitemap is missing ${url}`);
+}
+if (advertisedImageUrls.length < 25) {
+  fail(`advertised sitemap contains only ${advertisedImageUrls.length} image URLs`);
+}
+if (
+  advertisedImageUrls.some(
+    (url) => !url.startsWith(`${origin}/_astro/`) || url.includes('@fs') || url.includes('/Users/')
+  )
+) {
+  fail('advertised sitemap contains an invalid image URL');
+}
+for (const urlNode of advertisedSitemap.matchAll(/<url>([\s\S]*?)<\/url>/g)) {
+  const images = [...urlNode[1].matchAll(/<image:loc>([^<]+)<\/image:loc>/g)].map(
+    (match) => match[1]
+  );
+  if (new Set(images).size !== images.length) {
+    fail('advertised sitemap repeats an image within the same page entry');
+  }
 }
 
 const robots = await readFile(resolve(buildRoot, 'robots.txt'), 'utf8');
@@ -241,5 +300,5 @@ for (const key of ['Cache-Control', 'CDN-Cache-Control', 'Vercel-CDN-Cache-Contr
 }
 
 console.log(
-  `SEO, privacy and analytics verification passed for ${indexableRoutes.length} indexable routes and ${sitemapUrls.length} sitemap URLs.`
+  `SEO, image discovery, privacy and analytics verification passed for ${indexableRoutes.length} indexable routes, ${advertisedSitemapUrls.length} advertised URLs and ${advertisedImageUrls.length} image entries.`
 );
