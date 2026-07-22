@@ -15,6 +15,12 @@ interface Props {
   pageType?: PageSeo['pageType'];
   noIndex?: boolean;
   faqItems?: UtilitySection[];
+  structuredImages?: Array<{
+    url: URL;
+    caption: string;
+    width?: number;
+    height?: number;
+  }>;
 }
 
 const {
@@ -24,7 +30,8 @@ const {
   imageAlt = 'Best Website Awards: global recognition for website excellence',
   pageType = 'WebPage',
   noIndex = false,
-  faqItems
+  faqItems,
+  structuredImages = []
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
@@ -40,7 +47,17 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
-    <SeoHead {title} {description} {canonical} {image} {imageAlt} {pageType} {noIndex} {faqItems} />
+    <SeoHead
+      {title}
+      {description}
+      {canonical}
+      {image}
+      {imageAlt}
+      {pageType}
+      {noIndex}
+      {faqItems}
+      {structuredImages}
+    />
     <script is:inline>
       document.documentElement.classList.add('js');
       window.dataLayer = window.dataLayer || [];

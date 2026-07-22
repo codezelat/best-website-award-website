@@ -1,0 +1,53 @@
+---
+import EditorialClosing from '../components/EditorialClosing.astro';
+import EditorialIntroduction from '../components/EditorialIntroduction.astro';
+import EditorialPageHero from '../components/EditorialPageHero.astro';
+import EventGallery from '../components/EventGallery.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import { legalNavigation, siteNavigation } from '../data/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getGalleryContent } from '../lib/content/gallery';
+
+export const prerender = true;
+
+const content = await getGalleryContent();
+const heroSource = content.hero.image.src;
+const socialImage = new URL(
+  typeof heroSource === 'string' ? heroSource : heroSource.src,
+  Astro.site
+);
+const structuredImages = content.gallery.items.map((item) => {
+  const source = item.image.src;
+  return {
+    url: new URL(typeof source === 'string' ? source : source.src, Astro.site),
+    caption: item.image.alt,
+    width: typeof source === 'string' ? item.image.width : source.width,
+    height: typeof source === 'string' ? item.image.height : source.height
+  };
+});
+---
+
+<BaseLayout
+  title={content.seo.title}
+  description={content.seo.description}
+  image={socialImage}
+  imageAlt={content.hero.image.alt}
+  pageType={content.seo.pageType}
+  noIndex={content.seo.noIndex}
+  {structuredImages}
+>
+  <div id="top"></div>
+  <SiteHeader navigation={siteNavigation} currentPath={Astro.url.pathname} />
+  <main id="main-content">
+    <EditorialPageHero content={content.hero} />
+    <EditorialIntroduction content={content.introduction} />
+    <EventGallery content={content.gallery} />
+    <EditorialClosing content={content.closing} />
+  </main>
+  <SiteFooter
+    navigation={siteNavigation}
+    legalNavigation={legalNavigation}
+    currentPath={Astro.url.pathname}
+  />
+</BaseLayout>

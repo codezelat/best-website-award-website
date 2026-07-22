@@ -1,8 +1,8 @@
-import aboutFeatureContext from '../assets/generated/about-feature-context.png';
+import awardHandover from '../assets/event/award-handover.webp';
+import ceremonyVenue from '../assets/event/ceremony-venue.webp';
+import trophyCollection from '../assets/event/trophy-collection.webp';
 import aboutHeroConnection from '../assets/generated/about-hero-connection.png';
-import awardsFeatureRecord from '../assets/generated/awards-feature-record.png';
 import awardsHeroRecognition from '../assets/generated/awards-hero-recognition.png';
-import processFeatureEvidence from '../assets/generated/process-feature-evidence.png';
 import processHeroReview from '../assets/generated/process-hero-review.png';
 import standardFeatureTrust from '../assets/generated/standard-feature-trust.png';
 import standardHeroFramework from '../assets/generated/standard-hero-framework.png';
@@ -30,7 +30,7 @@ export const editorialPages = {
       secondaryAction: { label: 'See the process', href: '/process' },
       image: {
         src: awardsHeroRecognition,
-        alt: 'Cobalt glass portal rising from a precise white architectural plinth'
+        alt: 'Sculptural cobalt award form casting a precise shadow across a white architectural surface'
       },
       frameLabel: 'The awards',
       visualIndex: 'BWA / 01'
@@ -104,8 +104,9 @@ export const editorialPages = {
         'That clarity is what turns an award into useful proof for organisations and the people behind them.'
       ],
       image: {
-        src: awardsFeatureRecord,
-        alt: 'Layered clear and cobalt glass with a restrained brass datum'
+        src: trophyCollection,
+        alt: 'Rows of trophies prepared for a Global Business Excellence Awards ceremony',
+        position: 'center 50%'
       },
       imagePosition: 'right',
       tone: 'soft'
@@ -449,8 +450,9 @@ export const editorialPages = {
         `${programmeDetails.status} for ${programmeDetails.date}. Present a live website, its purpose, audience, contributors and credible evidence through the official contact process.`
       ],
       image: {
-        src: processFeatureEvidence,
-        alt: 'Website case-study materials, responsive layouts and abstract evidence charts'
+        src: awardHandover,
+        alt: 'A recipient accepting a Global Business Excellence Award on stage',
+        position: 'center 48%'
       },
       imagePosition: 'right',
       tone: 'soft'
@@ -482,7 +484,7 @@ export const editorialPages = {
       secondaryAction: { label: 'Work we recognise', href: '/work' },
       image: {
         src: aboutHeroConnection,
-        alt: 'Cobalt glass architectural bridge connecting two refined environments'
+        alt: 'Two sculptural cobalt forms connected across a luminous white architectural space'
       },
       frameLabel: 'About BWA',
       visualIndex: 'BWA / 05'
@@ -556,8 +558,9 @@ export const editorialPages = {
         'A consistent standard makes that work easier to understand on its own merit and in its own context.'
       ],
       image: {
-        src: aboutFeatureContext,
-        alt: 'Refined global business meeting space with cobalt glass and a brass connection line'
+        src: ceremonyVenue,
+        alt: 'Global Business Excellence Awards venue entrance with programme banners',
+        position: 'center 50%'
       },
       imagePosition: 'right',
       tone: 'soft'

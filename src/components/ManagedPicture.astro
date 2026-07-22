@@ -43,11 +43,12 @@ const style = image.position ? `object-position:${image.position}` : undefined;
       alt={image.alt}
       widths={widths}
       sizes={sizes}
-      formats={['avif', 'webp']}
+      formats={['avif']}
+      fallbackFormat="webp"
       loading={loading}
       decoding="async"
       fetchpriority={fetchpriority}
-      quality={88}
+      quality={82}
       style={style}
     />
   )

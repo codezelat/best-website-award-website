@@ -4,6 +4,7 @@ import workDigitalProducts from '../assets/generated/work-digital-products.png';
 import workOrganisations from '../assets/generated/work-organisations.png';
 import workPortfolios from '../assets/generated/work-portfolios.png';
 import type { HomepageContent } from '../lib/content/types';
+import { featuredEventGalleryItems } from './gallery';
 import { programmeDetails, siteNavigation } from './site';
 
 export const homepageContent = {
@@ -136,6 +137,13 @@ export const homepageContent = {
         summary: 'Exceptional work earns a place in the awards.'
       }
     ]
+  },
+  gallery: {
+    title: 'Recognition in view.',
+    summary:
+      'Authentic moments from the wider awards programme, where achievement is presented and shared.',
+    items: featuredEventGalleryItems,
+    action: { label: 'View the gallery', href: '/gallery' }
   },
   parentBrand: {
     title: 'Global perspective. Business credibility.',

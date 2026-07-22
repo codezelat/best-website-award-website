@@ -44,7 +44,7 @@ The separate admin and awards portal applications are not part of this repositor
 
 | Surface                        | Delivery                           | Source                         | Cache and indexing                                      |
 | ------------------------------ | ---------------------------------- | ------------------------------ | ------------------------------------------------------- |
-| 11 public pages                | Pre-rendered HTML on Vercel's edge | Typed, versioned local content | Layered browser and CDN caching; indexable              |
+| 12 public pages                | Pre-rendered HTML on Vercel's edge | Typed, versioned local content | Layered browser and CDN caching; indexable              |
 | `sitemap.xml` and `robots.txt` | Pre-rendered static files          | Site route configuration       | CDN cached; sitemap exposes the canonical public routes |
 | `/_astro/*`                    | Fingerprinted static assets        | Astro build pipeline           | One-year immutable caching                              |
 | `/api/contact`                 | One isolated Vercel function       | Validated form submission      | `no-store`; `noindex, nofollow`                         |
@@ -79,6 +79,7 @@ The generated Vercel output is hardened after each build. Unused runtime image a
 | `/work`           | Types of digital work recognised                   |
 | `/standard`       | Four-measure evaluation framework                  |
 | `/process`        | Entry and recognition journey                      |
+| `/gallery`        | Authentic awards ceremony photography              |
 | `/about`          | Organisation and parent-brand context              |
 | `/faq`            | Programme questions and structured FAQ content     |
 | `/contact`        | Protected enquiry and website submission form      |
@@ -94,6 +95,7 @@ The branded 404 experience and `/api/*` remain non-indexable. All canonical publ
 src/
 ├── assets/
 │   ├── brand/                 # Primary and reversed brand artwork
+│   ├── event/                 # Authentic awards ceremony photography
 │   └── generated/             # Programme imagery transformed at build time
 ├── components/                # Reusable Astro presentation components
 ├── data/                      # Versioned public content records
@@ -177,7 +179,7 @@ Public components do not import CMS or database records directly. They consume t
 
 Current content is versioned in [`src/data/`](./src/data/). When the separate admin application is connected, the source adapters can be replaced with validated Neon-backed implementations while keeping the component contract stable.
 
-Programme media is rendered through [`ManagedPicture.astro`](./src/components/ManagedPicture.astro). It accepts either Astro image metadata or a validated remote URL, which provides one rendering contract for the current local assets and future Cloudflare R2 media. Every image must retain meaningful alternative text and explicit dimensions.
+Programme media is rendered through [`ManagedPicture.astro`](./src/components/ManagedPicture.astro). It accepts either Astro image metadata or a validated remote URL, which provides one rendering contract for the current local assets and future Cloudflare R2 media. The event archive contains authentic Global Business Excellence Awards ceremony photography copied from the sibling production repository. Every image must retain meaningful alternative text and explicit dimensions.
 
 Do not add dates, fees, winners, judges, sponsors, category totals, or programme claims unless they come from an approved programme source.
 
@@ -191,7 +193,7 @@ The site provides:
 - Indexable privacy, terms, cookies, FAQ, contact, and editorial pages
 - A branded non-indexable 404 page
 - Direct sitemap and robots routes
-- Page-appropriate structured data, including FAQ schema
+- Page-appropriate structured data, including FAQ and gallery ImageObject schema
 - HTTPS and canonical host redirects
 - Explicit noindex and no-store rules for API responses
 

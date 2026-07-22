@@ -11,6 +11,12 @@ interface Props {
   pageType?: PageSeo['pageType'];
   noIndex?: boolean;
   faqItems?: UtilitySection[];
+  structuredImages?: Array<{
+    url: URL;
+    caption: string;
+    width?: number;
+    height?: number;
+  }>;
 }
 
 const {
@@ -21,7 +27,8 @@ const {
   imageAlt,
   pageType = 'WebPage',
   noIndex = false,
-  faqItems = []
+  faqItems = [],
+  structuredImages = []
 } = Astro.props;
 
 const siteId = `${canonical.origin}/#website`;
@@ -30,6 +37,15 @@ const pageId = `${canonical.href}#webpage`;
 const isHomepage = canonical.pathname === '/';
 const breadcrumbId = `${canonical.href}#breadcrumb`;
 const pageName = title.replace(/\s*\|\s*Best Website Awards$/, '');
+const galleryImageNodes = structuredImages.map((item, index) => ({
+  '@type': 'ImageObject',
+  '@id': `${pageId}/image/${index + 1}`,
+  contentUrl: item.url.href,
+  url: item.url.href,
+  caption: item.caption,
+  ...(item.width ? { width: item.width } : {}),
+  ...(item.height ? { height: item.height } : {})
+}));
 
 const pageNode: Record<string, unknown> = {
   '@type': pageType,
@@ -49,6 +65,10 @@ const pageNode: Record<string, unknown> = {
 
 if (!isHomepage) {
   pageNode.breadcrumb = { '@id': breadcrumbId };
+}
+
+if (galleryImageNodes.length > 0) {
+  pageNode.hasPart = galleryImageNodes.map((item) => ({ '@id': item['@id'] }));
 }
 
 if (pageType === 'FAQPage' && faqItems.length > 0) {
@@ -123,7 +143,8 @@ const structuredData = {
           }
         ]
       : []),
-    pageNode
+    pageNode,
+    ...galleryImageNodes
   ]
 };
 ---

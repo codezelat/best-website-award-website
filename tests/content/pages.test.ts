@@ -1,8 +1,14 @@
 import { describe, expect, it } from 'vitest';
+import {
+  eventGalleryItems,
+  featuredEventGalleryItems,
+  galleryPageContent
+} from '../../src/data/gallery';
 import { editorialPages, utilityPages } from '../../src/data/pages';
 import { publicRoutes } from '../../src/data/site';
 import { programmeDetails } from '../../src/data/site';
 import { getEditorialPage, getUtilityPage } from '../../src/lib/content/pages';
+import { getGalleryContent } from '../../src/lib/content/gallery';
 import type {
   EditorialCollection,
   EditorialPageContent,
@@ -34,6 +40,32 @@ describe('public page content contract', () => {
         expect(page?.seo.description.trim().length).toBeGreaterThan(0);
       })
     );
+  });
+
+  it('publishes the authentic gallery through its content source', async () => {
+    const gallery = await getGalleryContent();
+
+    expect(gallery.slug).toBe('gallery');
+    expect(gallery.gallery.items).toHaveLength(10);
+    expect(new Set(eventGalleryItems.map((item) => item.id)).size).toBe(eventGalleryItems.length);
+    expect(eventGalleryItems.every((item) => item.image.alt.trim().length > 0)).toBe(true);
+  });
+
+  it('gives every ceremony photograph one deliberate public placement', () => {
+    const editorialCeremonyImages = [
+      editorialPages.awards.feature?.image,
+      editorialPages.process.feature?.image,
+      editorialPages.about.feature?.image
+    ].filter((image) => image !== undefined);
+    const ceremonyImages = [
+      galleryPageContent.hero.image,
+      ...editorialCeremonyImages,
+      ...featuredEventGalleryItems.map((item) => item.image),
+      ...eventGalleryItems.map((item) => item.image)
+    ];
+    const imageSources = ceremonyImages.map((image) => image.src);
+
+    expect(new Set(imageSources).size).toBe(imageSources.length);
   });
 
   it('keeps managed editorial images accessible and item identifiers unique per page', () => {
@@ -88,8 +120,9 @@ describe('public page content contract', () => {
   it('keeps indexable page metadata unique and descriptive', () => {
     const pages = [
       ...(Object.values(editorialPages) as EditorialPageContent[]),
-      ...(Object.values(utilityPages) as UtilityPageContent[])
-    ].filter((page) => !page.seo.noIndex);
+      ...(Object.values(utilityPages) as UtilityPageContent[]),
+      galleryPageContent
+    ].filter((page) => !('noIndex' in page.seo && page.seo.noIndex));
     const titles = pages.map((page) => page.seo.title);
     const descriptions = pages.map((page) => page.seo.description);
 
@@ -116,9 +149,9 @@ describe('public page content contract', () => {
   });
 
   it('publishes every indexable page through the direct public sitemap contract', () => {
-    expect(publicRoutes).toHaveLength(11);
+    expect(publicRoutes).toHaveLength(12);
     expect(publicRoutes).toEqual(
-      expect.arrayContaining(['/privacy-policy', '/terms', '/cookies', '/contact'])
+      expect.arrayContaining(['/privacy-policy', '/terms', '/cookies', '/contact', '/gallery'])
     );
   });
 
@@ -135,7 +168,7 @@ describe('public page content contract', () => {
   });
 
   it('contains no draft markers or manufactured programme specifics', () => {
-    const sourceCopy = JSON.stringify({ editorialPages, utilityPages });
+    const sourceCopy = JSON.stringify({ editorialPages, utilityPages, galleryPageContent });
     const copy = sourceCopy.toLowerCase();
 
     expect(copy).not.toMatch(/lorem ipsum|coming soon|sample winner|dummy|placeholder|vote now/);

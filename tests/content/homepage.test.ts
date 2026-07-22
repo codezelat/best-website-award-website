@@ -7,16 +7,18 @@ describe('homepage content contract', () => {
     const ids = [
       ...homepageContent.work.items.map((item) => item.id),
       ...homepageContent.evaluation.items.map((item) => item.id),
-      ...homepageContent.process.items.map((item) => item.id)
+      ...homepageContent.process.items.map((item) => item.id),
+      ...homepageContent.gallery.items.map((item) => item.id)
     ];
 
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it('keeps every generated image accessible', () => {
+  it('keeps every managed image accessible', () => {
     const images = [
       homepageContent.hero.image,
-      ...homepageContent.work.items.map((item) => item.image)
+      ...homepageContent.work.items.map((item) => item.image),
+      ...homepageContent.gallery.items.map((item) => item.image)
     ];
 
     expect(images.every((image) => image.alt.trim().length > 0)).toBe(true);
@@ -39,5 +41,6 @@ describe('homepage content contract', () => {
     expect(homepageContent.introduction.statements.join(' ')).toContain('Sri Lanka');
     expect(JSON.stringify(homepageContent)).toContain(programmeDetails.date);
     expect(homepageContent.hero.primaryAction).toEqual({ label: 'Apply now', href: '/contact' });
+    expect(homepageContent.gallery.action).toEqual({ label: 'View the gallery', href: '/gallery' });
   });
 });

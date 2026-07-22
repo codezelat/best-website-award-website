@@ -5,7 +5,8 @@ const editorialRoutes = [
   ['/work', 'Different websites. One serious standard.'],
   ['/standard', 'A standard designed to see the whole website.'],
   ['/process', 'Make the work understandable.'],
-  ['/about', 'Digital excellence in a wider business world.']
+  ['/about', 'Digital excellence in a wider business world.'],
+  ['/gallery', 'Recognition, seen clearly.']
 ] as const;
 
 const utilityRoutes = [
@@ -60,6 +61,23 @@ for (const [route, heading] of [...editorialRoutes, ...utilityRoutes]) {
     }
   });
 }
+
+test('gallery publishes authentic ceremony imagery and matching image structured data', async ({
+  page
+}) => {
+  await page.goto('/gallery');
+
+  await expect(page.locator('main figure')).toHaveCount(10);
+  await expect(page.getByRole('heading', { name: 'Moments of recognition' })).toBeVisible();
+
+  const structuredDataText = await page.locator('script[type="application/ld+json"]').textContent();
+  const structuredData = JSON.parse(structuredDataText ?? '{}');
+  const imageNodes = structuredData['@graph']?.filter(
+    (item: { '@type'?: string }) => item['@type'] === 'ImageObject'
+  );
+
+  expect(imageNodes).toHaveLength(10);
+});
 
 test('FAQ publishes complete visible answers and matching structured data', async ({ page }) => {
   await page.goto('/faq');

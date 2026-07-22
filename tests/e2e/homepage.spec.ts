@@ -7,6 +7,7 @@ test('renders the complete homepage and its landmark content', async ({ page }) 
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Best Website Awards 2026.');
   await expect(page.getByRole('heading', { name: 'The work we recognise' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Four measures of excellence' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Recognition in view.' })).toBeVisible();
   await expect(
     page.getByRole('heading', { name: 'Global perspective. Business credibility.' })
   ).toBeVisible();
@@ -51,4 +52,5 @@ test('publishes canonical, social and structured metadata', async ({ page }) => 
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /https:\/\//);
   const structuredData = await page.locator('script[type="application\/ld\+json"]').textContent();
   expect(structuredData).toContain('Best Website Awards');
+  expect(structuredData).toContain('ImageObject');
 });

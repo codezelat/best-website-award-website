@@ -128,6 +128,48 @@ export interface RecognitionStep {
   summary: string;
 }
 
+export interface EventGalleryItem {
+  id: string;
+  index: string;
+  title: string;
+  summary: string;
+  image: ManagedImage;
+  layout: 'wide' | 'standard';
+}
+
+export interface EventGalleryContent {
+  title: string;
+  summary: string;
+  attribution?: string;
+  items: EventGalleryItem[];
+  action?: NavigationItem;
+}
+
+export interface GalleryPageContent {
+  slug: string;
+  seo: PageSeo;
+  hero: {
+    title: string;
+    summary: string;
+    primaryAction: NavigationItem;
+    secondaryAction: NavigationItem;
+    image: ManagedImage;
+    frameLabel: string;
+    visualIndex: string;
+  };
+  introduction: {
+    title: string;
+    body: string[];
+  };
+  gallery: EventGalleryContent;
+  closing: {
+    title: string;
+    summary: string;
+    primaryAction: NavigationItem;
+    secondaryAction: NavigationItem;
+  };
+}
+
 export interface HomepageContent {
   seo: {
     title: string;
@@ -161,6 +203,7 @@ export interface HomepageContent {
     summary: string;
     items: RecognitionStep[];
   };
+  gallery: EventGalleryContent;
   parentBrand: {
     title: string;
     summary: string;

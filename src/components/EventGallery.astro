@@ -1,0 +1,97 @@
+---
+import type { EventGalleryContent } from '../lib/content/types';
+import ButtonLink from './ButtonLink.astro';
+import ManagedPicture from './ManagedPicture.astro';
+
+interface Props {
+  content: EventGalleryContent;
+  compact?: boolean;
+}
+
+const { content, compact = false } = Astro.props;
+---
+
+<section
+  class="tw:bg-white tw:py-[clamp(6rem,11vw,12rem)]"
+  id="gallery"
+  aria-labelledby="recognition-gallery-title"
+>
+  <div class="container">
+    <header
+      class="tw:grid tw:gap-7 tw:border-t tw:border-carbon tw:pt-6 tw:lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,.85fr)] tw:lg:gap-[clamp(3rem,8vw,9rem)]"
+      data-reveal-group
+    >
+      <h2 id="recognition-gallery-title" class="tw:max-w-[11ch]" data-reveal>
+        {content.title}
+      </h2>
+      <div class="tw:grid tw:justify-items-start tw:gap-6 tw:pt-2" data-reveal>
+        <p
+          class="tw:max-w-[34rem] tw:text-[clamp(1.08rem,1.5vw,1.3rem)] tw:leading-[1.55] tw:text-ink-soft"
+        >
+          {content.summary}
+        </p>
+        {content.action && <ButtonLink {...content.action} variant="text" />}
+      </div>
+    </header>
+
+    <ol
+      class="tw:mt-[clamp(4rem,7vw,7rem)] tw:grid tw:grid-cols-1 tw:items-start tw:gap-x-[clamp(1.5rem,3vw,3.6rem)] tw:gap-y-[clamp(4rem,8vw,8rem)] tw:lg:grid-cols-12"
+      data-reveal-group
+    >
+      {
+        content.items.map((item, index) => (
+          <li
+            class:list={[
+              'tw:group tw:min-w-0',
+              item.layout === 'wide' ? 'tw:lg:col-span-7' : 'tw:lg:col-span-5',
+              index % 2 === 1 && 'tw:lg:mt-[clamp(2rem,7vw,7rem)]'
+            ]}
+            data-reveal
+          >
+            <figure class="tw:m-0">
+              <div
+                class="tw:overflow-hidden tw:border tw:border-line tw:bg-blue-soft tw:shadow-[0_2rem_5rem_rgba(16,42,102,.09)]"
+                data-image-reveal
+              >
+                <ManagedPicture
+                  image={item.image}
+                  class="tw:h-auto tw:w-full tw:transition-transform tw:duration-700 tw:ease-out tw:group-hover:scale-[1.018]"
+                  sizes={
+                    item.layout === 'wide'
+                      ? '(min-width: 1024px) 56vw, 92vw'
+                      : '(min-width: 1024px) 40vw, 92vw'
+                  }
+                  widths={[480, 720, 960, 1280, 1440]}
+                />
+              </div>
+              <figcaption class="tw:mt-5 tw:grid tw:grid-cols-[2.6rem_1fr] tw:gap-3 tw:border-t tw:border-carbon tw:pt-4">
+                <span class="tw:pt-1 tw:text-[.72rem] tw:font-bold tw:tracking-[.1em] tw:text-lapis">
+                  {item.index}
+                </span>
+                <div>
+                  <h3>{item.title}</h3>
+                  {!compact && (
+                    <p class="tw:mt-3 tw:max-w-[34rem] tw:leading-[1.6] tw:text-ink-soft">
+                      {item.summary}
+                    </p>
+                  )}
+                </div>
+              </figcaption>
+            </figure>
+          </li>
+        ))
+      }
+    </ol>
+
+    {
+      content.attribution && (
+        <p
+          class="tw:mt-[clamp(4rem,7vw,7rem)] tw:border-t tw:border-line tw:pt-5 tw:text-[.68rem] tw:font-semibold tw:tracking-[.1em] tw:text-ink-soft tw:uppercase"
+          data-reveal
+        >
+          {content.attribution}
+        </p>
+      )
+    }
+  </div>
+</section>

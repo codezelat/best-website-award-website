@@ -1,6 +1,7 @@
 ---
 import ClosingSection from '../components/ClosingSection.astro';
 import EvaluationFramework from '../components/EvaluationFramework.astro';
+import EventGallery from '../components/EventGallery.astro';
 import HeroSection from '../components/HeroSection.astro';
 import IntroductionBand from '../components/IntroductionBand.astro';
 import ParentBrandBand from '../components/ParentBrandBand.astro';
@@ -20,6 +21,15 @@ const socialImage = new URL(
   typeof heroSource === 'string' ? heroSource : heroSource.src,
   Astro.site
 );
+const structuredImages = content.gallery.items.map((item) => {
+  const source = item.image.src;
+  return {
+    url: new URL(typeof source === 'string' ? source : source.src, Astro.site),
+    caption: item.image.alt,
+    width: typeof source === 'string' ? item.image.width : source.width,
+    height: typeof source === 'string' ? item.image.height : source.height
+  };
+});
 ---
 
 <BaseLayout
@@ -27,6 +37,7 @@ const socialImage = new URL(
   description={content.seo.description}
   image={socialImage}
   imageAlt={content.hero.image.alt}
+  {structuredImages}
 >
   <div id="top"></div>
   <SiteHeader navigation={content.navigation} currentPath="/" />
@@ -36,6 +47,7 @@ const socialImage = new URL(
     <WorkGallery content={content.work} />
     <EvaluationFramework content={content.evaluation} />
     <RecognitionProcess content={content.process} />
+    <EventGallery content={content.gallery} compact />
     <ParentBrandBand content={content.parentBrand} />
     <ClosingSection content={content.closing} />
   </main>

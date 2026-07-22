@@ -11,6 +11,7 @@ const indexableRoutes = [
   '/contact',
   '/cookies',
   '/faq',
+  '/gallery',
   '/privacy-policy',
   '/process',
   '/standard',
@@ -112,6 +113,14 @@ for (const route of indexableRoutes) {
     const faqPage = graph.find((item) => item['@type'] === 'FAQPage');
     if (!faqPage || faqPage.mainEntity?.length !== 24) {
       fail('/faq structured data does not match the 24 visible questions');
+    }
+  }
+
+  if (route === '/gallery') {
+    const galleryPage = graph.find((item) => item['@type'] === 'CollectionPage');
+    const galleryImages = graph.filter((item) => item['@type'] === 'ImageObject');
+    if (!galleryPage || galleryPage.hasPart?.length !== 10 || galleryImages.length !== 10) {
+      fail('/gallery structured data does not match the 10 visible ceremony images');
     }
   }
 }
