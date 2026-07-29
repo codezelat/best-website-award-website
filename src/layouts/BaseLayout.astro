@@ -13,6 +13,10 @@ interface Props {
   imageAlt?: string;
   imageWidth?: number;
   imageHeight?: number;
+  preloadImage?: {
+    href: string;
+    media?: string;
+  };
   pageType?: PageSeo['pageType'];
   noIndex?: boolean;
   faqItems?: UtilitySection[];
@@ -32,6 +36,7 @@ const {
   imageAlt = 'Best Website Awards: global recognition for website excellence',
   imageWidth,
   imageHeight,
+  preloadImage,
   pageType = 'WebPage',
   noIndex = false,
   faqItems,
@@ -52,6 +57,17 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+    {
+      preloadImage && (
+        <link
+          rel="preload"
+          as="image"
+          href={preloadImage.href}
+          media={preloadImage.media}
+          fetchpriority="high"
+        />
+      )
+    }
     <SeoHead
       {title}
       {description}

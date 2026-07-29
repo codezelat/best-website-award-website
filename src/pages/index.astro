@@ -1,4 +1,5 @@
 ---
+import { getImage } from 'astro:assets';
 import ClosingSection from '../components/ClosingSection.astro';
 import EvaluationFramework from '../components/EvaluationFramework.astro';
 import EventGallery from '../components/EventGallery.astro';
@@ -19,6 +20,23 @@ export const prerender = true;
 const content = await getHomepageContent();
 const primaryHeroImage = content.hero.images[0];
 const primaryImage = resolveManagedImage(primaryHeroImage, Astro.site);
+const preloadImage =
+  typeof primaryHeroImage.src === 'string'
+    ? { href: primaryHeroImage.src, media: '(max-width: 979px)' }
+    : {
+        href: (
+          await getImage({
+            src: primaryHeroImage.src,
+            width: 768,
+            format: 'webp',
+            quality: 68,
+            fit: 'cover',
+            position: 'center',
+            layout: 'none'
+          })
+        ).src,
+        media: '(max-width: 979px)'
+      };
 const structuredImages = resolveManagedImages(
   [
     ...content.hero.images.slice(1),
@@ -36,6 +54,7 @@ const structuredImages = resolveManagedImages(
   imageAlt={primaryHeroImage.alt}
   imageWidth={primaryImage.width}
   imageHeight={primaryImage.height}
+  {preloadImage}
   {structuredImages}
 >
   <div id="top"></div>
