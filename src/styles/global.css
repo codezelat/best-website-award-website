@@ -530,6 +530,7 @@
 
   .hero h1 {
     max-width: 9.3ch;
+    font-size: clamp(3.2rem, 6.15vw, 6.55rem);
   }
 
   .hero__summary {
@@ -1875,6 +1876,10 @@
 
     h2 {
       font-size: clamp(2.65rem, 12vw, 4.15rem);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.1rem, 10.2vw, 3.9rem);
     }
 
     .site-header__brand {

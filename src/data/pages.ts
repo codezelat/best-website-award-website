@@ -589,7 +589,8 @@ export const utilityPages = {
       pageType: 'ContactPage'
     },
     title: 'Present your website for 2026.',
-    introduction: `Apply for the ${programmeDetails.date} programme or ask a question through one simple, secure form. The official awards team will reply directly.`,
+    introduction:
+      "Apply for the 2026 programme or ask a question through one simple, secure form. The official awards team will reply directly.",
     sections: [
       {
         title: 'What happens next',

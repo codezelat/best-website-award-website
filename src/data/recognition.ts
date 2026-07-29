@@ -3,7 +3,7 @@ import gbeAwardsLogo from '../assets/recognition/gbe-awards-logo.png';
 import londonBusinessConsultancyLogo from '../assets/recognition/london-business-consultancy-logo.webp';
 import recognitionAudience from '../assets/recognition/recognition-audience.webp';
 import recognitionCommunity from '../assets/recognition/recognition-community.webp';
-import recognitionHero from '../assets/recognition/recognition-hero.webp';
+import recognitionGlassAward from '../assets/recognition/recognition-glass-award-v3.png';
 import recognitionRecipient from '../assets/recognition/recognition-recipient.webp';
 import recognitionVenue from '../assets/recognition/recognition-venue.webp';
 import sitcCampusLogo from '../assets/recognition/sitc-campus-logo.webp';
@@ -25,9 +25,9 @@ export const recognitionPageContent = {
     primaryAction: { label: 'Understand the roles', href: '#recognition-framework' },
     secondaryAction: { label: 'See recognition in action', href: '#recognition-in-action' },
     image: {
-      src: recognitionHero,
-      alt: 'Global Business Excellence Awards recipient receiving an award on stage',
-      position: 'center 38%'
+      src: recognitionGlassAward,
+      alt: 'Elegant optical-crystal Best Website Awards recognition trophy',
+      position: 'center'
     },
     frameLabel: 'Recognition framework',
     visualIndex: 'BWA / 07'

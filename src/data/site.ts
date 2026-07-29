@@ -2,7 +2,7 @@ import type { ContactDetails, NavigationItem, SocialLink } from '../lib/content/
 
 export const siteNavigation = [
   { label: 'The awards', href: '/awards' },
-  { label: 'Work we recognise', href: '/work' },
+  { label: 'Work we recognise', href: '/work', showInHeader: false },
   { label: 'The standard', href: '/standard' },
   { label: 'Recognition', href: '/recognition' },
   { label: 'Gallery', href: '/gallery' },

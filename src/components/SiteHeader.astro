@@ -10,6 +10,7 @@ interface Props {
 
 const { navigation, currentPath = '/' } = Astro.props;
 const homeHref = currentPath === '/' ? '#top' : '/';
+const headerNavigation = navigation.filter((item) => item.showInHeader !== false);
 ---
 
 <header class="site-header" data-site-header>
@@ -20,7 +21,7 @@ const homeHref = currentPath === '/' ? '#top' : '/';
 
     <nav class="site-header__nav" aria-label="Primary navigation">
       {
-        navigation.map((item) => (
+        headerNavigation.map((item) => (
           <a href={item.href} aria-current={currentPath === item.href ? 'page' : undefined}>
             {item.label}
           </a>
@@ -45,7 +46,7 @@ const homeHref = currentPath === '/' ? '#top' : '/';
   <div class="mobile-navigation" id="mobile-navigation" data-mobile-navigation hidden>
     <nav class="container mobile-navigation__inner" aria-label="Mobile navigation">
       {
-        navigation.map((item, index) => (
+        headerNavigation.map((item, index) => (
           <a
             href={item.href}
             style={`--nav-index:${index}`}

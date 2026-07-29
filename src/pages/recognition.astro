@@ -1,9 +1,9 @@
 ---
 import EditorialClosing from '../components/EditorialClosing.astro';
 import EditorialIntroduction from '../components/EditorialIntroduction.astro';
-import EditorialPageHero from '../components/EditorialPageHero.astro';
 import EventGallery from '../components/EventGallery.astro';
 import RecognitionFramework from '../components/RecognitionFramework.astro';
+import RecognitionHero from '../components/RecognitionHero.astro';
 import RecognitionRecord from '../components/RecognitionRecord.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
@@ -44,8 +44,8 @@ const structuredOrganizations = content.framework.items.map((item) => ({
 >
   <div id="top"></div>
   <SiteHeader navigation={siteNavigation} currentPath={Astro.url.pathname} />
-  <main id="main-content">
-    <EditorialPageHero content={content.hero} />
+  <main id="main-content" class="recognition-page">
+    <RecognitionHero content={content.hero} />
     <EditorialIntroduction content={content.introduction} />
     <RecognitionFramework content={content.framework} />
     <EventGallery content={content.gallery} id="recognition-in-action" />
@@ -58,3 +58,19 @@ const structuredOrganizations = content.framework.items.map((item) => ({
     currentPath={Astro.url.pathname}
   />
 </BaseLayout>
+
+<style is:global>
+  .recognition-page h2 {
+    line-height: 1.04;
+  }
+
+  .recognition-page h3 {
+    line-height: 1.12;
+  }
+
+  @media (max-width: 47.99rem) {
+    .recognition-page h2 {
+      line-height: 1.08;
+    }
+  }
+</style>

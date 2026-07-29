@@ -13,6 +13,7 @@ export interface ManagedImage {
 export interface NavigationItem {
   label: string;
   href: string;
+  showInHeader?: boolean;
 }
 
 export type SocialNetwork = 'facebook' | 'instagram' | 'x' | 'linkedin' | 'whatsapp';
