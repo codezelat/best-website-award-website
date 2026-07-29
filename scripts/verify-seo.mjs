@@ -14,6 +14,7 @@ const indexableRoutes = [
   '/gallery',
   '/privacy-policy',
   '/process',
+  '/recognition',
   '/standard',
   '/terms',
   '/work'
@@ -137,6 +138,33 @@ for (const route of indexableRoutes) {
     const galleryImages = graph.filter((item) => item['@type'] === 'ImageObject');
     if (!galleryPage || galleryPage.hasPart?.length !== 12 || galleryImages.length !== 12) {
       fail('/gallery structured data does not match the 12 visible ceremony images');
+    }
+  }
+
+  if (route === '/recognition') {
+    const recognitionPage = graph.find((item) => item['@type'] === 'CollectionPage');
+    const recognitionList = graph.find(
+      (item) => item['@id'] === `${canonical}#recognition-framework`
+    );
+    const recognitionNames = [
+      'Global Business Excellence Awards',
+      'DEC',
+      'SITC Campus Business Faculty',
+      'London Business Consultancy'
+    ];
+    const organizationNames = graph
+      .filter((item) => item['@type'] === 'Organization')
+      .map((item) => item.name);
+    const recognitionImages = graph.filter((item) => item['@type'] === 'ImageObject');
+
+    if (
+      !recognitionPage ||
+      recognitionList?.numberOfItems !== 4 ||
+      recognitionList?.itemListElement?.length !== 4 ||
+      !recognitionNames.every((name) => organizationNames.includes(name)) ||
+      recognitionImages.length !== 8
+    ) {
+      fail('/recognition structured data does not match the four roles and eight visible images');
     }
   }
 }

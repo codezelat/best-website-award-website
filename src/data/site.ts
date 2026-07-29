@@ -4,6 +4,7 @@ export const siteNavigation = [
   { label: 'The awards', href: '/awards' },
   { label: 'Work we recognise', href: '/work' },
   { label: 'The standard', href: '/standard' },
+  { label: 'Recognition', href: '/recognition' },
   { label: 'Gallery', href: '/gallery' },
   { label: 'About', href: '/about' }
 ] satisfies NavigationItem[];
@@ -60,6 +61,7 @@ export const publicRoutes = [
   '/gallery',
   '/privacy-policy',
   '/process',
+  '/recognition',
   '/standard',
   '/terms',
   '/work'

@@ -1,0 +1,60 @@
+---
+import EditorialClosing from '../components/EditorialClosing.astro';
+import EditorialIntroduction from '../components/EditorialIntroduction.astro';
+import EditorialPageHero from '../components/EditorialPageHero.astro';
+import EventGallery from '../components/EventGallery.astro';
+import RecognitionFramework from '../components/RecognitionFramework.astro';
+import RecognitionRecord from '../components/RecognitionRecord.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import { contactDetails, legalNavigation, siteNavigation } from '../data/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getRecognitionContent } from '../lib/content/recognition';
+import { resolveManagedImage, resolveManagedImages } from '../lib/seo/images';
+
+export const prerender = true;
+
+const content = await getRecognitionContent();
+const primaryImage = resolveManagedImage(content.hero.image, Astro.site);
+const frameworkLogos = content.framework.items.map((item) => item.logo);
+const structuredImages = resolveManagedImages(
+  [...frameworkLogos, ...content.gallery.items.map((item) => item.image)],
+  Astro.site
+);
+const structuredOrganizations = content.framework.items.map((item) => ({
+  id: item.id,
+  name: item.name,
+  description: item.summary,
+  ...(item.id === 'gbe-awards' ? { url: contactDetails.parentWebsite } : {}),
+  image: resolveManagedImage(item.logo, Astro.site)
+}));
+---
+
+<BaseLayout
+  title={content.seo.title}
+  description={content.seo.description}
+  image={primaryImage.url}
+  imageAlt={content.hero.image.alt}
+  imageWidth={primaryImage.width}
+  imageHeight={primaryImage.height}
+  pageType={content.seo.pageType}
+  noIndex={content.seo.noIndex}
+  {structuredImages}
+  {structuredOrganizations}
+>
+  <div id="top"></div>
+  <SiteHeader navigation={siteNavigation} currentPath={Astro.url.pathname} />
+  <main id="main-content">
+    <EditorialPageHero content={content.hero} />
+    <EditorialIntroduction content={content.introduction} />
+    <RecognitionFramework content={content.framework} />
+    <EventGallery content={content.gallery} id="recognition-in-action" />
+    <RecognitionRecord content={content.record} />
+    <EditorialClosing content={content.closing} />
+  </main>
+  <SiteFooter
+    navigation={siteNavigation}
+    legalNavigation={legalNavigation}
+    currentPath={Astro.url.pathname}
+  />
+</BaseLayout>

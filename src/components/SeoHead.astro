@@ -1,5 +1,5 @@
 ---
-import type { PageSeo, UtilitySection } from '../lib/content/types';
+import type { PageSeo, StructuredOrganization, UtilitySection } from '../lib/content/types';
 import { socialLinks } from '../data/site';
 
 interface Props {
@@ -19,6 +19,7 @@ interface Props {
     width?: number;
     height?: number;
   }>;
+  structuredOrganizations?: StructuredOrganization[];
 }
 
 const {
@@ -32,7 +33,8 @@ const {
   pageType = 'WebPage',
   noIndex = false,
   faqItems = [],
-  structuredImages = []
+  structuredImages = [],
+  structuredOrganizations = []
 } = Astro.props;
 
 const siteId = `${canonical.origin}/#website`;
@@ -50,6 +52,39 @@ const galleryImageNodes = structuredImages.map((item, index) => ({
   ...(item.width ? { width: item.width } : {}),
   ...(item.height ? { height: item.height } : {})
 }));
+const organizationNodes = structuredOrganizations.map((item) => ({
+  '@type': 'Organization',
+  '@id': `${canonical.href}#${item.id}`,
+  name: item.name,
+  description: item.description,
+  ...(item.url ? { url: item.url } : {}),
+  ...(item.image
+    ? {
+        logo: {
+          '@type': 'ImageObject',
+          contentUrl: item.image.url.href,
+          url: item.image.url.href,
+          caption: item.image.caption,
+          ...(item.image.width ? { width: item.image.width } : {}),
+          ...(item.image.height ? { height: item.image.height } : {})
+        }
+      }
+    : {})
+}));
+const organizationListNode =
+  organizationNodes.length > 0
+    ? {
+        '@type': 'ItemList',
+        '@id': `${canonical.href}#recognition-framework`,
+        name: 'Best Website Awards recognition framework',
+        numberOfItems: organizationNodes.length,
+        itemListElement: organizationNodes.map((item, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          item: { '@id': item['@id'] }
+        }))
+      }
+    : undefined;
 
 const pageNode: Record<string, unknown> = {
   '@type': pageType,
@@ -76,6 +111,10 @@ if (!isHomepage) {
 
 if (galleryImageNodes.length > 0) {
   pageNode.hasPart = galleryImageNodes.map((item) => ({ '@id': item['@id'] }));
+}
+
+if (organizationListNode) {
+  pageNode.mainEntity = { '@id': organizationListNode['@id'] };
 }
 
 if (pageType === 'FAQPage' && faqItems.length > 0) {
@@ -151,7 +190,9 @@ const structuredData = {
         ]
       : []),
     pageNode,
-    ...galleryImageNodes
+    ...galleryImageNodes,
+    ...organizationNodes,
+    ...(organizationListNode ? [organizationListNode] : [])
   ]
 };
 ---

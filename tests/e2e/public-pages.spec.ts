@@ -6,7 +6,8 @@ const editorialRoutes = [
   ['/standard', 'A standard designed to see the whole website.'],
   ['/process', 'Make the work understandable.'],
   ['/about', 'Digital excellence in a wider business world.'],
-  ['/gallery', 'Recognition, seen clearly.']
+  ['/gallery', 'Recognition, seen clearly.'],
+  ['/recognition', 'Recognition with every role made clear.']
 ] as const;
 
 const utilityRoutes = [
@@ -77,6 +78,30 @@ test('gallery publishes authentic ceremony imagery and matching image structured
   );
 
   expect(imageNodes).toHaveLength(12);
+});
+
+test('recognition page publishes four distinct roles, authentic imagery and matching structured data', async ({
+  page
+}) => {
+  await page.goto('/recognition');
+
+  await expect(page.locator('#recognition-framework article')).toHaveCount(4);
+  await expect(page.locator('#recognition-in-action figure')).toHaveCount(4);
+  await expect(page.getByRole('heading', { name: 'The framework, clearly stated' })).toBeVisible();
+
+  const structuredDataText = await page.locator('script[type="application/ld+json"]').textContent();
+  const structuredData = JSON.parse(structuredDataText ?? '{}');
+  const recognitionList = structuredData['@graph']?.find(
+    (item: { '@id'?: string }) =>
+      item['@id'] === 'https://bestwebsiteaward.com/recognition#recognition-framework'
+  );
+  const imageNodes = structuredData['@graph']?.filter(
+    (item: { '@type'?: string }) => item['@type'] === 'ImageObject'
+  );
+
+  expect(recognitionList?.numberOfItems).toBe(4);
+  expect(recognitionList?.itemListElement).toHaveLength(4);
+  expect(imageNodes).toHaveLength(8);
 });
 
 test('FAQ publishes complete visible answers and matching structured data', async ({ page }) => {

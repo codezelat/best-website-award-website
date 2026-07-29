@@ -5,7 +5,7 @@ import '../styles/global.css';
 import PageLoader from '../components/PageLoader.astro';
 import AnalyticsConsent from '../components/AnalyticsConsent.astro';
 import SeoHead from '../components/SeoHead.astro';
-import type { PageSeo, UtilitySection } from '../lib/content/types';
+import type { PageSeo, StructuredOrganization, UtilitySection } from '../lib/content/types';
 
 interface Props {
   title: string;
@@ -23,6 +23,7 @@ interface Props {
     width?: number;
     height?: number;
   }>;
+  structuredOrganizations?: StructuredOrganization[];
 }
 
 const {
@@ -35,7 +36,8 @@ const {
   pageType = 'WebPage',
   noIndex = false,
   faqItems,
-  structuredImages = []
+  structuredImages = [],
+  structuredOrganizations = []
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
@@ -63,6 +65,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       {noIndex}
       {faqItems}
       {structuredImages}
+      {structuredOrganizations}
     />
     <script is:inline>
       document.documentElement.classList.add('js');

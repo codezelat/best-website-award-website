@@ -37,6 +37,19 @@ export interface PageSeo {
   noIndex?: boolean;
 }
 
+export interface StructuredOrganization {
+  id: string;
+  name: string;
+  description: string;
+  url?: string;
+  image?: {
+    url: URL;
+    caption: string;
+    width?: number;
+    height?: number;
+  };
+}
+
 export interface EditorialItem {
   id: string;
   index: string;
@@ -168,6 +181,47 @@ export interface GalleryPageContent {
     primaryAction: NavigationItem;
     secondaryAction: NavigationItem;
   };
+}
+
+export interface RecognitionOrganisation {
+  id: string;
+  index: string;
+  eyebrow: string;
+  name: string;
+  role: string;
+  summary: string;
+  detail: string;
+  highlight?: string;
+  logo: ManagedImage;
+  logoPresentation: 'portrait' | 'wide-light' | 'wide-dark';
+}
+
+export interface RecognitionRecordStep {
+  id: string;
+  index: string;
+  title: string;
+  summary: string;
+}
+
+export interface RecognitionPageContent {
+  slug: string;
+  seo: PageSeo;
+  hero: EditorialPageContent['hero'];
+  introduction: EditorialPageContent['introduction'];
+  framework: {
+    title: string;
+    summary: string;
+    items: RecognitionOrganisation[];
+  };
+  gallery: EventGalleryContent;
+  record: {
+    eyebrow: string;
+    title: string;
+    summary: string;
+    statement: string;
+    steps: RecognitionRecordStep[];
+  };
+  closing: EditorialPageContent['closing'];
 }
 
 export interface HomepageContent {

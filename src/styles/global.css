@@ -1671,6 +1671,29 @@
 }
 
 @layer utilities {
+  @media (min-width: 68.0625rem) and (max-width: 76rem) {
+    .site-header__inner {
+      grid-template-columns: minmax(11.5rem, 1fr) auto minmax(10.5rem, 1fr);
+      gap: 1.25rem;
+    }
+
+    .site-header__brand {
+      width: 11.5rem;
+    }
+
+    .site-header__nav {
+      gap: 1rem;
+    }
+
+    .site-header__nav a {
+      font-size: 0.8rem;
+    }
+
+    .site-header__cta {
+      min-width: 10.5rem;
+    }
+  }
+
   @media (max-width: 68rem) {
     :root {
       --header-height: 5.2rem;

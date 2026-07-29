@@ -1,0 +1,74 @@
+---
+import type { RecognitionPageContent } from '../lib/content/types';
+
+interface Props {
+  content: RecognitionPageContent['record'];
+}
+
+const { content } = Astro.props;
+---
+
+<section
+  class="tw:relative tw:isolate tw:overflow-hidden tw:bg-lapis-deep tw:py-[clamp(6rem,11vw,11rem)] tw:text-white"
+  aria-labelledby="recognition-record-title"
+>
+  <div
+    class="tw:pointer-events-none tw:absolute tw:inset-0 tw:-z-10 tw:opacity-30 [background-image:linear-gradient(rgba(255,255,255,.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.08)_1px,transparent_1px)] [background-size:clamp(3rem,6vw,6rem)_clamp(3rem,6vw,6rem)] [mask-image:linear-gradient(90deg,transparent_0%,black_45%,black_100%)]"
+    aria-hidden="true"
+  >
+  </div>
+  <div class="container">
+    <div
+      class="tw:grid tw:gap-[clamp(3rem,8vw,9rem)] tw:lg:grid-cols-[minmax(18rem,.82fr)_minmax(25rem,1.18fr)]"
+      data-reveal-group
+    >
+      <div>
+        <p
+          class="tw:text-[.68rem] tw:font-bold tw:tracking-[.16em] tw:text-[#9db5ff] tw:uppercase"
+          data-reveal
+        >
+          {content.eyebrow}
+        </p>
+        <h2 id="recognition-record-title" class="tw:mt-4 tw:max-w-[12ch]" data-reveal>
+          {content.title}
+        </h2>
+        <p
+          class="tw:mt-7 tw:max-w-[38rem] tw:text-[1.06rem] tw:leading-[1.72] tw:text-white/70"
+          data-reveal
+        >
+          {content.summary}
+        </p>
+        <p
+          class="tw:mt-7 tw:max-w-[38rem] tw:border-l-2 tw:border-brass tw:pl-5 tw:text-[.98rem] tw:font-medium tw:leading-[1.68] tw:text-white/90"
+          data-reveal
+        >
+          {content.statement}
+        </p>
+      </div>
+
+      <ol class="tw:grid tw:gap-4">
+        {
+          content.steps.map((step) => (
+            <li
+              class="tw:grid tw:grid-cols-[3.2rem_minmax(0,1fr)] tw:gap-5 tw:border tw:border-white/15 tw:bg-white/[.055] tw:p-6 tw:backdrop-blur-sm tw:transition-[transform,border-color,background-color] tw:duration-300 tw:hover:-translate-y-1 tw:hover:border-brass/70 tw:hover:bg-white/[.08] tw:sm:grid-cols-[4rem_minmax(0,1fr)] tw:sm:p-7"
+              data-reveal
+            >
+              <span
+                class="tw:grid tw:size-12 tw:place-items-center tw:rounded-full tw:border tw:border-brass tw:text-[.68rem] tw:font-bold tw:tracking-[.08em] tw:text-[#e1b75a] tw:sm:size-14"
+                aria-hidden="true"
+              >
+                {step.index}
+              </span>
+              <div>
+                <h3 class="tw:text-[1.55rem] tw:text-white">{step.title}</h3>
+                <p class="tw:mt-3 tw:max-w-[38rem] tw:leading-[1.68] tw:text-white/68">
+                  {step.summary}
+                </p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>

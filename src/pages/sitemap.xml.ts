@@ -3,6 +3,7 @@ import { publicRoutes } from '../data/site';
 import { getGalleryContent } from '../lib/content/gallery';
 import { getHomepageContent } from '../lib/content/homepage';
 import { getEditorialPage } from '../lib/content/pages';
+import { getRecognitionContent } from '../lib/content/recognition';
 import type { ManagedImage } from '../lib/content/types';
 import { resolveManagedImages } from '../lib/seo/images';
 
@@ -37,9 +38,10 @@ const editorialImages = async (route: (typeof editorialRoutes)[number]) => {
 
 export const GET: APIRoute = async ({ site }) => {
   const origin = site ?? new URL('https://bestwebsiteaward.com');
-  const [homepage, gallery, ...editorialImageGroups] = await Promise.all([
+  const [homepage, gallery, recognition, ...editorialImageGroups] = await Promise.all([
     getHomepageContent(),
     getGalleryContent(),
+    getRecognitionContent(),
     ...editorialRoutes.map((route) => editorialImages(route))
   ]);
   const imagesByRoute = new Map<string, readonly ManagedImage[]>([
@@ -52,6 +54,14 @@ export const GET: APIRoute = async ({ site }) => {
       ]
     ],
     ['/gallery', [gallery.hero.image, ...gallery.gallery.items.map((item) => item.image)]],
+    [
+      '/recognition',
+      [
+        recognition.hero.image,
+        ...recognition.framework.items.map((item) => item.logo),
+        ...recognition.gallery.items.map((item) => item.image)
+      ]
+    ],
     ...editorialRoutes.map(
       (route, index) => [route, editorialImageGroups[index]] as [string, readonly ManagedImage[]]
     )

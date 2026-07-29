@@ -1,0 +1,103 @@
+---
+import type { RecognitionPageContent } from '../lib/content/types';
+import ManagedPicture from './ManagedPicture.astro';
+
+interface Props {
+  content: RecognitionPageContent['framework'];
+}
+
+const { content } = Astro.props;
+---
+
+<section
+  class="tw:bg-blue-soft tw:py-[clamp(6rem,11vw,11rem)]"
+  id="recognition-framework"
+  aria-labelledby="recognition-framework-title"
+>
+  <div class="container">
+    <header
+      class="tw:grid tw:gap-7 tw:border-t tw:border-carbon tw:pt-6 tw:lg:grid-cols-[minmax(0,1.05fr)_minmax(20rem,.95fr)] tw:lg:gap-[clamp(3rem,8vw,9rem)]"
+      data-reveal-group
+    >
+      <h2 id="recognition-framework-title" class="tw:max-w-[12ch]" data-reveal>
+        {content.title}
+      </h2>
+      <p
+        class="tw:max-w-[38rem] tw:pt-2 tw:text-[clamp(1.08rem,1.5vw,1.3rem)] tw:leading-[1.55] tw:text-ink-soft"
+        data-reveal
+      >
+        {content.summary}
+      </p>
+    </header>
+
+    <ol class="tw:mt-[clamp(4rem,7vw,7rem)] tw:border-t tw:border-carbon" data-reveal-group>
+      {
+        content.items.map((item) => (
+          <li
+            class="tw:grid tw:min-w-0 tw:gap-[clamp(2rem,6vw,7rem)] tw:border-b tw:border-line tw:py-[clamp(2.5rem,5vw,4.5rem)] tw:lg:grid-cols-[minmax(0,1.2fr)_minmax(18rem,.8fr)] tw:lg:items-center"
+            data-reveal
+          >
+            <article class="tw:grid tw:min-w-0 tw:grid-cols-[2.6rem_minmax(0,1fr)] tw:gap-4 tw:sm:grid-cols-[3.4rem_minmax(0,1fr)] tw:sm:gap-6">
+              <span
+                class="tw:grid tw:size-10 tw:place-items-center tw:rounded-full tw:border tw:border-brass tw:text-[.66rem] tw:font-bold tw:tracking-[.08em] tw:text-brass tw:sm:size-12"
+                aria-hidden="true"
+              >
+                {item.index}
+              </span>
+              <div class="tw:min-w-0">
+                <p class="tw:text-[.68rem] tw:font-bold tw:tracking-[.14em] tw:text-lapis tw:uppercase">
+                  {item.eyebrow}
+                </p>
+                <h3 class="tw:mt-2 tw:max-w-[22ch] tw:text-[clamp(1.65rem,3vw,2.6rem)]">
+                  {item.name}
+                </h3>
+                <p class="tw:mt-3 tw:text-[.76rem] tw:font-semibold tw:tracking-[.08em] tw:text-ink-soft tw:uppercase">
+                  {item.role}
+                </p>
+                <p class="tw:mt-6 tw:max-w-[44rem] tw:text-[1.05rem] tw:leading-[1.7]">
+                  {item.summary}
+                </p>
+                {item.highlight && (
+                  <p class="tw:mt-5 tw:max-w-[44rem] tw:border-l-2 tw:border-brass tw:bg-white tw:px-5 tw:py-4 tw:text-[.98rem] tw:font-medium tw:leading-[1.65]">
+                    {item.highlight}
+                  </p>
+                )}
+                <p class="tw:mt-5 tw:max-w-[44rem] tw:leading-[1.7] tw:text-ink-soft">
+                  {item.detail}
+                </p>
+              </div>
+            </article>
+
+            <div
+              class:list={[
+                'tw:group tw:grid tw:min-h-[11rem] tw:w-full tw:place-items-center tw:overflow-hidden tw:border tw:p-7 tw:shadow-[0_1.5rem_4rem_rgba(16,42,102,.09)] tw:transition-[transform,box-shadow] tw:duration-500 tw:ease-out tw:hover:-translate-y-1 tw:hover:shadow-[0_2rem_5rem_rgba(16,42,102,.14)]',
+                item.logoPresentation === 'wide-light'
+                  ? 'tw:border-line tw:bg-white'
+                  : item.logoPresentation === 'portrait'
+                    ? 'tw:border-carbon tw:bg-carbon'
+                    : 'tw:border-lapis-deep tw:bg-lapis-deep'
+              ]}
+            >
+              <ManagedPicture
+                image={item.logo}
+                class:list={[
+                  'tw:block tw:object-contain tw:transition-transform tw:duration-500 tw:ease-out tw:group-hover:scale-[1.02]',
+                  item.logoPresentation === 'portrait'
+                    ? 'tw:h-[10rem] tw:w-auto'
+                    : 'tw:max-h-[5.6rem] tw:w-full tw:max-w-[23rem]'
+                ]}
+                sizes={
+                  item.logoPresentation === 'portrait' ? '160px' : '(min-width: 1024px) 360px, 78vw'
+                }
+                widths={
+                  item.logoPresentation === 'portrait' ? [160, 240, 360] : [360, 540, 720, 960]
+                }
+                quality={90}
+              />
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

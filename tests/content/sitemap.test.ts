@@ -20,10 +20,11 @@ describe('direct public sitemap', () => {
     expect(response.headers.get('vercel-cdn-cache-control')).toBe(
       'public, s-maxage=86400, stale-while-revalidate=604800'
     );
-    expect(urls).toHaveLength(12);
+    expect(urls).toHaveLength(13);
     expect(urls).toEqual(
       expect.arrayContaining([
         'https://bestwebsiteaward.com/gallery',
+        'https://bestwebsiteaward.com/recognition',
         'https://bestwebsiteaward.com/privacy-policy',
         'https://bestwebsiteaward.com/terms',
         'https://bestwebsiteaward.com/cookies'

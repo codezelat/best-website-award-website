@@ -6,10 +6,12 @@ import {
 } from '../../src/data/gallery';
 import { homepageContent } from '../../src/data/homepage';
 import { editorialPages, utilityPages } from '../../src/data/pages';
+import { recognitionPageContent } from '../../src/data/recognition';
 import { publicRoutes } from '../../src/data/site';
 import { programmeDetails } from '../../src/data/site';
 import { getEditorialPage, getUtilityPage } from '../../src/lib/content/pages';
 import { getGalleryContent } from '../../src/lib/content/gallery';
+import { getRecognitionContent } from '../../src/lib/content/recognition';
 import type {
   EditorialCollection,
   EditorialPageContent,
@@ -52,6 +54,21 @@ describe('public page content contract', () => {
     expect(eventGalleryItems.every((item) => item.image.alt.trim().length > 0)).toBe(true);
   });
 
+  it('publishes the four-part recognition framework through its content source', async () => {
+    const recognition = await getRecognitionContent();
+
+    expect(recognition.slug).toBe('recognition');
+    expect(recognition.framework.items).toHaveLength(4);
+    expect(recognition.framework.items.map((item) => item.name)).toEqual([
+      'Global Business Excellence Awards',
+      'DEC',
+      'SITC Campus Business Faculty',
+      'London Business Consultancy'
+    ]);
+    expect(recognition.gallery.items).toHaveLength(4);
+    expect(recognition.framework.items.every((item) => item.logo.alt.trim().length > 0)).toBe(true);
+  });
+
   it('gives every ceremony photograph one deliberate public placement', () => {
     const editorialCeremonyImages = [
       editorialPages.awards.feature?.image,
@@ -61,9 +78,11 @@ describe('public page content contract', () => {
     const ceremonyImages = [
       ...homepageContent.hero.images,
       galleryPageContent.hero.image,
+      recognitionPageContent.hero.image,
       ...editorialCeremonyImages,
       ...featuredEventGalleryItems.map((item) => item.image),
-      ...eventGalleryItems.map((item) => item.image)
+      ...eventGalleryItems.map((item) => item.image),
+      ...recognitionPageContent.gallery.items.map((item) => item.image)
     ];
     const imageSources = ceremonyImages.map((image) => image.src);
 
@@ -74,6 +93,7 @@ describe('public page content contract', () => {
     const closingSummaries = [
       homepageContent.closing.summary,
       galleryPageContent.closing.summary,
+      recognitionPageContent.closing.summary,
       ...(Object.values(editorialPages) as EditorialPageContent[]).map(
         (page) => page.closing.summary
       )
@@ -137,7 +157,8 @@ describe('public page content contract', () => {
     const pages = [
       ...(Object.values(editorialPages) as EditorialPageContent[]),
       ...(Object.values(utilityPages) as UtilityPageContent[]),
-      galleryPageContent
+      galleryPageContent,
+      recognitionPageContent
     ].filter((page) => !('noIndex' in page.seo && page.seo.noIndex));
     const titles = pages.map((page) => page.seo.title);
     const descriptions = pages.map((page) => page.seo.description);
@@ -156,6 +177,8 @@ describe('public page content contract', () => {
     expect(editorialPages.awards.seo.title).toContain('Best Website Awards 2026');
     expect(editorialPages.about.seo.description).toContain('Global Business Excellence Awards');
     expect(editorialPages.about.seo.description).toContain('GBE Awards 2026');
+    expect(recognitionPageContent.seo.title).toContain('Best Website Awards 2026');
+    expect(recognitionPageContent.seo.description).toContain('GBE Awards');
   });
 
   it('keeps substantive legal utility pages discoverable', () => {
@@ -165,9 +188,16 @@ describe('public page content contract', () => {
   });
 
   it('publishes every indexable page through the direct public sitemap contract', () => {
-    expect(publicRoutes).toHaveLength(12);
+    expect(publicRoutes).toHaveLength(13);
     expect(publicRoutes).toEqual(
-      expect.arrayContaining(['/privacy-policy', '/terms', '/cookies', '/contact', '/gallery'])
+      expect.arrayContaining([
+        '/privacy-policy',
+        '/terms',
+        '/cookies',
+        '/contact',
+        '/gallery',
+        '/recognition'
+      ])
     );
   });
 
@@ -184,7 +214,12 @@ describe('public page content contract', () => {
   });
 
   it('contains no draft markers or manufactured programme specifics', () => {
-    const sourceCopy = JSON.stringify({ editorialPages, utilityPages, galleryPageContent });
+    const sourceCopy = JSON.stringify({
+      editorialPages,
+      utilityPages,
+      galleryPageContent,
+      recognitionPageContent
+    });
     const copy = sourceCopy.toLowerCase();
 
     expect(copy).not.toMatch(/lorem ipsum|coming soon|sample winner|dummy|placeholder|vote now/);
