@@ -3,32 +3,6 @@ import { animate } from 'motion/mini';
 
 const root = document.documentElement;
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const loader = document.querySelector<HTMLElement>('[data-page-loader]');
-let loadingFinished = false;
-const loaderFailsafe = window.setTimeout(() => loader?.remove(), 4000);
-
-const finishLoading = async () => {
-  if (!loader || loadingFinished) return;
-  loadingFinished = true;
-  loader.style.pointerEvents = 'none';
-
-  if (reduceMotion) {
-    window.clearTimeout(loaderFailsafe);
-    loader.remove();
-    return;
-  }
-
-  try {
-    await animate(
-      loader,
-      { opacity: [1, 0] },
-      { duration: 0.3, delay: 0.05, ease: [0.65, 0, 0.35, 1] }
-    ).finished;
-  } finally {
-    window.clearTimeout(loaderFailsafe);
-    loader.remove();
-  }
-};
 
 const runMotion = () => {
   if (reduceMotion) return;
@@ -91,10 +65,3 @@ const runMotion = () => {
 };
 
 runMotion();
-
-if (document.readyState !== 'loading') {
-  void finishLoading();
-} else {
-  document.addEventListener('DOMContentLoaded', () => void finishLoading(), { once: true });
-  window.setTimeout(() => void finishLoading(), 1600);
-}

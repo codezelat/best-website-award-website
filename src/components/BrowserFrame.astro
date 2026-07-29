@@ -43,7 +43,7 @@ if (slides.length === 0) {
             image={slide}
             class="browser-frame__image"
             loading={priority && index === 0 ? 'eager' : 'lazy'}
-            fetchpriority={priority ? (index === 0 ? 'high' : 'low') : 'auto'}
+            fetchpriority={priority ? (index === 0 ? 'high' : 'low') : 'low'}
             sizes={priority ? '(min-width: 980px) 54vw, 88vw' : '(min-width: 980px) 44vw, 92vw'}
             quality={priority ? 68 : 82}
             formats={[]}

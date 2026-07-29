@@ -2,7 +2,6 @@
 import '@fontsource-variable/funnel-display/index.css';
 import '@fontsource-variable/funnel-sans/index.css';
 import '../styles/global.css';
-import PageLoader from '../components/PageLoader.astro';
 import AnalyticsConsent from '../components/AnalyticsConsent.astro';
 import SeoHead from '../components/SeoHead.astro';
 import type { PageSeo, StructuredOrganization, UtilitySection } from '../lib/content/types';
@@ -84,7 +83,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     </script>
   </head>
   <body>
-    <PageLoader />
     <a class="skip-link" href="#main-content">Skip to content</a>
     <slot />
     <AnalyticsConsent />

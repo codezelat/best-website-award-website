@@ -25,6 +25,9 @@ export default defineConfig({
     responsiveStyles: true,
     layout: 'constrained'
   },
+  build: {
+    inlineStylesheets: 'always'
+  },
   vite: {
     plugins: [tailwindcss()],
     build: {
