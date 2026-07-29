@@ -53,6 +53,13 @@ for (const staticEndpoint of ['sitemap.xml', 'robots.txt', '404.html']) {
 }
 
 const config = JSON.parse(await readFile(resolve(outputRoot, 'config.json'), 'utf8'));
+if (config.images) {
+  fail('Vercel Image Optimization must remain disabled for this static Hobby deployment');
+}
+if (JSON.stringify(config.cache) !== JSON.stringify(['.cache/astro/**'])) {
+  fail('the persistent Astro image cache is missing from the Vercel build output');
+}
+
 const functionRoutes = config.routes.filter((route) => route.dest === '_render');
 if (functionRoutes.length !== 1 || functionRoutes[0]?.src !== '^/api/contact$') {
   fail(`expected only /api/contact to map to _render, found ${JSON.stringify(functionRoutes)}`);
@@ -92,5 +99,5 @@ if (
 }
 
 console.log(
-  `Vercel output verification passed: ${publicRoutes.length} static public pages, one ${(functionSize / 1_000_000).toFixed(2)} MB contact function, and no public runtime image or server-island routes.`
+  `Vercel output verification passed: ${publicRoutes.length} static public pages, one ${(functionSize / 1_000_000).toFixed(2)} MB contact function, a persistent build image cache, and no public runtime image or server-island routes.`
 );

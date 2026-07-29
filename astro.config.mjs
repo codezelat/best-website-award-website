@@ -7,6 +7,7 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   site: 'https://bestwebsiteaward.com',
   output: 'static',
+  cacheDir: './.cache/astro',
   adapter: vercel({
     maxDuration: 15
   }),

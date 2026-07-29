@@ -590,7 +590,7 @@ export const utilityPages = {
     },
     title: 'Present your website for 2026.',
     introduction:
-      "Apply for the 2026 programme or ask a question through one simple, secure form. The official awards team will reply directly.",
+      'Apply for the 2026 programme or ask a question through one simple, secure form. The official awards team will reply directly.',
     sections: [
       {
         title: 'What happens next',

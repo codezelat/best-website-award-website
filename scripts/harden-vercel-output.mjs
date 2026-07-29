@@ -33,6 +33,8 @@ for (const file of publicAssets) {
 const config = JSON.parse(await readFile(configPath, 'utf8'));
 const removedRoutes = [];
 
+config.cache = ['.cache/astro/**'];
+
 config.routes = config.routes.filter((route) => {
   const isUnusedRuntimeRoute =
     route.src === '^/_image$' || route.src?.startsWith('^/_server-islands/');

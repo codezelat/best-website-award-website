@@ -12,7 +12,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node scripts/harden-vercel-output.mjs",
+    "build": "node scripts/prepare-vercel-output.mjs && astro build && node scripts/harden-vercel-output.mjs",
     "check": "astro check",
     "test": "vitest run",
     "test:e2e": "playwright test",

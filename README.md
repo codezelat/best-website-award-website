@@ -48,9 +48,11 @@ The separate admin and awards portal applications are not part of this repositor
 | `sitemap.xml` and `robots.txt` | Pre-rendered static files          | Site route configuration       | CDN cached; sitemap exposes the canonical public routes |
 | `/_astro/*`                    | Fingerprinted static assets        | Astro build pipeline           | One-year immutable caching                              |
 | `/api/contact`                 | One isolated Vercel function       | Validated form submission      | `no-store`; `noindex, nofollow`                         |
-| Programme images               | Astro build-time image pipeline    | `ManagedPicture.astro`         | Responsive AVIF/WebP output with explicit dimensions    |
+| Programme images               | Astro build-time image pipeline    | `ManagedPicture.astro`         | Static responsive WebP files with explicit dimensions   |
 
 The generated Vercel output is hardened after each build. Unused runtime image and server-island routes are removed, and the verification gate proves that only `/api/contact` maps to server compute.
+
+Production image variants are encoded during the build and emitted as fingerprinted static files. Vercel Image Optimization remains disabled, so public image requests never consume image-transformation quota or runtime compute. A persistent Astro image cache is declared in the Vercel Build Output API, allowing unchanged transforms to be reused by later deployments.
 
 ## Technology
 
@@ -59,7 +61,7 @@ The generated Vercel output is hardened after each build. Unused runtime image a
 | Framework              | Astro 7 with the Vercel adapter                                |
 | Styling                | Tailwind CSS 4 using the `tw:` prefix, plus focused global CSS |
 | Language               | TypeScript 6 in strict mode                                    |
-| Images                 | Astro assets, Sharp, responsive AVIF and WebP variants         |
+| Images                 | Astro assets with cached build-time Sharp optimization         |
 | Typography             | Self-hosted Funnel Display and Funnel Sans variable fonts      |
 | Motion                 | Motion with reduced-motion-safe behavior                       |
 | Icons                  | Lucide Astro and Font Awesome brand SVGs                       |
@@ -112,6 +114,7 @@ src/
 └── styles/                    # Global design system and Tailwind entry
 
 scripts/
+├── prepare-vercel-output.mjs  # Clears only the generated Vercel output before a build
 ├── harden-vercel-output.mjs   # Removes unused generated runtime routes
 ├── verify-seo.mjs             # Verifies metadata, schema, indexing, and caching
 └── verify-vercel-output.mjs   # Verifies static output and function isolation
@@ -179,7 +182,7 @@ Public components do not import CMS or database records directly. They consume t
 
 Current content is versioned in [`src/data/`](./src/data/). When the separate admin application is connected, the source adapters can be replaced with validated Neon-backed implementations while keeping the component contract stable.
 
-Programme media is rendered through [`ManagedPicture.astro`](./src/components/ManagedPicture.astro). It accepts either Astro image metadata or a validated remote URL, which provides one rendering contract for the current local assets and future Cloudflare R2 media. The event archive contains authentic Global Business Excellence Awards ceremony photography copied from the sibling production repository. Every image must retain meaningful alternative text and explicit dimensions.
+Programme media is rendered through [`ManagedPicture.astro`](./src/components/ManagedPicture.astro). It accepts either Astro image metadata or a validated remote URL, which provides one rendering contract for the current local assets and future Cloudflare R2 media. Production builds generate a concise responsive WebP set through Sharp and emit only static files. The event archive contains authentic Global Business Excellence Awards ceremony photography copied from the sibling production repository. Every image must retain meaningful alternative text and explicit dimensions.
 
 Do not add dates, fees, winners, judges, sponsors, category totals, or programme claims unless they come from an approved programme source.
 
@@ -247,6 +250,7 @@ git diff --check
 - Every public route is emitted as a static file
 - Sitemap and robots are static
 - Only `/api/contact` maps to the Vercel function
+- The persistent Astro image cache is included in the Vercel build-cache contract
 - Unused runtime image and server-island routes are absent
 - Sharp native binaries are not packaged into the contact function
 - No top-level middleware, authentication package, or database client has entered this public runtime

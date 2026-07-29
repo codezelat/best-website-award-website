@@ -46,7 +46,7 @@ if (slides.length === 0) {
             fetchpriority={priority ? (index === 0 ? 'high' : 'low') : 'auto'}
             sizes={priority ? '(min-width: 980px) 54vw, 88vw' : '(min-width: 980px) 44vw, 92vw'}
             quality={priority ? 68 : 82}
-            formats={priority ? [] : ['avif']}
+            formats={[]}
             decoding={priority && index === 0 ? 'sync' : 'async'}
           />
         </div>
