@@ -7,6 +7,7 @@ import {
 } from '../../lib/server/contact-delivery';
 import { apiError, json, readForm, requireSameOrigin } from '../../lib/server/http';
 import { env, PaymentError } from '../../lib/server/payment-config';
+import { metaContext, queueMetaEvent } from '../../lib/server/meta-conversions';
 
 export const prerender = false;
 export const POST: APIRoute = async ({ request, clientAddress }) => {
@@ -27,6 +28,11 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       return json(200, { ok: true, message: 'Thank you. Your enquiry has been received.' });
     await verifyTurnstile(submission.turnstileToken, request, clientAddress);
     await sendContactEmail(deliveryDetails(submission));
+    await queueMetaEvent(
+      metaContext(request, clientAddress, submission),
+      'Contact',
+      submission.submissionId
+    );
     return json(200, {
       ok: true,
       message: 'Thank you. Your enquiry is now with the awards team. We’ll reply by email.'

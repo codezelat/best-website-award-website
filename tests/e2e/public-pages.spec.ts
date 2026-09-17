@@ -171,6 +171,11 @@ test('optional analytics remains off until consent and preference can be changed
   await page.route('https://connect.facebook.net/**', (route) =>
     route.fulfill({ contentType: 'application/javascript', body: '' })
   );
+  const metaRequests: Array<{ name?: string; reference?: string; action?: string }> = [];
+  await page.route('**/api/meta', (route) => {
+    metaRequests.push(route.request().postDataJSON());
+    return route.fulfill({ contentType: 'application/json', body: '{"ok":true}' });
+  });
   await page.route('https://www.googletagmanager.com/**', (route) =>
     route.fulfill({ contentType: 'application/javascript', body: '' })
   );
@@ -190,11 +195,14 @@ test('optional analytics remains off until consent and preference can be changed
       const pixelWindow = window as typeof window & { fbq?: { queue: unknown[][] } };
       return pixelWindow.fbq?.queue ?? [];
     });
-  expect(await pixelQueue()).toEqual([
+  expect((await pixelQueue()).slice(0, 3)).toEqual([
     ['consent', 'grant'],
     ['init', '1382406717339611'],
     ['track', 'PageView']
   ]);
+  await expect.poll(() => metaRequests.filter((event) => event.name === 'ViewContent').length).toBe(1);
+  const view = metaRequests.find((event) => event.name === 'ViewContent')!;
+  expect((await pixelQueue()).at(-1)).toEqual(['track', 'ViewContent', {}, { eventID: `bwa:ViewContent:${view.reference}` }]);
   await expect
     .poll(() => page.evaluate(() => localStorage.getItem('bwa_analytics_consent_v1')))
     .toBe('granted');
@@ -215,11 +223,11 @@ test('optional analytics remains off until consent and preference can be changed
     .poll(() => page.evaluate(() => localStorage.getItem('bwa_analytics_consent_v1')))
     .toBe('granted');
   await expect(page.locator('script[data-meta-pixel]')).toHaveCount(1);
-  expect((await pixelQueue()).filter((entry) => entry[0] === 'track')).toHaveLength(1);
+  expect((await pixelQueue()).filter((entry) => entry[0] === 'track')).toHaveLength(2);
 
   await page.reload();
   await expect(page.locator('script[data-meta-pixel]')).toHaveCount(1);
-  expect((await pixelQueue()).filter((entry) => entry[0] === 'track')).toEqual([
+  expect((await pixelQueue()).filter((entry) => entry[0] === 'track' && entry[1] === 'PageView')).toEqual([
     ['track', 'PageView']
   ]);
 });

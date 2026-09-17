@@ -8,6 +8,7 @@ import {
 import { paymentConfig, PaymentError } from './payment-config';
 import { decryptDetails, encryptDetails } from './payment-security';
 import { db } from './payment-store';
+import { metaContext, queueMetaEvent } from './meta-conversions';
 
 export interface LeadRecord {
   id: string;
@@ -106,6 +107,12 @@ export async function captureLead(
   } catch {
     // The encrypted lead is durable. Email recovery must not block a card payment.
   }
+  await queueMetaEvent(
+    metaContext(request, address, submission),
+    'Lead',
+    lead.id,
+    new Date(lead.created_at).getTime()
+  );
   return { captured: true };
 }
 

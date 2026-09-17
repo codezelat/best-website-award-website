@@ -8,6 +8,7 @@ import { hash, newSession, validSession } from '../../../lib/server/payment-secu
 import { verifyTurnstile } from '../../../lib/server/contact-delivery';
 import { getTransaction, validWebhookSignature } from '../../../lib/server/genie';
 import { captureLead, recoverLeads, verifiedLead } from '../../../lib/server/nomination-leads';
+import { metaContext, recoverMetaEvents } from '../../../lib/server/meta-conversions';
 import {
   findPayment,
   findPaymentByTransaction,
@@ -100,7 +101,14 @@ export const POST: APIRoute = async (context) => {
       });
     if (!(await verifiedLead(parsed.data, ownerHash)))
       await verifyTurnstile(parsed.data.turnstileToken, request, context.clientAddress);
-    return json(200, { ok: true, payment: await beginPayment(parsed.data, ownerHash) });
+    return json(200, {
+      ok: true,
+      payment: await beginPayment(
+        parsed.data,
+        ownerHash,
+        metaContext(request, context.clientAddress, parsed.data)
+      )
+    });
   } catch (error) {
     return apiError(error);
   }
@@ -140,11 +148,13 @@ export const GET: APIRoute = async (context) => {
         );
       }
       const leads = await leadRecovery;
+      const meta = await recoverMetaEvents().catch(() => ({ checked: 0, pending: true }));
       return json(pending || leads.pending ? 503 : 200, {
         ok: !pending && !leads.pending,
         checked: candidates.length,
         pending,
-        leads
+        leads,
+        meta
       });
     }
     if (context.params.action !== 'status') return json(404, { ok: false, message: 'Not found.' });

@@ -63,12 +63,13 @@ if (JSON.stringify(config.cache) !== JSON.stringify(['.cache/astro/**'])) {
 
 const functionRoutes = config.routes.filter((route) => route.dest === '_render');
 if (
-  functionRoutes.length !== 2 ||
+  functionRoutes.length !== 3 ||
   !functionRoutes.some((route) => route.src === '^/api/contact$') ||
+  !functionRoutes.some((route) => route.src === '^/api/meta$') ||
   !functionRoutes.some((route) => route.src.startsWith('^/api/nomination/'))
 ) {
   fail(
-    `expected only contact and nomination APIs to map to _render, found ${JSON.stringify(functionRoutes)}`
+    `expected only contact, meta and nomination APIs to map to _render, found ${JSON.stringify(functionRoutes)}`
   );
 }
 if (!(await exists(resolve(staticRoot, 'nomination-status/index.html'))))
@@ -99,7 +100,7 @@ const staticAssets = await readdir(resolve(staticRoot, '_astro'));
 for (const name of staticAssets.filter((name) => /\.(js|css)$/.test(name))) {
   const content = await readFile(resolve(staticRoot, '_astro', name), 'utf8');
   if (
-    /neondatabase|GENIE_API_KEY|PAYMENT_DATA_KEY|DATABASE_URL|TURNSTILE_SECRET_KEY|RESEND_API_KEY/.test(
+    /META_CAPI_ACCESS_TOKEN|neondatabase|GENIE_API_KEY|PAYMENT_DATA_KEY|DATABASE_URL|TURNSTILE_SECRET_KEY|RESEND_API_KEY/.test(
       content
     )
   ) {

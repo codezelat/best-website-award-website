@@ -814,7 +814,7 @@ export const utilityPages = {
       {
         title: 'Analytics and consent',
         body: [
-          'With your permission, this website uses Google Analytics 4 to understand aggregate page use, referring sources, device and browser characteristics, and interaction patterns so the public experience can be improved. Meta Pixel shares page-view information with Meta to measure advertising effectiveness.',
+          'With your permission, this website uses Google Analytics 4 to understand aggregate page use, referring sources, device and browser characteristics, and interaction patterns so the public experience can be improved. Meta Pixel and Conversions API share page views, contact actions, nomination leads and confirmed paid registrations with Meta to measure advertising effectiveness. Server events may include your IP address, browser information, Meta cookie identifiers and hashed email address or international phone number when supplied.',
           'Analytics is not loaded before consent. Google advertising storage, advertising personalisation and Google Signals are disabled in our configuration. You can change or withdraw your choice at any time through Cookie settings in the footer.'
         ]
       },
@@ -941,7 +941,7 @@ export const utilityPages = {
       {
         title: 'Optional Meta Pixel',
         body: [
-          'If you select Yes, help improve, Meta Pixel is loaded using pixel ID 1382406717339611 and sends a PageView event to Meta. It may set _fbp and _fbc cookies to measure advertising effectiveness.',
+          'If you select Yes, help improve, Meta Pixel is loaded using pixel ID 1382406717339611 and sends page views and conversion events to Meta. Conversions API also sends permitted events from our server. The _fbp and _fbc cookies support advertising measurement, and bwa_meta_consent links your permission to server events. Our consent cookie lasts up to 90 days.',
           'Declining leaves Meta Pixel unloaded. You can withdraw permission through Cookie settings in the footer.'
         ]
       },

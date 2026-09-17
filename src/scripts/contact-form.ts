@@ -1,4 +1,5 @@
 import type { PaymentView } from '../lib/payments/policy';
+import { trackBrowserConversion } from './meta-tracking';
 
 const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
 const select = form?.querySelector<HTMLSelectElement>('[data-enquiry-type]');
@@ -41,6 +42,7 @@ function prepareLead(data: FormData) {
           result.message || 'We could not save your details. Close this window and try again.'
         );
       leadCaptured = true;
+      trackBrowserConversion('Lead', String(data.get('submissionId')));
       capturedVerificationToken = String(data.get('cf-turnstile-response') || '');
     })().finally(() => {
       leadRequest = undefined;
@@ -211,6 +213,7 @@ form?.addEventListener('submit', async (event) => {
     const result = await response.json();
     if (!response.ok || !result.ok)
       throw new Error(result.message || 'We could not send your enquiry. Please try again.');
+    if (id) trackBrowserConversion('Contact', id.value);
     form.reset();
     leadCaptured = false;
     capturedVerificationToken = '';

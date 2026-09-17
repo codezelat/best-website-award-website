@@ -9,6 +9,7 @@ import type { ContactSubmission } from '../contact';
 import { deliveryDetails, sendContactEmail, type DeliveryDetails } from './contact-delivery';
 import { assertPaymentEnabled, paymentConfig, PaymentError } from './payment-config';
 import { decryptDetails, encryptDetails } from './payment-security';
+import { trackPaidMeta, type MetaContext } from './meta-conversions';
 import { createTransaction, getTransaction, safeCheckoutUrl, verifyTransaction } from './genie';
 import {
   claimDelivery,
@@ -50,7 +51,8 @@ export function paymentView(record: PaymentRecord): PaymentView {
 
 export async function beginPayment(
   submission: ContactSubmission,
-  ownerHash: string
+  ownerHash: string,
+  meta?: MetaContext
 ): Promise<PaymentView> {
   const config = assertPaymentEnabled();
   const existing = await findPayment(submission.submissionId);
@@ -58,7 +60,10 @@ export async function beginPayment(
   const row = await insertPayment({
     id: submission.submissionId,
     owner_hash: ownerHash,
-    details: encryptDetails(deliveryDetails(submission), submission.submissionId),
+    details: encryptDetails(
+      { ...deliveryDetails(submission), ...(meta ? { meta } : {}) },
+      submission.submissionId
+    ),
     amount: NOMINATION_AMOUNT,
     currency: NOMINATION_CURRENCY,
     terms_version: PAYMENT_TERMS_VERSION,
@@ -110,6 +115,7 @@ export async function beginPayment(
 }
 
 export async function deliverPaidNomination(record: PaymentRecord): Promise<PaymentRecord> {
+  await trackPaidMeta(record);
   if (record.state !== 'paid' || record.email_sent_at) return record;
   const claimed = await claimDelivery(record.id);
   if (!claimed) return (await findPayment(record.id))!;

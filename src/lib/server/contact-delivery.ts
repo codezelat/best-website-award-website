@@ -1,7 +1,9 @@
 import { enquiryLabels, escapeHtml, type ContactSubmission } from '../contact';
 import { env, PaymentError } from './payment-config';
+import type { MetaContext } from './meta-conversions';
 
 export interface DeliveryDetails {
+  meta?: MetaContext;
   submission: Omit<ContactSubmission, 'turnstileToken' | 'websiteConfirmation'>;
   from: string;
   to: string;
