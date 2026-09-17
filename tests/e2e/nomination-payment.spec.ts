@@ -99,7 +99,16 @@ test('nomination starts checkout only after explicit fee agreement', async ({ pa
 test('opening and dismissing payment saves one unpaid lead without starting checkout', async ({
   page
 }) => {
+  await page.addInitScript(() => localStorage.setItem('bwa_analytics_consent_v1', 'granted'));
+  await page.route('https://connect.facebook.net/**', (route) =>
+    route.fulfill({ body: '', contentType: 'application/javascript' })
+  );
+  await page.route('https://www.googletagmanager.com/**', (route) =>
+    route.fulfill({ body: '', contentType: 'application/javascript' })
+  );
+  await page.route('**/api/meta', (route) => route.fulfill({ json: { ok: true } }));
   await prepare(page);
+  const submission = await page.locator('[data-submission-id]').inputValue();
   let leads = 0;
   let starts = 0;
   await page.route('**/api/nomination/lead', async (route) => {
@@ -119,6 +128,15 @@ test('opening and dismissing payment saves one unpaid lead without starting chec
   await expect(page.locator('[data-payment-feedback]')).toBeHidden();
   expect(leads).toBe(1);
   expect(starts).toBe(0);
+  const events = await page.evaluate(
+    () => (window as typeof window & { fbq: { queue: unknown[][] } }).fbq.queue
+  );
+  expect(events.filter((entry) => entry[1] === 'Lead')).toEqual([
+    ['track', 'Lead', {}, { eventID: `bwa:Lead:${submission}` }]
+  ]);
+  expect(
+    events.some((entry) => ['Purchase', 'CompleteRegistration'].includes(String(entry[1])))
+  ).toBe(false);
 });
 
 test('lead storage failure keeps card payment disabled and supports retry', async ({ page }) => {

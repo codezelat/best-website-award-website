@@ -347,6 +347,9 @@ const bundledScripts = [
 
 for (const analyticsContract of [
   'G-L2FR8JR6ZJ',
+  '1382406717339611',
+  'connect.facebook.net/en_US/fbevents.js',
+  '/api/meta',
   'www.googletagmanager.com/gtag/js',
   'allow_google_signals',
   'allow_ad_personalization_signals',
@@ -369,6 +372,8 @@ const documentCacheControl = vercel.headers
 
 for (const analyticsOrigin of [
   'https://www.googletagmanager.com',
+  'https://connect.facebook.net',
+  'https://www.facebook.com',
   'https://www.google-analytics.com'
 ]) {
   if (!contentSecurityPolicy?.includes(analyticsOrigin)) {

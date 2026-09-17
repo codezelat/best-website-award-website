@@ -215,6 +215,8 @@ The site provides:
 
 Google Analytics 4 uses measurement ID `G-L2FR8JR6ZJ`. Analytics is not requested until a visitor selects **Yes, help improve**. Consent Mode v2 starts with analytics and advertising storage denied. Advertising signals and Google Signals remain disabled after analytics consent. Visitors can change their choice through **Cookie settings** in the footer.
 
+Meta Pixel and Conversions API use dataset `1382406717339611` under the same optional consent choice. ViewContent, Contact and Lead have matching browser/server event IDs; verified paid nominations generate server-only CompleteRegistration and Purchase events. See [Meta conversions](./docs/meta-conversions.md) for Production environment variables, encrypted retries and post-deployment testing.
+
 The cache policy includes `no-transform`, preventing intermediary services from rewriting production HTML or injecting another analytics script.
 
 ## Performance, caching, and security
@@ -262,7 +264,7 @@ git diff --check
 
 - Every public route is emitted as a static file
 - Sitemap and robots are static
-- Only contact and nomination APIs map to the Vercel function
+- Only contact, Meta measurement and nomination APIs map to the Vercel function
 - The persistent Astro image cache is included in the Vercel build-cache contract
 - Unused runtime image and server-island routes are absent
 - Sharp native binaries are not packaged into the contact function

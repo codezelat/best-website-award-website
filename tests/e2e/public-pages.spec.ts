@@ -200,9 +200,16 @@ test('optional analytics remains off until consent and preference can be changed
     ['init', '1382406717339611'],
     ['track', 'PageView']
   ]);
-  await expect.poll(() => metaRequests.filter((event) => event.name === 'ViewContent').length).toBe(1);
+  await expect
+    .poll(() => metaRequests.filter((event) => event.name === 'ViewContent').length)
+    .toBe(1);
   const view = metaRequests.find((event) => event.name === 'ViewContent')!;
-  expect((await pixelQueue()).at(-1)).toEqual(['track', 'ViewContent', {}, { eventID: `bwa:ViewContent:${view.reference}` }]);
+  expect((await pixelQueue()).at(-1)).toEqual([
+    'track',
+    'ViewContent',
+    {},
+    { eventID: `bwa:ViewContent:${view.reference}` }
+  ]);
   await expect
     .poll(() => page.evaluate(() => localStorage.getItem('bwa_analytics_consent_v1')))
     .toBe('granted');
@@ -227,9 +234,9 @@ test('optional analytics remains off until consent and preference can be changed
 
   await page.reload();
   await expect(page.locator('script[data-meta-pixel]')).toHaveCount(1);
-  expect((await pixelQueue()).filter((entry) => entry[0] === 'track' && entry[1] === 'PageView')).toEqual([
-    ['track', 'PageView']
-  ]);
+  expect(
+    (await pixelQueue()).filter((entry) => entry[0] === 'track' && entry[1] === 'PageView')
+  ).toEqual([['track', 'PageView']]);
 });
 
 for (const route of ['/privacy-policy', '/terms', '/cookies']) {
@@ -245,6 +252,14 @@ for (const route of ['/privacy-policy', '/terms', '/cookies']) {
 test('contact page publishes official channels and completes a website enquiry', async ({
   page
 }) => {
+  await page.addInitScript(() => localStorage.setItem('bwa_analytics_consent_v1', 'granted'));
+  await page.route('https://connect.facebook.net/**', (route) =>
+    route.fulfill({ body: '', contentType: 'application/javascript' })
+  );
+  await page.route('https://www.googletagmanager.com/**', (route) =>
+    route.fulfill({ body: '', contentType: 'application/javascript' })
+  );
+  await page.route('**/api/meta', (route) => route.fulfill({ json: { ok: true } }));
   await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js', (route) =>
     route.fulfill({
       contentType: 'application/javascript',
@@ -289,11 +304,18 @@ test('contact page publishes official channels and completes a website enquiry',
   await page.getByLabel('Website address *').fill('https://example.com');
   await page.locator('[data-enquiry-type]').selectOption('eligibility');
   await page.locator('input[name="privacyAccepted"]').check();
+  const submission = await page.locator('[data-submission-id]').inputValue();
   await page.getByRole('button', { name: 'Send enquiry' }).click();
 
   await expect(page.locator('[data-form-status]')).toContainText(
     'Thank you. Your website details are now with the awards team.'
   );
+  const events = await page.evaluate(
+    () => (window as typeof window & { fbq: { queue: unknown[][] } }).fbq.queue
+  );
+  expect(events.filter((entry) => entry[1] === 'Contact')).toEqual([
+    ['track', 'Contact', {}, { eventID: `bwa:Contact:${submission}` }]
+  ]);
 });
 
 test('unknown routes use the branded, non-indexable not-found page', async ({ page }) => {

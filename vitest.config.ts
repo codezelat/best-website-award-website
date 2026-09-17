@@ -5,6 +5,7 @@ export default defineConfig({
     include: [
       'tests/content/**/*.test.ts',
       'tests/contact/**/*.test.ts',
+      'tests/meta/**/*.test.ts',
       'tests/payments/**/*.test.ts'
     ]
   }

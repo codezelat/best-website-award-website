@@ -83,7 +83,6 @@ const measurementId = 'G-L2FR8JR6ZJ';
     analyticsWindow.fbq('consent', 'grant');
     analyticsWindow.fbq('init', '1382406717339611');
     analyticsWindow.fbq('track', 'PageView');
-    startMetaTracking();
   };
 
   const setConsent = (granted: boolean) => {
@@ -98,6 +97,7 @@ const measurementId = 'G-L2FR8JR6ZJ';
 
   const loadAnalytics = () => {
     loadMetaPixel();
+    startMetaTracking();
     if (!measurementId || analyticsLoaded || document.querySelector('[data-google-analytics]')) {
       return;
     }

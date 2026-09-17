@@ -34,7 +34,7 @@ export function prepareMetaConsent() {
 }
 
 export function revokeMetaTracking() {
-  // fetch captures the current consent cookie before it is removed locally.
+  // Include the consent capability explicitly before removing its cookie.
   void fetch('/api/meta', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -84,7 +84,7 @@ document.addEventListener('click', (event) => {
       ? 'email'
       : url.protocol === 'tel:'
         ? 'phone'
-        : ['wa.me', 'api.whatsapp.com'].includes(url.hostname)
+        : ['wa.me', 'wa.link', 'api.whatsapp.com'].includes(url.hostname)
           ? 'whatsapp'
           : undefined;
   if (channel) trackPublic('Contact', channel);
