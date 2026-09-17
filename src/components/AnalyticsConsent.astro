@@ -14,8 +14,8 @@ const measurementId = 'G-L2FR8JR6ZJ';
   <div class="analytics-consent__copy">
     <h2 id="analytics-consent-title">A better website, with your help.</h2>
     <p id="analytics-consent-description">
-      Optional insights show us what people find useful. Choose what works for you, and change it
-      anytime. <a href="/cookies">Privacy choices</a>
+      Allow Google Analytics and Meta Pixel to measure site use and advertising effectiveness.
+      Choose what works for you, and change it anytime. <a href="/cookies">Privacy choices</a>
     </p>
   </div>
   <div class="analytics-consent__actions">
@@ -33,6 +33,14 @@ const measurementId = 'G-L2FR8JR6ZJ';
 </section>
 
 <script>
+  type Pixel = {
+    (...args: unknown[]): void;
+    callMethod?: (...args: unknown[]) => void;
+    queue: unknown[][];
+    push: Pixel;
+    loaded: boolean;
+    version: string;
+  };
   const STORAGE_KEY = 'bwa_analytics_consent_v1';
   const consentPanel = document.querySelector<HTMLElement>('[data-analytics-consent]');
   const acceptButton = document.querySelector<HTMLButtonElement>('[data-analytics-accept]');
@@ -40,12 +48,44 @@ const measurementId = 'G-L2FR8JR6ZJ';
   const analyticsWindow = window as typeof window & {
     dataLayer: unknown[][];
     gtag: (...args: unknown[]) => void;
+    fbq?: Pixel;
+    _fbq?: Pixel;
   };
 
   const measurementId = consentPanel?.dataset.measurementId;
   let analyticsLoaded = false;
+  let pixelLoaded = false;
+
+  const loadMetaPixel = () => {
+    if (pixelLoaded) return;
+    pixelLoaded = true;
+
+    if (!analyticsWindow.fbq) {
+      const pixel = function (...args: unknown[]) {
+        if (pixel.callMethod) pixel.callMethod(...args);
+        else pixel.queue.push(args);
+      } as Pixel;
+      pixel.queue = [];
+      pixel.push = pixel;
+      pixel.loaded = true;
+      pixel.version = '2.0';
+      analyticsWindow.fbq = pixel;
+      analyticsWindow._fbq ??= pixel;
+
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://connect.facebook.net/en_US/fbevents.js';
+      script.dataset.metaPixel = 'true';
+      document.head.append(script);
+    }
+
+    analyticsWindow.fbq('consent', 'grant');
+    analyticsWindow.fbq('init', '1382406717339611');
+    analyticsWindow.fbq('track', 'PageView');
+  };
 
   const setConsent = (granted: boolean) => {
+    analyticsWindow.fbq?.('consent', granted ? 'grant' : 'revoke');
     analyticsWindow.gtag('consent', 'update', {
       ad_storage: 'denied',
       analytics_storage: granted ? 'granted' : 'denied',
@@ -55,6 +95,7 @@ const measurementId = 'G-L2FR8JR6ZJ';
   };
 
   const loadAnalytics = () => {
+    loadMetaPixel();
     if (!measurementId || analyticsLoaded || document.querySelector('[data-google-analytics]')) {
       return;
     }
@@ -78,7 +119,7 @@ const measurementId = 'G-L2FR8JR6ZJ';
   const removeAnalyticsCookies = () => {
     document.cookie.split(';').forEach((cookie) => {
       const name = cookie.split('=')[0]?.trim();
-      if (!name?.startsWith('_ga')) return;
+      if (!name || (!name.startsWith('_ga') && !['_fbp', '_fbc'].includes(name))) return;
 
       document.cookie = `${name}=; Max-Age=0; path=/; SameSite=Lax`;
       document.cookie = `${name}=; Max-Age=0; path=/; domain=.${location.hostname}; SameSite=Lax`;

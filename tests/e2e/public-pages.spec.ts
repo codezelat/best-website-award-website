@@ -168,6 +168,9 @@ test('FAQ publishes complete visible answers and matching structured data', asyn
 test('optional analytics remains off until consent and preference can be changed', async ({
   page
 }) => {
+  await page.route('https://connect.facebook.net/**', (route) =>
+    route.fulfill({ contentType: 'application/javascript', body: '' })
+  );
   await page.route('https://www.googletagmanager.com/**', (route) =>
     route.fulfill({ contentType: 'application/javascript', body: '' })
   );
@@ -176,10 +179,22 @@ test('optional analytics remains off until consent and preference can be changed
   const consent = page.getByRole('dialog', { name: 'A better website, with your help.' });
   await expect(consent).toBeVisible();
   await expect(page.locator('script[data-google-analytics]')).toHaveCount(0);
+  await expect(page.locator('script[data-meta-pixel]')).toHaveCount(0);
 
   await page.getByRole('button', { name: 'Yes, help improve' }).click({ force: true });
   await expect(consent).toBeHidden();
   await expect(page.locator('script[data-google-analytics]')).toHaveCount(1);
+  await expect(page.locator('script[data-meta-pixel]')).toHaveCount(1);
+  const pixelQueue = () =>
+    page.evaluate(() => {
+      const pixelWindow = window as typeof window & { fbq?: { queue: unknown[][] } };
+      return pixelWindow.fbq?.queue ?? [];
+    });
+  expect(await pixelQueue()).toEqual([
+    ['consent', 'grant'],
+    ['init', '1382406717339611'],
+    ['track', 'PageView']
+  ]);
   await expect
     .poll(() => page.evaluate(() => localStorage.getItem('bwa_analytics_consent_v1')))
     .toBe('granted');
@@ -190,6 +205,23 @@ test('optional analytics remains off until consent and preference can be changed
   await expect
     .poll(() => page.evaluate(() => localStorage.getItem('bwa_analytics_consent_v1')))
     .toBe('denied');
+  expect((await pixelQueue()).at(-1)).toEqual(['consent', 'revoke']);
+
+  await page.getByRole('button', { name: 'Cookie settings' }).click();
+  await expect(consent).toBeVisible();
+  await page.getByRole('button', { name: 'Yes, help improve' }).focus();
+  await page.getByRole('button', { name: 'Yes, help improve' }).press('Enter');
+  await expect
+    .poll(() => page.evaluate(() => localStorage.getItem('bwa_analytics_consent_v1')))
+    .toBe('granted');
+  await expect(page.locator('script[data-meta-pixel]')).toHaveCount(1);
+  expect((await pixelQueue()).filter((entry) => entry[0] === 'track')).toHaveLength(1);
+
+  await page.reload();
+  await expect(page.locator('script[data-meta-pixel]')).toHaveCount(1);
+  expect((await pixelQueue()).filter((entry) => entry[0] === 'track')).toEqual([
+    ['track', 'PageView']
+  ]);
 });
 
 for (const route of ['/privacy-policy', '/terms', '/cookies']) {

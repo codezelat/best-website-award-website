@@ -814,7 +814,7 @@ export const utilityPages = {
       {
         title: 'Analytics and consent',
         body: [
-          'With your permission, this website uses Google Analytics 4 to understand aggregate page use, referring sources, device and browser characteristics, and interaction patterns so the public experience can be improved.',
+          'With your permission, this website uses Google Analytics 4 to understand aggregate page use, referring sources, device and browser characteristics, and interaction patterns so the public experience can be improved. Meta Pixel shares page-view information with Meta to measure advertising effectiveness.',
           'Analytics is not loaded before consent. Google advertising storage, advertising personalisation and Google Signals are disabled in our configuration. You can change or withdraw your choice at any time through Cookie settings in the footer.'
         ]
       },
@@ -927,7 +927,7 @@ export const utilityPages = {
       {
         title: 'Current use',
         body: [
-          'The site does not use advertising or account-session cookies. Hosting and security infrastructure may use technical mechanisms needed to deliver and protect requests.',
+          'The site uses optional analytics and advertising measurement cookies only with your permission. Hosting and security infrastructure may use technical mechanisms needed to deliver and protect requests.',
           'Your analytics preference is saved in local storage as bwa_analytics_consent_v1 so the site can respect your choice on later visits.'
         ]
       },
@@ -936,6 +936,13 @@ export const utilityPages = {
         body: [
           'If you select Yes, help improve, Google Analytics 4 is loaded using measurement ID G-L2FR8JR6ZJ. It may set _ga and _ga_* cookies to distinguish site usage over time.',
           'We limit analytics cookies to 90 days and disable Google advertising storage, advertising personalisation and Google Signals. Declining analytics leaves the measurement tag unloaded.'
+        ]
+      },
+      {
+        title: 'Optional Meta Pixel',
+        body: [
+          'If you select Yes, help improve, Meta Pixel is loaded using pixel ID 1382406717339611 and sends a PageView event to Meta. It may set _fbp and _fbc cookies to measure advertising effectiveness.',
+          'Declining leaves Meta Pixel unloaded. You can withdraw permission through Cookie settings in the footer.'
         ]
       },
       {
@@ -948,7 +955,7 @@ export const utilityPages = {
       {
         title: 'Change or withdraw your choice',
         body: [
-          'Use Cookie settings in the footer to allow, decline or withdraw analytics consent. Withdrawing consent updates the analytics consent state and removes Best Website Awards cookies whose names begin with _ga.',
+          'Use Cookie settings in the footer to allow, decline or withdraw analytics consent. Withdrawing consent updates Google Analytics and Meta Pixel consent and removes Best Website Awards cookies whose names begin with _ga, along with _fbp and _fbc.',
           'You can also review, block or remove stored cookies through your browser privacy settings.'
         ]
       }
