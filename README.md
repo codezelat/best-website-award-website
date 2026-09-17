@@ -217,6 +217,8 @@ Google Analytics 4 uses measurement ID `G-L2FR8JR6ZJ`. Analytics is not requeste
 
 Meta Pixel and Conversions API use dataset `1382406717339611` under the same optional consent choice. ViewContent, Contact and Lead have matching browser/server event IDs; verified paid nominations generate server-only CompleteRegistration and Purchase events. See [Meta conversions](./docs/meta-conversions.md) for Production environment variables, encrypted retries and post-deployment testing.
 
+For normal production operation, keep `META_CAPI_ENABLED=true` and the server-only `META_CAPI_ACCESS_TOKEN` configured in the existing Vercel project's Production environment. Remove `META_TEST_EVENT_CODE` after testing, then redeploy so the running application picks up the change. The test code is a debugging aid, not a guarantee that events are isolated from normal reporting. Keep the existing database and payment variables unchanged, and never commit the access token.
+
 The cache policy includes `no-transform`, preventing intermediary services from rewriting production HTML or injecting another analytics script.
 
 ## Performance, caching, and security
