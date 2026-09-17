@@ -186,7 +186,8 @@ test('optional analytics remains off until consent and preference can be changed
   await expect(page.locator('script[data-google-analytics]')).toHaveCount(0);
   await expect(page.locator('script[data-meta-pixel]')).toHaveCount(0);
 
-  await page.getByRole('button', { name: 'Yes, help improve' }).click({ force: true });
+  await page.getByRole('button', { name: 'Yes, help improve' }).focus();
+  await page.getByRole('button', { name: 'Yes, help improve' }).press('Enter');
   await expect(consent).toBeHidden();
   await expect(page.locator('script[data-google-analytics]')).toHaveCount(1);
   await expect(page.locator('script[data-meta-pixel]')).toHaveCount(1);
@@ -216,7 +217,8 @@ test('optional analytics remains off until consent and preference can be changed
 
   await page.getByRole('button', { name: 'Cookie settings' }).click();
   await expect(consent).toBeVisible();
-  await page.getByRole('button', { name: 'Not now' }).click({ force: true });
+  await page.getByRole('button', { name: 'Not now' }).focus();
+  await page.getByRole('button', { name: 'Not now' }).press('Enter');
   await expect
     .poll(() => page.evaluate(() => localStorage.getItem('bwa_analytics_consent_v1')))
     .toBe('denied');
