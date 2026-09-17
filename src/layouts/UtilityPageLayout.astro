@@ -6,7 +6,7 @@ import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import { legalNavigation, siteNavigation } from '../data/site';
 import type { UtilityPageContent } from '../lib/content/types';
-import iconmark from '../assets/brand/iconmark.png';
+import { brandMetadata } from '../data/brand';
 import BaseLayout from './BaseLayout.astro';
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const { content } = Astro.props;
-const socialImage = new URL(iconmark.src, Astro.site);
+const socialImage = new URL(brandMetadata.logo, Astro.site);
 const getSectionId = (title: string, index: number) => {
   const slug = title
     .toLowerCase()
@@ -30,8 +30,8 @@ const getSectionId = (title: string, index: number) => {
   description={content.seo.description}
   image={socialImage}
   imageAlt={`Best Website Awards: ${content.title}`}
-  imageWidth={iconmark.width}
-  imageHeight={iconmark.height}
+  imageWidth={brandMetadata.logoWidth}
+  imageHeight={brandMetadata.logoHeight}
   pageType={content.seo.pageType}
   noIndex={content.seo.noIndex}
   faqItems={content.slug === 'faq' ? content.sections : undefined}

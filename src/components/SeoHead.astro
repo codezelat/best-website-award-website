@@ -1,6 +1,7 @@
 ---
 import type { PageSeo, StructuredOrganization, UtilitySection } from '../lib/content/types';
 import { socialLinks } from '../data/site';
+import { brandMetadata } from '../data/brand';
 
 interface Props {
   title: string;
@@ -38,6 +39,7 @@ const {
 } = Astro.props;
 
 const siteId = `${canonical.origin}/#website`;
+const socialImage = new URL(brandMetadata.socialImage, canonical.origin);
 const organizationId = `${canonical.origin}/#organization`;
 const pageId = `${canonical.href}#webpage`;
 const isHomepage = canonical.pathname === '/';
@@ -159,7 +161,10 @@ const structuredData = {
       sameAs: socialLinks.filter((item) => item.network !== 'whatsapp').map((item) => item.href),
       logo: {
         '@type': 'ImageObject',
-        url: `${canonical.origin}/favicon.png`
+        url: new URL(brandMetadata.logo, canonical.origin).href,
+        contentUrl: new URL(brandMetadata.logo, canonical.origin).href,
+        width: brandMetadata.logoWidth,
+        height: brandMetadata.logoHeight
       },
       parentOrganization: {
         '@type': 'Organization',
@@ -213,16 +218,17 @@ const structuredData = {
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
-<meta property="og:image" content={image} />
-<meta property="og:image:secure_url" content={image} />
-<meta property="og:image:alt" content={imageAlt} />
-{imageWidth && <meta property="og:image:width" content={String(imageWidth)} />}
-{imageHeight && <meta property="og:image:height" content={String(imageHeight)} />}
+<meta property="og:image" content={socialImage} />
+<meta property="og:image:secure_url" content={socialImage} />
+<meta property="og:image:type" content={brandMetadata.socialImageType} />
+<meta property="og:image:alt" content={brandMetadata.socialImageAlt} />
+<meta property="og:image:width" content={String(brandMetadata.socialImageWidth)} />
+<meta property="og:image:height" content={String(brandMetadata.socialImageHeight)} />
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={image} />
-<meta name="twitter:image:alt" content={imageAlt} />
+<meta name="twitter:image" content={socialImage} />
+<meta name="twitter:image:alt" content={brandMetadata.socialImageAlt} />
 
 <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />

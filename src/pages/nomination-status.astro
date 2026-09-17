@@ -4,7 +4,7 @@ import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { siteNavigation, legalNavigation } from '../data/site';
 import { getNominationContent } from '../lib/content/nomination';
-import iconmark from '../assets/brand/iconmark.png';
+import { brandMetadata } from '../data/brand';
 import { Check } from '@lucide/astro';
 import '../styles/nomination.css';
 export const prerender = true;
@@ -14,7 +14,9 @@ const content = await getNominationContent();
 <BaseLayout
   title="Nomination status | Best Website Awards"
   description="Check your secure payment and website nomination status."
-  image={new URL(iconmark.src, Astro.site)}
+  image={new URL(brandMetadata.logo, Astro.site)}
+  imageWidth={brandMetadata.logoWidth}
+  imageHeight={brandMetadata.logoHeight}
   noIndex
   disableAnalytics
 >

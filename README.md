@@ -197,6 +197,10 @@ Do not add dates, fees, winners, judges, sponsors, category totals, or programme
 
 ## SEO, analytics, and privacy
 
+All routes share a dedicated 1200 by 630 JPEG brand preview for Open Graph and Twitter cards. Page photography remains independently described in JSON-LD and the image sitemap. The approved header logo supplies the favicon, Apple touch icon and manifest icons, including a maskable variant. In Astro these files belong in `public/`, so the real multi-size ICO is served at `/favicon.ico`, not from an `app/` directory.
+
+Run `npm run assets:brand` manually when the approved brand artwork changes. This uses the existing Sharp and Playwright development tools; it adds no production runtime work. Commit the generated static assets and bump their metadata URL version when replacing artwork. The SEO gate checks the JPEG dimensions and size, ICO frames, manifest icons and metadata across every indexable route. Existing social previews may remain cached by sharing services after deployment.
+
 [`SeoHead.astro`](./src/components/SeoHead.astro) owns canonical URLs, robots directives, Open Graph metadata, Twitter metadata, and JSON-LD. The verification script checks rendered production output rather than only checking source props.
 
 The site provides:

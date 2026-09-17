@@ -1,5 +1,6 @@
 import { readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import sharp from 'sharp';
 
 const origin = 'https://bestwebsiteaward.com';
 const root = resolve(import.meta.dirname, '..');
@@ -45,6 +46,44 @@ const getStructuredData = (html) => {
 
 const pageDocuments = [];
 
+const socialPath = '/images/brand/social-preview-v2.jpg';
+const socialFile = await readFile(resolve(buildRoot, `.${socialPath}`));
+const socialMetadata = await sharp(socialFile).metadata();
+if (
+  socialMetadata.format !== 'jpeg' ||
+  socialMetadata.width !== 1200 ||
+  socialMetadata.height !== 630 ||
+  socialFile.length > 150_000
+)
+  fail('social preview must be a lightweight 1200 x 630 JPEG');
+
+const ico = await readFile(resolve(buildRoot, 'favicon.ico'));
+if (ico.readUInt16LE(0) !== 0 || ico.readUInt16LE(2) !== 1 || ico.readUInt16LE(4) !== 3) {
+  fail('favicon.ico must be a real three-frame ICO');
+}
+for (const [index, size] of [16, 32, 48].entries()) {
+  const entry = 6 + index * 16;
+  const length = ico.readUInt32LE(entry + 8);
+  const offset = ico.readUInt32LE(entry + 12);
+  const metadata = await sharp(ico.subarray(offset, offset + length)).metadata();
+  if (
+    ico[entry] !== size ||
+    ico[entry + 1] !== size ||
+    metadata.width !== size ||
+    metadata.height !== size
+  ) {
+    fail(`favicon.ico has an invalid ${size}px frame`);
+  }
+}
+const manifest = JSON.parse(await readFile(resolve(buildRoot, 'site.webmanifest'), 'utf8'));
+for (const icon of manifest.icons) {
+  const metadata = await sharp(resolve(buildRoot, `.${icon.src.split('?')[0]}`)).metadata();
+  if (`${metadata.width}x${metadata.height}` !== icon.sizes || metadata.format !== 'png') {
+    fail(`manifest icon ${icon.src} does not match its declared dimensions or format`);
+  }
+}
+if (!manifest.icons.some((icon) => icon.purpose === 'maskable')) fail('missing maskable app icon');
+
 for (const route of indexableRoutes) {
   const html = await readRoute(route);
   const canonical = route === '/' ? `${origin}/` : `${origin}${route}`;
@@ -84,6 +123,24 @@ for (const route of indexableRoutes) {
   ) {
     fail(`${route} is missing complete social image metadata`);
   }
+  if (
+    openGraphImage !== `${origin}${socialPath}` ||
+    openGraphWidth !== '1200' ||
+    openGraphHeight !== '630' ||
+    getMetaContent(html, 'property="og:image:type"') !== 'image/jpeg' ||
+    getMetaContent(html, 'property="og:image:secure_url"') !== openGraphImage ||
+    getMetaContent(html, 'name="twitter:image"') !== openGraphImage
+  )
+    fail(`${route} does not use the current branded social preview consistently`);
+  for (const path of [
+    '/favicon.ico?v=2',
+    '/favicon-16x16.png?v=2',
+    '/favicon-32x32.png?v=2',
+    '/apple-touch-icon.png?v=2',
+    '/site.webmanifest?v=2'
+  ]) {
+    if (!html.includes(`href="${path}"`)) fail(`${route} is missing ${path}`);
+  }
   if (!html.includes('<html lang="en-GB">')) {
     fail(`${route} does not declare the site language as en-GB`);
   }
@@ -118,12 +175,27 @@ for (const route of indexableRoutes) {
   }
   const pageNode = graph.find((item) => item['@id'] === `${canonical}#webpage`);
   if (
-    pageNode?.primaryImageOfPage?.contentUrl !== openGraphImage ||
-    pageNode?.primaryImageOfPage?.url !== openGraphImage ||
-    String(pageNode?.primaryImageOfPage?.width) !== openGraphWidth ||
-    String(pageNode?.primaryImageOfPage?.height) !== openGraphHeight
+    !pageNode?.primaryImageOfPage?.contentUrl?.startsWith(`${origin}/`) ||
+    pageNode?.primaryImageOfPage?.url !== pageNode?.primaryImageOfPage?.contentUrl ||
+    !pageNode?.primaryImageOfPage?.caption ||
+    !pageNode?.primaryImageOfPage?.width ||
+    !pageNode?.primaryImageOfPage?.height
   ) {
-    fail(`${route} primary image structured data does not match its social image`);
+    fail(`${route} is missing its separate page-image structured data`);
+  }
+  const pageImage = pageNode.primaryImageOfPage;
+  const pageImageMetadata = await sharp(
+    resolve(buildRoot, `.${new URL(pageImage.contentUrl).pathname}`)
+  ).metadata();
+  if (
+    pageImageMetadata.width !== pageImage.width ||
+    pageImageMetadata.height !== pageImage.height
+  ) {
+    fail(`${route} primary image dimensions do not match the emitted asset`);
+  }
+  const siteOrganization = graph.find((item) => item['@id'] === `${origin}/#organization`);
+  if (siteOrganization?.logo?.url !== `${origin}/icon-512.png?v=2`) {
+    fail(`${route} structured data uses an outdated brand mark`);
   }
 
   if (route === '/faq') {

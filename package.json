@@ -11,6 +11,7 @@
     "path-to-regexp": "^6.3.0"
   },
   "scripts": {
+    "assets:brand": "node scripts/generate-brand-assets.mjs",
     "payments:migrate": "node --env-file=.env scripts/migrate-payments.mjs",
     "payments:reconcile": "node --env-file=.env scripts/reconcile-payments.mjs",
     "dev": "astro dev",
