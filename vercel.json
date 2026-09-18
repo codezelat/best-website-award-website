@@ -2,6 +2,13 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/pdf",
+      "destination": "https://drive.google.com/file/d/1bnGU1BllHBtPWN15MCHFGvnYSoV2SK3S/view?usp=sharing",
+      "permanent": true
+    }
+  ],
   "crons": [
     {
       "path": "/api/nomination/reconcile",
