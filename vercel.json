@@ -7,6 +7,11 @@
       "source": "/pdf",
       "destination": "https://drive.google.com/file/d/1bnGU1BllHBtPWN15MCHFGvnYSoV2SK3S/view?usp=sharing",
       "permanent": true
+    },
+    {
+      "source": "/how-to-apply",
+      "destination": "https://drive.google.com/file/d/1lRGrGfCkLzA0SIOP-qu7vpyqYGaJCDUJ/view?usp=sharing",
+      "permanent": true
     }
   ],
   "crons": [
