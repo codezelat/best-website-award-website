@@ -247,6 +247,12 @@ if (!getMetaContent(paymentStatus, 'name="robots"')?.startsWith('noindex'))
   fail('payment status must be noindex');
 if (paymentStatus.includes('data-consent'))
   fail('payment status must not load analytics consent code');
+const participation = await readRoute('/accept');
+if (!getMetaContent(participation, 'name="robots"')?.startsWith('noindex'))
+  fail('participation must be noindex');
+if (participation.includes('data-consent')) fail('participation must not load analytics');
+if (participation.includes('Local preview') || participation.includes('data-demo="true"'))
+  fail('local demo must never enter production HTML');
 const descriptions = pageDocuments.map((page) => page.description);
 if (new Set(titles).size !== titles.length) fail('indexable pages contain duplicate titles');
 if (new Set(descriptions).size !== descriptions.length) {

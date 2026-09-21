@@ -185,6 +185,14 @@ The contact flow is deliberately isolated from the static site:
 
 The function has a 30-second Vercel duration limit, while individual provider calls use five-second timeouts. Public page requests never invoke it.
 
+## Participation confirmations
+
+`/accept` is a separate, unlisted, noindex page for recipients who have accepted their selection by email. It checks an existing paid nomination, offers Packages A/B/C, calculates attendees and takes a separate participation payment through the existing Genie gateway. Customer and team confirmations use the saved nomination contact details.
+
+Run `npm run dev:accept` and open [the local preview](http://127.0.0.1:4322/accept). Use **example.com** to try every step and simulate confirmation without charging a card or sending email. This preview is restricted to local development and is removed from production builds.
+
+Before deploying, apply migration `004_participation_payments.sql` using `npm run payments:migrate` and add `PARTICIPATION_PAYMENTS_ENABLED=true` to the existing Vercel Production environment. All existing gateway, database, encryption, Turnstile and email settings remain required. See [Participation payments](./docs/participation.md) for pricing, matching rules, recovery and deployment checks.
+
 ## Content and media
 
 Public components do not import CMS or database records directly. They consume typed contracts from [`src/lib/content/types.ts`](./src/lib/content/types.ts) through the content-source modules in [`src/lib/content/`](./src/lib/content/).
@@ -266,7 +274,7 @@ git diff --check
 
 - Every public route is emitted as a static file
 - Sitemap and robots are static
-- Only contact, Meta measurement and nomination APIs map to the Vercel function
+- Only contact, Meta measurement, nomination and participation APIs map to the Vercel function
 - The persistent Astro image cache is included in the Vercel build-cache contract
 - Unused runtime image and server-island routes are absent
 - Sharp native binaries are not packaged into the contact function

@@ -18,6 +18,10 @@
     {
       "path": "/api/nomination/reconcile",
       "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/participation/reconcile",
+      "schedule": "0 4 * * *"
     }
   ],
   "headers": [
@@ -156,6 +160,31 @@
         {
           "key": "X-Robots-Tag",
           "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/accept",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        },
+        {
+          "key": "CDN-Cache-Control",
+          "value": "no-store"
+        },
+        {
+          "key": "Vercel-CDN-Cache-Control",
+          "value": "no-store"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
         }
       ]
     }

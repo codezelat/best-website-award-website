@@ -24,7 +24,8 @@
     "format:check": "prettier --check .",
     "verify:runtime": "node scripts/verify-vercel-output.mjs",
     "verify": "npm run format:check && npm run check && npm run test && npm run build && npm run verify:runtime && npm run verify:seo",
-    "verify:full": "npm run verify && npm run test:e2e"
+    "verify:full": "npm run verify && npm run test:e2e",
+    "dev:accept": "ACCEPT_DEMO=true astro dev --host 127.0.0.1 --port 4322"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",

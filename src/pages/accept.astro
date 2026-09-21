@@ -1,0 +1,255 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BrandLogo from '../components/BrandLogo.astro';
+import { brandMetadata } from '../data/brand';
+import { getParticipationContent } from '../lib/content/participation';
+import { PACKAGES, money, EXTRA_TROPHY_AMOUNT } from '../lib/participation/policy';
+import { ArrowRight, Check, LockKeyhole, Minus, Plus } from '@lucide/astro';
+import '../styles/accept.css';
+export const prerender = true;
+const content = await getParticipationContent();
+const demo =
+  import.meta.env.DEV && (process.env.ACCEPT_DEMO || import.meta.env.ACCEPT_DEMO) === 'true';
+const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
+---
+
+<BaseLayout
+  title="Confirm participation | Best Website Awards 2026"
+  description="Confirm your participation package and event attendees for Best Website Awards 2026."
+  image={new URL(brandMetadata.logo, Astro.site)}
+  imageWidth={brandMetadata.logoWidth}
+  imageHeight={brandMetadata.logoHeight}
+  noIndex
+  disableAnalytics
+>
+  <div class="accept-shell" data-accept data-demo={demo ? 'true' : 'false'}>
+    <header class="accept-header">
+      <a href="/" aria-label="Best Website Awards home"><BrandLogo /></a>
+    </header>
+    <main id="main-content" class="accept-main">
+      <div class="accept-intro">
+        <p class="accept-kicker">Best Website Awards 2026</p><h1>{content.title}</h1>
+      </div>
+      <ol class="accept-steps" aria-label="Participation steps">
+        <li aria-current="step" data-step-marker="website"><span>01</span> Website</li><li
+          data-step-marker="package"
+        >
+          <span>02</span> Package
+        </li><li data-step-marker="attendees"><span>03</span> Attendees &amp; payment</li>
+      </ol>
+      <p data-accept-error class="accept-error" role="alert" hidden></p>
+      <section data-panel="website" aria-label="Check your website" class="accept-lookup">
+        <p>Enter the website from your awarded nomination to continue.</p>
+        <form data-website-form>
+          <label for="accept-website">Website address</label><input
+            id="accept-website"
+            name="website"
+            type="text"
+            inputmode="url"
+            autocomplete="url"
+            placeholder="yourwebsite.com"
+            maxlength="500"
+            required
+            aria-describedby="accept-website-help"
+          /><p id="accept-website-help" class="accept-note">With or without https:// or www.</p>
+          {
+            !demo && (
+              <div
+                class="cf-turnstile"
+                data-sitekey={siteKey}
+                data-theme="light"
+                data-action="contact_form"
+              />
+            )
+          }
+          <button class="accept-primary" type="submit"
+            ><span data-lookup-label>Check website</span><ArrowRight
+              size={18}
+              aria-hidden="true"
+            /></button
+          >
+        </form>
+      </section>
+      <section data-panel="package" aria-labelledby="accept-package-title" hidden>
+        <div class="accept-section-heading">
+          <div>
+            <p class="accept-verified">
+              <Check size={16} aria-hidden="true" /> Website verified <span data-website-label
+              ></span>
+            </p><h2 id="accept-package-title" tabindex="-1">Choose your package.</h2>
+          </div><button class="accept-text-button" type="button" data-back="website"
+            >Change website</button
+          >
+        </div>
+        <fieldset class="accept-packages">
+          <legend class="accept-sr-only">Participation package</legend>{
+            content.packages.map((pkg) => (
+              <label class="accept-package">
+                <>
+                  <input type="radio" name="package" value={pkg.code} checked={pkg.code === 'A'} />
+                  <span class="accept-package-top">
+                    <>
+                      <span>Package {pkg.code}</span>
+                      <span class="accept-radio-dot" />
+                    </>
+                  </span>
+                  <span class="accept-package-title">{pkg.title}</span>
+                  <span class="accept-package-description">{pkg.description}</span>
+                  <strong class="accept-price">{money(PACKAGES[pkg.code].amount)}</strong>
+                  <ul>
+                    {pkg.benefits.map((benefit) => (
+                      <li>
+                        <Check size={16} aria-hidden="true" />
+                        {benefit}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              </label>
+            ))
+          }
+        </fieldset>
+        <label class="accept-addon" data-trophy-wrap hidden
+          ><input type="checkbox" data-extra-trophy /><span
+            ><strong>Add a second trophy <span>+ {money(EXTRA_TROPHY_AMOUNT)}</span></strong><small
+              >{content.extraTrophy}</small
+            ></span
+          ></label
+        >
+        <div class="accept-actions">
+          <p class="accept-note">Dinner buffet included for every attendee.</p><button
+            type="button"
+            class="accept-primary"
+            data-next-attendees>Next: attendees <ArrowRight size={18} aria-hidden="true" /></button
+          >
+        </div>
+      </section>
+      <section data-panel="attendees" aria-labelledby="accept-attendees-title" hidden>
+        <div class="accept-section-heading">
+          <h2 id="accept-attendees-title" tabindex="-1">Confirm your attendees.</h2><button
+            class="accept-text-button"
+            type="button"
+            data-back="package">Change package</button
+          >
+        </div>
+        <div class="accept-payment-grid">
+          <div class="accept-attendees">
+            <label for="accept-attendees">Total attendees</label><p
+              class="accept-note"
+              data-attendee-inclusion
+            >
+            </p><div class="accept-counter">
+              <button type="button" aria-label="Remove one attendee" data-decrease
+                ><Minus size={20} aria-hidden="true" /></button
+              ><input
+                id="accept-attendees"
+                type="number"
+                min="1"
+                max="10"
+                step="1"
+                value="1"
+                inputmode="numeric"
+                aria-describedby="accept-attendee-help"
+              /><button type="button" aria-label="Add one attendee" data-increase
+                ><Plus size={20} aria-hidden="true" /></button
+              >
+            </div><p class="accept-note" id="accept-attendee-help">
+              Maximum 10 attendees. Additional attendees: LKR 6,350 each.
+            </p><ul class="accept-attendee-benefits">
+              {
+                content.attendeeBenefits.map((benefit) => (
+                  <li>
+                    <Check size={17} aria-hidden="true" />
+                    {benefit}
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+          <div class="accept-summary">
+            <p class="accept-kicker">Your participation</p><p
+              class="accept-summary-website"
+              data-website-label
+            >
+            </p><dl>
+              <div><dt data-package-summary>Package A</dt><dd data-base-amount></dd></div><div
+                data-trophy-summary
+                hidden
+              >
+                <dt>Additional trophy</dt><dd>{money(EXTRA_TROPHY_AMOUNT)}</dd>
+              </div><div><dt data-attendees-summary></dt><dd data-attendees-amount></dd></div><div
+                class="accept-total"
+              >
+                <dt>Total</dt><dd data-total></dd>
+              </div>
+            </dl><label class="accept-agreement"
+              ><input type="checkbox" data-agreement /><span
+                >I confirm my package, total attendees and payment amount.</span
+              ></label
+            ><button type="button" class="accept-primary" data-pay disabled
+              ><LockKeyhole size={17} aria-hidden="true" /><span>Complete payment securely</span
+              ></button
+            ><p class="accept-payment-note">
+              Secure checkout by Genie Business.<br />Confirmation goes to your nomination email.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section
+        data-panel="status"
+        class="accept-status"
+        aria-labelledby="accept-status-title"
+        hidden
+      >
+        <div class="accept-status-icon" data-paid-icon hidden>
+          <Check size={28} aria-hidden="true" />
+        </div><div class="accept-status-icon" data-waiting-icon>
+          <LockKeyhole size={26} aria-hidden="true" />
+        </div><p class="accept-kicker">Your participation</p><h2
+          id="accept-status-title"
+          tabindex="-1"
+        >
+          Checking your payment.
+        </h2><p data-payment-message role="status" aria-live="polite">
+          Please keep this page open while we confirm your payment.
+        </p><dl data-payment-summary hidden></dl><p class="accept-reference" data-payment-reference>
+        </p><div class="accept-status-actions">
+          <button type="button" class="accept-primary" data-check-status>Check again</button><a
+            class="accept-primary"
+            data-continue-checkout
+            hidden>Continue secure payment</a
+          ><button
+            type="button"
+            class="accept-text-button"
+            data-back="website"
+            data-start-over
+            hidden>Start again</button
+          >{
+            demo && (
+              <button type="button" class="accept-primary" data-demo-confirm hidden>
+                Simulate successful payment
+              </button>
+            )
+          }
+        </div>
+      </section>
+      <noscript
+        ><p class="accept-error">
+          Please enable JavaScript to choose your package and pay securely, or email
+          info@gbeaward.com.
+        </p></noscript
+      >
+    </main>
+    <footer class="accept-footer">
+      <span>Best Website Awards 2026</span><a href="mailto:info@gbeaward.com">info@gbeaward.com</a>
+    </footer>
+  </div>
+  {
+    !demo && (
+      <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />
+    )
+  }
+  <script>
+    import '../scripts/accept';
+  </script>
+</BaseLayout>

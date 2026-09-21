@@ -63,17 +63,21 @@ if (JSON.stringify(config.cache) !== JSON.stringify(['.cache/astro/**'])) {
 
 const functionRoutes = config.routes.filter((route) => route.dest === '_render');
 if (
-  functionRoutes.length !== 3 ||
+  functionRoutes.length !== 4 ||
   !functionRoutes.some((route) => route.src === '^/api/contact$') ||
   !functionRoutes.some((route) => route.src === '^/api/meta$') ||
-  !functionRoutes.some((route) => route.src.startsWith('^/api/nomination/'))
+  !functionRoutes.some((route) => route.src.startsWith('^/api/nomination/')) ||
+  !functionRoutes.some((route) => route.src.startsWith('^/api/participation/'))
 ) {
   fail(
-    `expected only contact, meta and nomination APIs to map to _render, found ${JSON.stringify(functionRoutes)}`
+    `expected only contact, meta, nomination and participation APIs to map to _render, found ${JSON.stringify(functionRoutes)}`
   );
 }
 if (!(await exists(resolve(staticRoot, 'nomination-status/index.html'))))
   fail('payment status shell must be static');
+
+if (!(await exists(resolve(staticRoot, 'accept/index.html'))))
+  fail('participation shell must be static');
 
 for (const forbiddenRoute of ['/_image', '/_server-islands', '/sitemap.xml']) {
   if (config.routes.some((route) => route.src?.includes(forbiddenRoute.slice(1)))) {
@@ -82,6 +86,8 @@ for (const forbiddenRoute of ['/_image', '/_server-islands', '/sitemap.xml']) {
 }
 
 const renderFunction = resolve(functionsRoot, '_render.func');
+const serverChunks = await readdir(resolve(renderFunction, 'dist/server/chunks'));
+if (serverChunks.some((name) => name.startsWith('participation-demo'))) fail('local participation demo entered the production function');
 if (!(await exists(renderFunction))) fail('the contact function was not emitted');
 if (await exists(resolve(renderFunction, 'node_modules/sharp'))) {
   fail('Sharp was bundled into the contact function');

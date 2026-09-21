@@ -14,7 +14,8 @@ export default defineConfig({
   trailingSlash: 'never',
   integrations: [
     sitemap({
-      filter: (page) => !page.includes('/nomination-status'),
+      filter: (page) =>
+        !['/nomination-status', '/accept'].includes(new URL(page).pathname.replace(/\/$/, '')),
       namespaces: {
         news: false,
         video: false,
