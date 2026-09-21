@@ -8,7 +8,7 @@
 - Match by domain, ignoring HTTP/HTTPS, leading `www`, capitalisation, default ports, terminal domain dots, page paths, query parameters and fragments. Unicode and punycode forms match consistently. Different domains and non-www subdomains remain distinct. Domain aliases or redirects are not followed or guessed.
 - If several paid nominations use that domain, the most recently submitted paid nomination supplies the details. A later unpaid submission does not override those details. If the latest paid entry is under 12 hours old, it is ineligible; an older entry is not used to bypass the delay. Missing, unpaid and too-recent nominations all receive the same generic ineligibility message. Checkout refreshes eligibility and the latest paid nomination before saving an immutable participation snapshot.
 - No nomination name, email or phone is returned to the browser. Lookup uses Turnstile and an IP-based rate limit. A short-lived encrypted grant and an HttpOnly browser session authorise checkout.
-- A saved active participation payment is reused in its original browser. Another browser cannot create a second payment for the same website. The awards team handles lost-browser recovery using the payment reference.
+- A saved active participation payment is reused in its original browser. Once payment is confirmed, a new website lookup shows the same already-completed message in every browser, with info@gbeaward.com for enquiries. No second purchase is allowed. The original payment reference can still open its confirmation. The awards team handles lost-browser recovery using the payment reference.
 
 ## Approved prices
 
@@ -18,7 +18,7 @@
 | B       | Developer / agency             | LKR 37,500 |                  1 | 1 to 10               |
 | C       | Company and developer / agency | LKR 60,000 |                  2 | 2 to 10               |
 
-Package C alone offers an additional trophy for LKR 12,500, with separate company and developer presentations. Every additional attendee costs LKR 6,350. Full dinner buffet tickets are included for all attendees; extra attendee places are dinner buffet tickets only. Amounts use integer minor units throughout. The browser, server and database each enforce the limits; the server ignores client-supplied totals.
+Package C includes 1 shared trophy and 2 separate award certificates. It alone offers an additional trophy for LKR 12,500, with separate company and developer presentations. Every additional attendee costs LKR 6,350. Full dinner buffet tickets are included for all attendees; extra attendee places are dinner buffet tickets only. Amounts use integer minor units throughout. The browser, server and database each enforce the limits; the server ignores client-supplied totals.
 
 ## Local preview
 

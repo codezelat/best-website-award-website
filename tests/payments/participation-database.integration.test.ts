@@ -149,6 +149,35 @@ describe.skipIf(!process.env.BWA_PGLITE_MODULE)(
         'not available in this browser'
       );
     });
+    it('never creates another purchase for a website with a confirmed payment', async () => {
+      const id = await nomination();
+      let { record } = await insertParticipation(id, 'ab'.repeat(32), {
+        packageCode: 'A',
+        extraTrophy: false,
+        attendees: 1
+      });
+      record = await saveParticipationTransaction(
+        record,
+        { id: '65c509dcf003980008fbb808', state: 'CONFIRMED' },
+        'paid'
+      );
+      const repeated = await insertParticipation(id, 'ab'.repeat(32), {
+        packageCode: 'C',
+        extraTrophy: true,
+        attendees: 10
+      });
+      expect(repeated.created).toBe(false);
+      expect(repeated.record.id).toBe(record.id);
+      expect(repeated.record.amount).toBe(record.amount);
+      expect(repeated.record.state).toBe('paid');
+      await expect(
+        insertParticipation(id, 'cd'.repeat(32), {
+          packageCode: 'B',
+          extraTrophy: false,
+          attendees: 1
+        })
+      ).rejects.toThrow('not available in this browser');
+    });
     it('enforces package C minimum, maximum 10, and exact totals in the database itself', async () => {
       const id = await nomination();
       const { record } = await insertParticipation(id, 'ab'.repeat(32), {

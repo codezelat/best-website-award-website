@@ -19,12 +19,14 @@ export const participationContent: ParticipationContent = {
       title: 'Together',
       description: 'Company and developer / agency.',
       benefits: [
-        '1 shared trophy and award certificate',
+        '1 shared trophy and 2 separate award certificates',
         '2 attendees included',
         '1 shared stage presentation'
       ]
     }
   ],
+  packageNote:
+    'Dinner buffet included for every attendee. You can add additional attendees in the next step.',
   extraTrophy:
     'An additional trophy for the same award, with separate company and developer stage presentations.',
   attendeeBenefits: [

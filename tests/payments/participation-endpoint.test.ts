@@ -171,6 +171,27 @@ describe('participation API boundaries', () => {
     expect((await GET(context(`status?reference=${reference}`))).status).toBe(401);
     expect(store.findParticipation).not.toHaveBeenCalled();
   });
+  it.each([hash(session), 'other-browser'])(
+    'shows completed participation without permitting another purchase for owner %s',
+    async (owner_hash) => {
+      vi.mocked(store.activeParticipation).mockResolvedValue({
+        owner_hash,
+        state: 'paid'
+      } as never);
+      const response = await POST(
+        context('lookup', { website: 'https://www.example.com/', token: 'token' })
+      );
+      expect(response.status).toBe(409);
+      expect(await response.json()).toEqual({
+        ok: false,
+        message:
+          'Participation has already been completed for this website. For any enquiries, please contact info@gbeaward.com.'
+      });
+      expect(setCookie).not.toHaveBeenCalled();
+      expect(store.findPaidNomination).not.toHaveBeenCalled();
+      expect(payments.beginParticipation).not.toHaveBeenCalled();
+    }
+  );
   it('rejects unsigned callbacks before using their paid claim', async () => {
     vi.mocked(genie.validWebhookSignature).mockReturnValue(false);
     expect(

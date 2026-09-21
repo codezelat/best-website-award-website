@@ -39,7 +39,10 @@ import {
   participationView,
   verifyParticipation
 } from '../../../lib/server/participation';
-import { INVALID_WEBSITE_MESSAGE } from '../../../lib/server/participation-eligibility';
+import {
+  ALREADY_COMPLETED_MESSAGE,
+  INVALID_WEBSITE_MESSAGE
+} from '../../../lib/server/participation-eligibility';
 
 export const prerender = false;
 const SESSION = 'bwa_accept_session';
@@ -120,16 +123,15 @@ export const POST: APIRoute = async (context) => {
         request,
         context.clientAddress
       );
+      const active = await activeParticipation(hash(website));
+      if (active?.state === 'paid') throw new PaymentError(ALREADY_COMPLETED_MESSAGE, 409);
       const nomination = await findPaidNomination(website);
       const current = cookies.get(SESSION)?.value || '';
       const session = validSession(current) ? current : newSession();
       const ownerHash = hash(session);
-      const active = await activeParticipation(hash(website));
       if (active && active.owner_hash !== ownerHash)
         throw new PaymentError(
-          active.state === 'paid'
-            ? 'Participation is already paid for this website. Please contact info@gbeaward.com for your confirmation.'
-            : 'A participation payment is already in progress for this website. Continue in the original browser or contact info@gbeaward.com.',
+          'A participation payment is already in progress for this website. Continue in the original browser or contact info@gbeaward.com.',
           409
         );
       const options = {

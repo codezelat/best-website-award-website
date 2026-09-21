@@ -8,6 +8,7 @@ export interface ParticipationContent {
     description: string;
     benefits: readonly string[];
   }[];
+  packageNote: string;
   extraTrophy: string;
   attendeeBenefits: readonly string[];
 }

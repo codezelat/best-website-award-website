@@ -11,6 +11,7 @@ import {
 import { json, requireSameOrigin, smallBody } from './http';
 import { env, PaymentError } from './payment-config';
 import {
+  ALREADY_COMPLETED_MESSAGE,
   eligibleNomination,
   INELIGIBLE_MESSAGE,
   INVALID_WEBSITE_MESSAGE
@@ -58,6 +59,8 @@ export async function demoParticipation(context: APIContext) {
     } catch {
       throw new PaymentError(INVALID_WEBSITE_MESSAGE, 400);
     }
+    if (session.payment?.website === website && session.payment.state === 'paid')
+      throw new PaymentError(ALREADY_COMPLETED_MESSAGE, 409);
     const nomination =
       website === 'example.com' || website === 'recent.example.com'
         ? {
