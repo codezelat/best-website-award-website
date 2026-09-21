@@ -87,7 +87,8 @@ for (const forbiddenRoute of ['/_image', '/_server-islands', '/sitemap.xml']) {
 
 const renderFunction = resolve(functionsRoot, '_render.func');
 const serverChunks = await readdir(resolve(renderFunction, 'dist/server/chunks'));
-if (serverChunks.some((name) => name.startsWith('participation-demo'))) fail('local participation demo entered the production function');
+if (serverChunks.some((name) => name.startsWith('participation-demo')))
+  fail('local participation demo entered the production function');
 if (!(await exists(renderFunction))) fail('the contact function was not emitted');
 if (await exists(resolve(renderFunction, 'node_modules/sharp'))) {
   fail('Sharp was bundled into the contact function');

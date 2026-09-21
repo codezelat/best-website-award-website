@@ -311,8 +311,12 @@ pay.addEventListener('click', async () => {
   busy = true;
   update();
   showError();
-  const controls = root.querySelectorAll<HTMLInputElement | HTMLButtonElement>('[data-panel="attendees"] input, [data-panel="attendees"] button');
-  controls.forEach((control) => { control.disabled = true; });
+  const controls = root.querySelectorAll<HTMLInputElement | HTMLButtonElement>(
+    '[data-panel="attendees"] input, [data-panel="attendees"] button'
+  );
+  controls.forEach((control) => {
+    control.disabled = true;
+  });
   pay.querySelector('span')!.textContent = 'Preparing secure checkout...';
   try {
     const result = await api('start', { ...choice(), terms: PARTICIPATION_TERMS });
@@ -326,7 +330,9 @@ pay.addEventListener('click', async () => {
     );
   } finally {
     busy = false;
-    controls.forEach((control) => { control.disabled = false; });
+    controls.forEach((control) => {
+      control.disabled = false;
+    });
     pay.querySelector('span')!.textContent = 'Complete payment securely';
     update();
   }
