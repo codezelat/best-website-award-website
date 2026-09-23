@@ -29,8 +29,5 @@ export const participationContent: ParticipationContent = {
     'Dinner buffet included for every attendee. You can add additional attendees in the next step.',
   extraTrophy:
     'An additional trophy for the same award, with separate company and developer stage presentations.',
-  attendeeBenefits: [
-    'Full dinner buffet ticket included for each attendee.',
-    'Additional attendees receive a dinner buffet ticket only.'
-  ]
+  attendeeBenefits: ['Full dinner buffet ticket included for each attendee.']
 };
