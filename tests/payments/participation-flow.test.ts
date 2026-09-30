@@ -54,6 +54,7 @@ beforeEach(() => {
   record = {
     id: reference,
     nomination_id: reference,
+    manual_eligibility_id: null,
     website_key: 'ab'.repeat(32),
     owner_hash: 'owner',
     details: encryptDetails(details, `participation:${reference}`),

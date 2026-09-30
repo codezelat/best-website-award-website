@@ -1,7 +1,8 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { readFile } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
-import { decryptDetails, encryptDetails } from '../../src/lib/server/payment-security';
+import { decryptDetails, encryptDetails, hash } from '../../src/lib/server/payment-security';
+import { normaliseWebsite } from '../../src/lib/participation/policy';
 import {
   activeParticipation,
   findPaidNomination,
@@ -88,10 +89,16 @@ describe.skipIf(!process.env.BWA_PGLITE_MODULE)(
       const migration = await readFile('migrations/004_participation_payments.sql', 'utf8');
       await database.exec(migration);
       await database.exec(migration);
+      await database.exec(
+        await readFile('migrations/005_manual_nomination_eligibility.sql', 'utf8')
+      );
+      await database.exec(
+        await readFile('migrations/005_manual_nomination_eligibility.sql', 'utf8')
+      );
     }, 30_000);
     beforeEach(async () => {
       await database.exec(
-        'TRUNCATE bwa.participation_payments, bwa.participation_nomination_index, bwa.nomination_payments'
+        'TRUNCATE bwa.participation_payments, bwa.manual_nomination_eligibility, bwa.participation_nomination_index, bwa.nomination_payments'
       );
     });
     afterAll(async () => {
@@ -122,6 +129,41 @@ describe.skipIf(!process.env.BWA_PGLITE_MODULE)(
       await nomination({ state: 'pending' });
       await expect(findPaidNomination('example.com')).rejects.toThrow('not eligible');
       await expect(findPaidNomination('absent.example')).rejects.toThrow('not eligible');
+    });
+    it('uses an audited offline eligibility record without creating a Genie payment record', async () => {
+      const id = randomUUID();
+      const website = 'https://www.angelcurveglobal.com/';
+      const details = encryptDetails(
+        {
+          submission: {
+            website,
+            email: 'fathimashamila131@gmail.com',
+            name: 'M. A. F. Shamila',
+            organisation: 'Angel Curve Global',
+            phone: '0755967131'
+          }
+        },
+        id
+      );
+      await database.query(
+        `INSERT INTO bwa.manual_nomination_eligibility
+          (id, website_key, details, amount, currency, collected_on, recorded_by, evidence_note, app_id, merchant_id, sandbox)
+          VALUES ($1,$2,$3,285000,'LKR','2026-09-26','Sayuru','Organizer-confirmed offline collection of LKR 2,850',$4,'merchant',false)`,
+        [id, hash(normaliseWebsite(website)), details, 'app']
+      );
+      const found = await findPaidNomination('angelcurveglobal.com');
+      expect(found.id).toBe(id);
+      expect(found.source).toBe('manual');
+      const { record } = await insertParticipation(id, 'ab'.repeat(32), {
+        packageCode: 'A',
+        extraTrophy: false,
+        attendees: 1
+      });
+      expect(record.nomination_id).toBeNull();
+      expect(record.manual_eligibility_id).toBe(id);
+      expect(
+        (await database.query('SELECT id FROM bwa.nomination_payments WHERE id = $1', [id])).rows
+      ).toHaveLength(0);
     });
     it('refreshes the latest eligible details at checkout', async () => {
       const older = await nomination({ createdHours: 72, email: 'old@example.com' });

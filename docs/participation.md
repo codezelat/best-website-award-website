@@ -4,7 +4,7 @@
 
 ## Eligibility and website matching
 
-- Only `paid` nomination records in the configured merchant/application and payment environment qualify, at least 12 hours after payment confirmation. Unpaid submissions, authorised-only transactions, failures and records under review do not qualify.
+- A website qualifies from either a provider-confirmed paid nomination in the configured merchant/application and payment environment, or a separately audited `manual_nomination_eligibility` record for a fee collected outside Genie. Both sources must be at least 12 hours old. The manual source stores encrypted contact details, the collection date, operator and evidence note; it never creates a Genie transaction or changes a provider payment state. Unpaid submissions, authorised-only transactions, failures and records under review do not qualify.
 - Match by domain, ignoring HTTP/HTTPS, leading `www`, capitalisation, default ports, terminal domain dots, page paths, query parameters and fragments. Unicode and punycode forms match consistently. Different domains and non-www subdomains remain distinct. Domain aliases or redirects are not followed or guessed.
 - If several paid nominations use that domain, the most recently submitted paid nomination supplies the details. A later unpaid submission does not override those details. If the latest paid entry is under 12 hours old, it is ineligible; an older entry is not used to bypass the delay. Missing, unpaid and too-recent nominations all receive the same generic ineligibility message. Checkout refreshes eligibility and the latest paid nomination before saving an immutable participation snapshot.
 - No nomination name, email or phone is returned to the browser. Lookup uses Turnstile and an IP-based rate limit. A short-lived encrypted grant and an HttpOnly browser session authorise checkout.
@@ -32,13 +32,15 @@ The mock uses an in-memory session and cannot read/write the database, call Geni
 
 ## Deployment
 
-1. Apply the additive schema using the intended existing database: `npm run payments:migrate`. Migration 004 adds separate participation tables and indexes; it does not rewrite nomination records. Paid nomination domain hashes are indexed on demand.
+1. Apply the additive schema using the intended existing database: `npm run payments:migrate`. Migration 004 adds separate participation tables and indexes; migration 005 adds the audited manual-eligibility table and allows a participation payment to reference exactly one eligibility source. Neither migration rewrites nomination payment records. Paid nomination domain hashes are indexed on demand.
 2. Set `PARTICIPATION_PAYMENTS_ENABLED=true` in the existing Vercel project's Production environment. Existing `NOMINATION_PAYMENTS_ENABLED`, Genie credentials, `PAYMENT_SITE_URL`, `DATABASE_URL`, `PAYMENT_DATA_KEY`, Turnstile, Resend and `CRON_SECRET` values are reused. Never change the encryption key, which protects existing nominations.
 3. Run `npm run verify` and `PLAYWRIGHT_PORT=4397 npm run test:e2e`, then push and deploy through the existing project.
 4. Verify `/accept` has a noindex meta tag and `X-Robots-Tag`, is absent from both sitemaps and contains no local preview. Ensure any external CDN cache rule respects its no-store headers.
 5. Check a known paid website and an unpaid website. Complete an authorised gateway test in the correct payment environment and verify the actual customer and team receipts before distributing the link widely. A local simulation does not prove external payment or email delivery.
 
 No new secrets or provider accounts are required. The added daily cron is `/api/participation/reconcile` at 04:00 UTC. Existing nomination recovery is unchanged.
+
+For an offline nomination-fee collection, an authorised operator must insert a row in `bwa.manual_nomination_eligibility` with the actual collection date, encrypted nomination details, amount, currency, operator identity and evidence note. Never insert a synthetic row into `bwa.nomination_payments` or invent a Genie transaction ID. Keep the evidence note factual and limited to the confirmation received from the collector.
 
 ## Confirmation and recovery
 

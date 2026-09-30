@@ -150,7 +150,7 @@ export function participationEmail(
     ['Attendee inclusion', 'Full dinner buffet ticket'],
     ['Total paid', money(record.amount)],
     ['Participation reference', record.id],
-    ['Nomination reference', record.nomination_id],
+    ['Nomination reference', record.nomination_id || record.manual_eligibility_id || ''],
     ['Transaction ID', record.transaction_id || ''],
     ...(team
       ? [

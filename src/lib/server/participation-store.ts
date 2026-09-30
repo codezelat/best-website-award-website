@@ -20,7 +20,8 @@ export interface ParticipationDetails {
 }
 export interface ParticipationRecord {
   id: string;
-  nomination_id: string;
+  nomination_id: string | null;
+  manual_eligibility_id: string | null;
   website_key: string;
   owner_hash: string;
   details: string;
@@ -41,6 +42,12 @@ export interface ParticipationRecord {
   customer_email_id: string | null;
   team_email_id: string | null;
 }
+export type EligibleNomination = Pick<
+  PaymentRecord,
+  'id' | 'details' | 'state' | 'paid_at' | 'app_id' | 'merchant_id' | 'sandbox'
+> & {
+  source: 'genie' | 'manual';
+};
 export async function indexPaidNominations() {
   const config = paymentConfig();
   const rows = await db()`SELECT p.id, p.details FROM bwa.nomination_payments p
@@ -73,14 +80,20 @@ export async function limitLookup(key: string) {
 export async function findPaidNomination(website: string) {
   const config = paymentConfig();
   await indexPaidNominations();
-  const rows = await db()`SELECT p.* FROM bwa.nomination_payments p
+  const rows =
+    await db()`SELECT p.id, p.details, p.state, p.paid_at, p.created_at AS submitted_at, p.app_id, p.merchant_id, p.sandbox, 'genie' AS source FROM bwa.nomination_payments p
     JOIN bwa.participation_nomination_index i ON i.nomination_id = p.id
     WHERE i.website_key = ${hash(website)} AND p.state = 'paid'
     AND p.app_id = ${config.appId} AND p.merchant_id = ${config.merchantId} AND p.sandbox = ${config.sandbox}
-    ORDER BY p.created_at DESC, p.paid_at DESC NULLS LAST, p.id DESC LIMIT 1`;
-  if (!eligibleNomination(rows[0] as PaymentRecord | undefined))
-    throw new PaymentError(INELIGIBLE_MESSAGE, 404);
-  return rows[0] as PaymentRecord;
+    UNION ALL
+    SELECT m.id, m.details, 'paid' AS state, m.collected_on::timestamptz AS paid_at, m.collected_on::timestamptz AS submitted_at, m.app_id, m.merchant_id, m.sandbox, 'manual' AS source
+    FROM bwa.manual_nomination_eligibility m
+    WHERE m.website_key = ${hash(website)} AND m.app_id = ${config.appId}
+      AND m.merchant_id = ${config.merchantId} AND m.sandbox = ${config.sandbox}
+    ORDER BY submitted_at DESC, paid_at DESC NULLS LAST, id DESC LIMIT 1`;
+  const nomination = rows[0] as EligibleNomination | undefined;
+  if (!eligibleNomination(nomination)) throw new PaymentError(INELIGIBLE_MESSAGE, 404);
+  return nomination as EligibleNomination;
 }
 export async function findParticipation(id: string) {
   const rows = await db()`SELECT * FROM bwa.participation_payments WHERE id = ${id}::uuid`;
@@ -116,16 +129,23 @@ export async function insertParticipation(
 ) {
   const config = paymentConfig();
   const nomination = await findPayment(nominationId);
+  const manualRows = nomination
+    ? []
+    : await db()`SELECT id, details, 'paid' AS state, collected_on::timestamptz AS paid_at, app_id, merchant_id, sandbox
+      FROM bwa.manual_nomination_eligibility WHERE id = ${nominationId}::uuid`;
+  const source = nomination
+    ? ({ ...nomination, source: 'genie' } as EligibleNomination)
+    : (manualRows[0] as EligibleNomination | undefined);
   if (
-    !nomination ||
-    nomination.state !== 'paid' ||
-    nomination.app_id !== config.appId ||
-    nomination.merchant_id !== config.merchantId ||
-    nomination.sandbox !== config.sandbox
+    !source ||
+    source.state !== 'paid' ||
+    source.app_id !== config.appId ||
+    source.merchant_id !== config.merchantId ||
+    source.sandbox !== config.sandbox
   )
     throw new PaymentError(INELIGIBLE_MESSAGE, 409);
   // Refresh at checkout in case another nomination was paid after the lookup.
-  const original = decryptDetails<DeliveryDetails>(nomination.details, nomination.id);
+  const original = decryptDetails<DeliveryDetails>(source.details, source.id);
   const latest = await findPaidNomination(normaliseWebsite(original.submission.website));
   const { submission } = decryptDetails<DeliveryDetails>(latest.details, latest.id);
   const website = normaliseWebsite(submission.website);
@@ -140,8 +160,8 @@ export async function insertParticipation(
   };
   const encrypted = encryptDetails(details, `participation:${id}`);
   const rows = await db()`INSERT INTO bwa.participation_payments
-    (id, nomination_id, website_key, owner_hash, details, package_code, extra_trophy, attendees, amount, currency, terms_version, app_id, merchant_id, sandbox)
-    VALUES (${id}::uuid, ${latest.id}::uuid, ${hash(website)}, ${owner}, ${encrypted}, ${choice.packageCode}, ${choice.extraTrophy}, ${choice.attendees}, ${quote.total}, 'LKR', ${PARTICIPATION_TERMS}, ${config.appId}, ${config.merchantId}, ${config.sandbox})
+    (id, nomination_id, manual_eligibility_id, website_key, owner_hash, details, package_code, extra_trophy, attendees, amount, currency, terms_version, app_id, merchant_id, sandbox)
+    VALUES (${id}::uuid, ${latest.source === 'genie' ? latest.id : null}::uuid, ${latest.source === 'manual' ? latest.id : null}::uuid, ${hash(website)}, ${owner}, ${encrypted}, ${choice.packageCode}, ${choice.extraTrophy}, ${choice.attendees}, ${quote.total}, 'LKR', ${PARTICIPATION_TERMS}, ${config.appId}, ${config.merchantId}, ${config.sandbox})
     ON CONFLICT DO NOTHING RETURNING *`;
   if (rows[0]) return { record: rows[0] as ParticipationRecord, created: true };
   const existing = await activeParticipation(hash(website));
