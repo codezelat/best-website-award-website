@@ -386,6 +386,30 @@
       box-shadow 300ms ease;
   }
 
+  .site-announcement {
+    display: flex;
+    min-height: 2.35rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    padding: 0.45rem 1rem;
+    background: #8f2330;
+    color: #fff;
+    font-size: 0.76rem;
+    line-height: 1.35;
+    text-align: center;
+  }
+
+  .site-announcement span:first-child {
+    font-weight: 700;
+  }
+
+  .site-announcement span + span::before {
+    margin-right: 0.65rem;
+    content: '·';
+    opacity: 0.75;
+  }
+
   .site-header--scrolled {
     height: 4.8rem;
     border-color: var(--line);
@@ -1308,6 +1332,43 @@
     border-top: 4px solid var(--lapis);
     background: var(--white);
     box-shadow: 0 2rem 5rem rgba(16, 42, 102, 0.08);
+  }
+
+  .contact-closed-state {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1rem;
+    border-top-color: #8f2330;
+  }
+
+  .contact-closed-state__label {
+    color: #8f2330;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .contact-closed-state h2 {
+    max-width: 12ch;
+    font-size: clamp(2rem, 4vw, 3.4rem);
+  }
+
+  .contact-closed-state > p:not(.contact-closed-state__label) {
+    max-width: 34rem;
+    color: var(--ink-soft);
+    line-height: 1.65;
+  }
+
+  .contact-closed-state .contact-form__submit {
+    display: inline-flex;
+    width: auto;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.6rem;
+    text-decoration: none;
   }
 
   .contact-form-shell__heading {

@@ -16,6 +16,8 @@ const ref = document.querySelector<HTMLElement>('[data-payment-reference]')!;
 const check = document.querySelector<HTMLButtonElement>('[data-check-payment]')!;
 const resume = document.querySelector<HTMLAnchorElement>('[data-resume-payment]')!;
 const another = document.querySelector<HTMLAnchorElement>('main [data-another-nomination]')!;
+const nominationsOpen =
+  document.querySelector<HTMLElement>('main')?.dataset.nominationsOpen === 'true';
 const success = document.querySelector<HTMLDialogElement>('[data-success-dialog]')!;
 let checking = false;
 let count = 0;
@@ -28,9 +30,10 @@ const clearReference = () => {
     /* Optional storage. */
   }
 };
-document
-  .querySelectorAll('[data-another-nomination]')
-  .forEach((link) => link.addEventListener('click', clearReference));
+document.querySelectorAll('[data-another-nomination]').forEach((link) => {
+  if (!nominationsOpen) (link as HTMLElement).hidden = true;
+  link.addEventListener('click', clearReference);
+});
 document.querySelector('[data-close-success]')?.addEventListener('click', () => success.close());
 
 function render(payment: PaymentView) {
@@ -56,7 +59,7 @@ function render(payment: PaymentView) {
       resume.hidden = false;
     }
   }
-  another.hidden = payment.state !== 'failed' && !payment.submitted;
+  another.hidden = !nominationsOpen || (payment.state !== 'failed' && !payment.submitted);
   another.textContent = payment.submitted ? 'Submit another website' : 'Return to the form';
   check.hidden = payment.submitted || payment.state === 'failed' || payment.state === 'review';
   if (payment.state === 'paid' && payment.submitted && !successShown) {
@@ -84,7 +87,7 @@ async function refresh() {
     const result = await response.json();
     if (!response.ok || !result.payment) {
       if (response.status === 404) {
-        another.hidden = false;
+        another.hidden = !nominationsOpen;
         another.textContent = 'Return to the form';
       }
       throw new Error(

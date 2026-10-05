@@ -62,6 +62,8 @@ export const POST: APIRoute = async (context) => {
       return json(200, { ok: true });
     }
     requireSameOrigin(request);
+    if (['session', 'start', 'lead'].includes(params.action || ''))
+      throw new PaymentError('Nominations for 2026 are closed.', 410);
     if (params.action === 'session') {
       assertPaymentEnabled();
       const current = cookies.get(COOKIE)?.value || '';

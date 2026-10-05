@@ -13,13 +13,13 @@ import { programmeDetails, siteNavigation } from './site';
 export const homepageContent = {
   seo: {
     title: 'Best Website Awards Sri Lanka 2026 | Global Recognition',
-    description: `Entries are open for Best Website Awards Sri Lanka ${programmeDetails.date}, recognising outstanding websites across design, experience, accessibility and impact.`
+    description: `Best Website Awards Sri Lanka ${programmeDetails.date} nominations are closed. Congratulations to this year's winners across design, experience and impact.`
   },
   navigation: siteNavigation,
   hero: {
     title: 'Best Website Awards 2026.',
-    summary: `${programmeDetails.status} for the 2026 programme. Earn global recognition for exceptional digital work shaped with purpose and measurable impact.`,
-    primaryAction: { label: 'Apply now', href: '/contact' },
+    summary: `${programmeDetails.status} for the 2026 programme. Congratulations to our winners and to the teams behind this year's recognised websites.`,
+    primaryAction: { label: 'Explore the awards', href: '/awards' },
     secondaryAction: { label: 'View the standard', href: '#standard' },
     images: [
       {
@@ -172,8 +172,9 @@ export const homepageContent = {
     attribution: 'Powered by Global Business Excellence Awards'
   },
   closing: {
-    title: 'Present your website for 2026.',
-    summary: `${programmeDetails.status} for the 2026 programme.`,
-    primaryAction: { label: 'Apply now', href: '/contact' }
+    title: 'Congratulations to our 2026 winners.',
+    summary:
+      'Thank you to every organisation and digital team that took part in this year’s programme.',
+    primaryAction: { label: 'Explore the awards', href: '/awards' }
   }
 } satisfies HomepageContent;

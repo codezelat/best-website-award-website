@@ -6,7 +6,7 @@ test('renders the complete homepage and its landmark content', async ({ page }) 
   await expect(page).toHaveTitle(/Best Website Awards/);
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Best Website Awards 2026.');
   await expect(page.locator('.hero__summary')).toContainText(
-    'Entries now open for the 2026 programme.'
+    'Nominations are closed for the 2026 programme.'
   );
   await expect(page.getByRole('heading', { name: 'The work we recognise' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Four measures of excellence' })).toBeVisible();

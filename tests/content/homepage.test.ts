@@ -38,12 +38,17 @@ describe('homepage content contract', () => {
     expect(homepageContent.seo.description.length).toBeGreaterThanOrEqual(100);
     expect(homepageContent.seo.description.length).toBeLessThanOrEqual(170);
     expect(homepageContent.hero.title).toContain('Best Website Awards 2026');
-    expect(homepageContent.hero.summary).toContain('Entries now open for the 2026 programme.');
+    expect(homepageContent.hero.summary).toContain(
+      'Nominations are closed for the 2026 programme.'
+    );
     expect(homepageContent.hero.summary).not.toMatch(/\b\d{1,2}\s+[A-Z][a-z]+\s+2026\b/);
     expect(homepageContent.closing.summary).not.toMatch(/\b\d{1,2}\s+[A-Z][a-z]+\s+2026\b/);
     expect(homepageContent.introduction.statements.join(' ')).toContain('Sri Lanka');
     expect(JSON.stringify(homepageContent)).toContain(programmeDetails.date);
-    expect(homepageContent.hero.primaryAction).toEqual({ label: 'Apply now', href: '/contact' });
+    expect(homepageContent.hero.primaryAction).toEqual({
+      label: 'Explore the awards',
+      href: '/awards'
+    });
     expect(homepageContent.gallery.action).toEqual({ label: 'View the gallery', href: '/gallery' });
   });
 

@@ -209,9 +209,9 @@ export const recognitionPageContent = {
     ]
   },
   closing: {
-    title: 'Present work that can stand up to review.',
-    summary: `${programmeDetails.status} for the 2026 programme. Make the website, its purpose and the evidence behind it clear.`,
-    primaryAction: { label: 'Apply now', href: '/contact' },
+    title: 'Congratulations to our 2026 winners.',
+    summary: `${programmeDetails.status} for the 2026 programme. Thank you to the organisations and teams whose work was considered.`,
+    primaryAction: { label: 'Explore the awards', href: '/awards' },
     secondaryAction: { label: 'See the process', href: '/process' }
   }
 } satisfies RecognitionPageContent;

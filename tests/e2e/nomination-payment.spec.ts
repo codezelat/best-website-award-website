@@ -1,7 +1,34 @@
 import { expect, test, type Page } from '@playwright/test';
 
 const reference = '4f07dbbb-f612-4f46-96db-cf8823ffc395';
-test('verification errors and expiry recover without losing form details', async ({ page }) => {
+test('contact page announces that 2026 nominations are closed', async ({ page }) => {
+  await page.goto('/contact');
+  await expect(page.locator('.site-announcement')).toContainText('2026 nominations closed');
+  await expect(page.locator('.site-announcement')).toContainText('Congratulations to our winners');
+  await expect(page.getByRole('heading', { name: 'Nominations are closed.' })).toBeVisible();
+  await expect(page.locator('[data-contact-form]')).toHaveCount(0);
+  await expect(page.locator('[data-payment-dialog]')).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'Apply now' })).toHaveCount(0);
+});
+
+test('nomination API initiation actions return a closed response', async ({ page }) => {
+  await page.goto('/contact');
+  for (const action of ['session', 'lead', 'start']) {
+    const origin = new URL(page.url()).origin;
+    const response = await page.request.post(new URL(`/api/nomination/${action}`, origin).href, {
+      headers: { origin }
+    });
+    expect(response.status(), action).toBe(410);
+    await expect(response.json()).resolves.toMatchObject({
+      ok: false,
+      message: 'Nominations for 2026 are closed.'
+    });
+  }
+});
+
+test.skip('legacy: verification errors and expiry recover without losing form details', async ({
+  page
+}) => {
   await prepare(page);
   const invoke = (name: string) =>
     page.evaluate((key) => (window as unknown as Record<string, () => unknown>)[key](), name);
@@ -37,7 +64,7 @@ async function prepare(page: Page) {
   await page.locator('input[name="privacyAccepted"]').check();
 }
 
-test('fee popup is clear, accessible and cancellable without losing the form', async ({
+test.skip('legacy: fee popup is clear, accessible and cancellable without losing the form', async ({
   page
 }, testInfo) => {
   const errors: string[] = [];
@@ -59,7 +86,9 @@ test('fee popup is clear, accessible and cancellable without losing the form', a
   expect(errors).toEqual([]);
 });
 
-test('nomination starts checkout only after explicit fee agreement', async ({ page }) => {
+test.skip('legacy: nomination starts checkout only after explicit fee agreement', async ({
+  page
+}) => {
   await prepare(page);
   let started = 0;
   await page.route('**/api/contact', () => {
@@ -96,7 +125,7 @@ test('nomination starts checkout only after explicit fee agreement', async ({ pa
   expect(started).toBe(1);
 });
 
-test('opening and dismissing payment saves one unpaid lead without starting checkout', async ({
+test.skip('legacy: opening and dismissing payment saves one unpaid lead without starting checkout', async ({
   page
 }) => {
   await page.addInitScript(() => localStorage.setItem('bwa_analytics_consent_v1', 'granted'));
@@ -139,7 +168,9 @@ test('opening and dismissing payment saves one unpaid lead without starting chec
   ).toBe(false);
 });
 
-test('lead storage failure keeps card payment disabled and supports retry', async ({ page }) => {
+test.skip('legacy: lead storage failure keeps card payment disabled and supports retry', async ({
+  page
+}) => {
   await prepare(page);
   await page.route('**/api/nomination/lead', (route) =>
     route.fulfill({
@@ -161,7 +192,7 @@ test('lead storage failure keeps card payment disabled and supports retry', asyn
   await expect(page.locator('[data-pay-card]')).toBeEnabled();
 });
 
-test('paid nomination confirmation offers another submission and stays noindex', async ({
+test('paid nomination confirmation does not offer a new submission after closure', async ({
   page
 }) => {
   await page.route('**/api/nomination/status?*', (route) =>
@@ -184,9 +215,10 @@ test('paid nomination confirmation offers another submission and stays noindex',
   );
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
   await expect(page).toHaveURL(/\/nomination-status$/);
-  await page.getByRole('dialog').getByRole('link', { name: 'Submit another website' }).click();
-  await expect(page).toHaveURL(/\/contact#nomination-form$/);
-  expect(await page.evaluate(() => sessionStorage.getItem('bwaPaymentReference'))).toBeNull();
+  await expect(
+    page.getByRole('dialog').getByRole('link', { name: 'Submit another website' })
+  ).toBeHidden();
+  await expect(page.locator('main [data-another-nomination]')).toBeHidden();
 });
 
 test('paid email delay does not show another payment option or false success', async ({ page }) => {
@@ -210,7 +242,7 @@ test('paid email delay does not show another payment option or false success', a
   await expect(page.locator('main [data-another-nomination]')).not.toBeVisible();
 });
 
-test('unavailable checkout leaves the form recoverable without taking payment', async ({
+test.skip('legacy: unavailable checkout leaves the form recoverable without taking payment', async ({
   page
 }) => {
   await prepare(page);

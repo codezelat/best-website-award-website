@@ -43,11 +43,10 @@ export const contactDetails = {
 } satisfies ContactDetails;
 
 export const programmeDetails = {
-  status: 'Entries now open',
+  status: 'Nominations are closed',
+  acceptingNominations: false,
   date: '2026',
-  whatsappHref: 'https://wa.link/qnfbkz',
-  feeGuidance:
-    'The online nomination fee is Rs. 2,850 per website, payable securely by card. Contact the awards team on WhatsApp if you need help.'
+  whatsappHref: 'https://wa.link/qnfbkz'
 } as const;
 
 export const socialLinks = [

@@ -16,7 +16,6 @@ import stageWinners from '../assets/event/stage-winners.webp';
 import winnerCertificates from '../assets/event/winner-certificates.webp';
 import womenWinners from '../assets/event/women-winners.webp';
 import type { EventGalleryItem, GalleryPageContent } from '../lib/content/types';
-import { programmeDetails } from './site';
 
 export const eventGalleryItems = [
   {
@@ -215,7 +214,7 @@ export const galleryPageContent = {
     summary:
       'A considered record of ceremony, achievement and the people who give recognition its meaning.',
     primaryAction: { label: 'Explore the awards', href: '/awards' },
-    secondaryAction: { label: 'Apply now', href: '/contact' },
+    secondaryAction: { label: 'Explore the awards', href: '/awards' },
     image: {
       src: ceremonyOpening,
       alt: 'Ceremonial lamp lighting at a Global Business Excellence Awards programme',
@@ -239,9 +238,10 @@ export const galleryPageContent = {
     items: eventGalleryItems
   },
   closing: {
-    title: 'Place your work in the next chapter.',
-    summary: `${programmeDetails.status} for the 2026 programme. Present the website, its purpose and the evidence behind it.`,
-    primaryAction: { label: 'Apply now', href: '/contact' },
+    title: 'Congratulations to our 2026 winners.',
+    summary:
+      'Thank you to every organisation and digital team that took part in this year’s programme.',
+    primaryAction: { label: 'Explore the awards', href: '/awards' },
     secondaryAction: { label: 'See the process', href: '/process' }
   }
 } satisfies GalleryPageContent;

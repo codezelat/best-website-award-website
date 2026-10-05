@@ -20,7 +20,7 @@ export const editorialPages = {
     slug: 'awards',
     seo: {
       title: 'Best Website Awards 2026 | Global Website Recognition',
-      description: `Apply to Best Website Awards ${programmeDetails.date} and discover the evidence-led standard for purposeful, accessible and effective websites.`
+      description: `Explore the Best Website Awards ${programmeDetails.date} standard for purposeful, accessible and effective websites. Nominations are closed.`
     },
     hero: {
       title: 'Recognition built on the work.',
@@ -447,7 +447,7 @@ export const editorialPages = {
       title: 'Show the reasoning, not only the result.',
       body: [
         'A polished page can show the outcome. A useful case for recognition also explains the challenge, the choices and what changed.',
-        `${programmeDetails.status} for ${programmeDetails.date}. Present a live website, its purpose, audience, contributors and credible evidence through the official contact process.`
+        `Nominations for ${programmeDetails.date} are closed. The evaluation framework explains how submitted work is considered.`
       ],
       image: {
         src: awardHandover,
@@ -465,7 +465,7 @@ export const editorialPages = {
       title: 'Begin with the standard.',
       summary: 'Understand the connected measures before presenting the work.',
       primaryAction: { label: 'Explore the standard', href: '/standard' },
-      secondaryAction: { label: 'Apply now', href: '/contact' }
+      secondaryAction: { label: 'Explore the awards', href: '/awards' }
     }
   },
   about: {
@@ -584,41 +584,41 @@ export const utilityPages = {
   contact: {
     slug: 'contact',
     seo: {
-      title: 'Apply Now | Best Website Awards 2026',
-      description: `Apply now for Best Website Awards ${programmeDetails.date}, confirm eligibility, present a live website or contact the official team about the entry fee.`,
+      title: 'Nominations Closed | Best Website Awards 2026',
+      description: `Nominations for Best Website Awards ${programmeDetails.date} are closed. Contact the official team with general enquiries.`,
       pageType: 'ContactPage'
     },
-    title: 'Present your website for 2026.',
+    title: 'Nominations for 2026 are closed.',
     introduction:
-      'Apply for the 2026 programme or ask a question through one simple, secure form. The official awards team will reply directly.',
+      'Congratulations to this year’s winners. The nomination period has ended. For general enquiries, contact the awards team directly.',
     sections: [
       {
         title: 'What happens next',
         body: [
-          `Applications are open for the ${programmeDetails.date} programme. The awards team reviews the website address, organisation and context you provide, then responds by email with the next step.`,
-          'Eligible work must be a live, functional website presented by its owner or an authorised contributor. New websites and substantial redesigns from any country may be considered.'
+          `Nominations for the ${programmeDetails.date} programme are closed. The awards team is no longer accepting new website entries.`,
+          'For general questions about the awards, contact the official team by email or WhatsApp.'
         ]
       },
       {
-        title: 'Entry fee and official channels',
+        title: 'Official channels',
         body: [
-          `${programmeDetails.feeGuidance} The official WhatsApp action is available on this page and in the footer.`,
+          `Nominations for ${programmeDetails.date} are closed. For general programme questions, contact info@gbeaward.com or use the official WhatsApp link.`,
           'Messages are handled through Global Business Excellence Awards, which powers Best Website Awards. You can also contact info@gbeaward.com or use the verified social channels.'
         ]
       }
     ],
-    action: { label: 'Nominate a website', href: '/contact#nomination-form' }
+    action: undefined
   },
   faq: {
     slug: 'faq',
     seo: {
       title: 'Best Website Awards 2026 FAQs | Eligibility & Criteria',
-      description: `Find confirmed Best Website Awards Sri Lanka ${programmeDetails.date} details, including eligibility, website types, criteria, evidence, entry fee and review.`,
+      description: `Find Best Website Awards Sri Lanka ${programmeDetails.date} details, including website types, criteria, evidence and review. Nominations are closed.`,
       pageType: 'FAQPage'
     },
     title: 'Questions, answered with clarity.',
     introduction:
-      'A complete guide to who can present work, what is considered and how website excellence is recognised.',
+      'A guide to the work considered in the 2026 programme and how website excellence is recognised.',
     sections: [
       {
         title: 'What is Best Website Awards 2026?',
@@ -628,7 +628,7 @@ export const utilityPages = {
         ]
       },
       {
-        title: 'Is Best Website Awards Sri Lanka open to international websites?',
+        title: 'Could websites from Sri Lanka and other countries take part?',
         body: [
           'Yes. The programme is based in Sri Lanka and built for global participation and exposure. Eligible websites from Sri Lanka and every other market may be presented for consideration.',
           'The same published standard is applied to the work in its own purpose, audience and operating context.'
@@ -642,34 +642,32 @@ export const utilityPages = {
         ]
       },
       {
-        title: 'Is Best Website Awards open globally?',
+        title: 'Was Best Website Awards open globally in 2026?',
         body: [
-          'Yes. Websites from any country or market may be presented for the 2026 programme.',
-          'The work is considered on its own purpose, audience and context rather than being judged by where the organisation is based.'
+          'Yes. Websites from any country or market could be presented for the 2026 programme.',
+          'The work was considered on its own purpose, audience and context rather than being judged by where the organisation was based.'
         ]
       },
       {
-        title: 'Who can present a website?',
+        title: 'Who could present a website?',
         body: [
-          'A website may be presented by its owner, an authorised internal team, or an agency, studio, developer or specialist partner acting with the owner’s permission.',
-          'The presentation should identify the organisation that owns the website and the contributors whose work should be credited.'
+          'A website could be presented by its owner, an authorised internal team, or an agency, studio, developer or specialist partner acting with the owner’s permission.',
+          'The presentation identified the organisation that owns the website and the contributors whose work should be credited.'
         ]
       },
       {
         title: 'Is a prior nomination required?',
+        body: ['Nominations for the 2026 programme are now closed.']
+      },
+      {
+        title: 'What kinds of websites were considered?',
         body: [
-          'No prior nomination is required. Entries are now open, and an eligible website may be presented by its owner or an authorised contributor.'
+          'The programme considered corporate and organisational websites, brand and campaign experiences, commerce and service platforms, public-interest and purpose-led websites, portfolios, specialist practices and other substantial web experiences.',
+          'These descriptions explain the range of work considered and are not a restrictive list of fixed categories.'
         ]
       },
       {
-        title: 'What kinds of websites can be considered?',
-        body: [
-          'The programme can consider corporate and organisational websites, brand and campaign experiences, commerce and service platforms, public-interest and purpose-led websites, portfolios, specialist practices and other substantial web experiences.',
-          'These descriptions explain the confirmed range of eligible work and are not a restrictive list of fixed categories.'
-        ]
-      },
-      {
-        title: 'Can both new websites and redesigns be presented?',
+        title: 'Could both new websites and redesigns be considered?',
         body: [
           'Yes. A newly launched website, a substantial redesign or a meaningful redevelopment may be considered when the work is complete enough to be experienced and reviewed as a coherent website.'
         ]
@@ -772,10 +770,10 @@ export const utilityPages = {
         ]
       },
       {
-        title: 'What are the confirmed 2026 fee and entry instructions?',
+        title: 'Are 2026 nominations still open?',
         body: [
-          `${programmeDetails.status} for Best Website Awards ${programmeDetails.date}. Begin by using Apply now and sending the live website address, organisation, contact details and a concise account of its purpose and contributors.`,
-          `${programmeDetails.feeGuidance} Information from third-party listings should be checked against this website or an official Global Business Excellence Awards channel.`
+          `No. Nominations for Best Website Awards ${programmeDetails.date} are closed, and the nomination form is no longer accepting entries.`,
+          'For general questions about the programme, contact info@gbeaward.com.'
         ]
       },
       {
@@ -785,7 +783,7 @@ export const utilityPages = {
         ]
       }
     ],
-    action: { label: 'Nominate a website', href: '/contact#nomination-form' }
+    action: undefined
   },
   privacy: {
     slug: 'privacy-policy',
@@ -858,7 +856,7 @@ export const utilityPages = {
     slug: 'terms',
     seo: {
       title: 'Best Website Awards 2026 Terms & Entry Information',
-      description: `Read confirmed Best Website Awards ${programmeDetails.date} entry information, including eligibility, fee confirmation, website use and intellectual property terms.`
+      description: `Read Best Website Awards ${programmeDetails.date} terms, including completed entry, payment and intellectual property information.`
     },
     title: 'Terms built for clarity.',
     introduction:
@@ -868,15 +866,14 @@ export const utilityPages = {
         title: 'Public information',
         body: [
           `${programmeDetails.status} for Best Website Awards ${programmeDetails.date}.`,
-          `Eligible entries are live, functional websites presented by their owner or an authorised contributor. New websites and substantial redesigns from any country may be considered. ${programmeDetails.feeGuidance}`
+          'Eligible entries were live, functional websites presented by their owner or an authorised contributor. New websites and substantial redesigns from any country could be considered.'
         ]
       },
       {
-        title: 'Nomination fee and payment',
+        title: '2026 nomination fee and payment records',
         body: [
-          'The online nomination fee is Rs. 2,850 in Sri Lankan rupees for each website nomination. The amount is shown before payment and is charged once, not as a subscription. General enquiries do not carry this fee.',
-          'The fee supports entry checks, nomination administration and evaluation processing. A paid nomination is submitted for review and does not guarantee eligibility, selection, an award or a particular outcome.',
-          'Your nomination is confirmed only after the payment provider confirms payment. If checkout is interrupted or a bank debit appears without confirmation, check the nomination status or contact info@gbeaward.com before paying again.'
+          'The online nomination fee during the 2026 nomination period was Rs. 2,850 per website. Nominations are now closed, and this fee is no longer being collected for new entries.',
+          'For questions about a past payment, use the nomination reference or contact info@gbeaward.com. Do not send card numbers or security codes.'
         ]
       },
       {
@@ -911,7 +908,7 @@ export const utilityPages = {
         ]
       }
     ],
-    action: { label: 'Nominate a website', href: '/contact#nomination-form' }
+    action: undefined
   },
   cookies: {
     slug: 'cookies',

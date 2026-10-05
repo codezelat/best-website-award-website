@@ -12,7 +12,7 @@ const editorialRoutes = [
 
 const utilityRoutes = [
   ['/faq', 'Questions, answered with clarity.'],
-  ['/contact', 'Present your website for 2026.'],
+  ['/contact', 'Nominations for 2026 are closed.'],
   ['/privacy-policy', 'Privacy, explained clearly.'],
   ['/terms', 'Terms built for clarity.'],
   ['/cookies', 'A minimal approach to cookies.']
@@ -251,73 +251,25 @@ for (const route of ['/privacy-policy', '/terms', '/cookies']) {
   });
 }
 
-test('contact page publishes official channels and completes a website enquiry', async ({
+test('contact page publishes official channels and confirms the 2026 programme is closed', async ({
   page
 }) => {
-  await page.addInitScript(() => localStorage.setItem('bwa_analytics_consent_v1', 'granted'));
-  await page.route('https://connect.facebook.net/**', (route) =>
-    route.fulfill({ body: '', contentType: 'application/javascript' })
-  );
-  await page.route('https://www.googletagmanager.com/**', (route) =>
-    route.fulfill({ body: '', contentType: 'application/javascript' })
-  );
-  await page.route('**/api/meta', (route) => route.fulfill({ json: { ok: true } }));
-  await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js', (route) =>
-    route.fulfill({
-      contentType: 'application/javascript',
-      body: `
-        window.turnstile = { reset() {} };
-        document.querySelectorAll('.cf-turnstile').forEach((container) => {
-          const input = document.createElement('input');
-          input.type = 'hidden';
-          input.name = 'cf-turnstile-response';
-          input.value = 'test-token';
-          container.append(input);
-        });
-      `
-    })
-  );
-  await page.route('**/api/contact', async (route) => {
-    const request = route.request();
-    expect(request.method()).toBe('POST');
-    expect(request.postData()).toContain('example.com');
-    await route.fulfill({
-      status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify({
-        ok: true,
-        message: 'Thank you. Your website details are now with the awards team.'
-      })
-    });
-  });
   await page.goto('/contact');
 
   await expect(
     page.locator('.contact-application__social').getByRole('link', { name: /Facebook/ })
   ).toHaveAttribute('href', 'https://www.facebook.com/gbeaward/');
   await expect(page.locator('.contact-application__details')).toContainText('2026');
-  await expect(page.getByRole('link', { name: /Confirm on WhatsApp/ }).first()).toHaveAttribute(
+  await expect(page.getByRole('link', { name: /Chat on WhatsApp/ }).first()).toHaveAttribute(
     'href',
     'https://wa.link/qnfbkz'
   );
-  await page.getByLabel('Your name *').fill('Test Entrant');
-  await page.getByLabel('Work email *').fill('entrant@example.com');
-  await page.getByLabel('Organisation *').fill('Example Studio');
-  await page.getByLabel('Website address *').fill('https://example.com');
-  await page.locator('[data-enquiry-type]').selectOption('eligibility');
-  await page.locator('input[name="privacyAccepted"]').check();
-  const submission = await page.locator('[data-submission-id]').inputValue();
-  await page.getByRole('button', { name: 'Send enquiry' }).click();
-
-  await expect(page.locator('[data-form-status]')).toContainText(
-    'Thank you. Your website details are now with the awards team.'
+  await expect(page.getByRole('heading', { name: 'Nominations are closed.' })).toBeVisible();
+  await expect(page.locator('[data-contact-form]')).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'Contact the awards team' })).toHaveAttribute(
+    'href',
+    'mailto:info@gbeaward.com'
   );
-  const events = await page.evaluate(
-    () => (window as typeof window & { fbq: { queue: unknown[][] } }).fbq.queue
-  );
-  expect(events.filter((entry) => entry[1] === 'Contact')).toEqual([
-    ['track', 'Contact', {}, { eventID: `bwa:Contact:${submission}` }]
-  ]);
 });
 
 test('unknown routes use the branded, non-indexable not-found page', async ({ page }) => {

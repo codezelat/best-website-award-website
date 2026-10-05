@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import { siteNavigation, legalNavigation } from '../data/site';
+import { siteNavigation, legalNavigation, programmeDetails } from '../data/site';
 import { getNominationContent } from '../lib/content/nomination';
 import { brandMetadata } from '../data/brand';
 import { Check } from '@lucide/astro';
@@ -22,7 +22,11 @@ const content = await getNominationContent();
 >
   <div id="top"></div>
   <SiteHeader navigation={siteNavigation} currentPath="/contact" />
-  <main id="main-content" class="nomination-status">
+  <main
+    id="main-content"
+    class="nomination-status"
+    data-nominations-open={programmeDetails.acceptingNominations}
+  >
     <p class="nomination-kicker">Best Website Awards</p>
     <h1 data-payment-status-title>Checking your nomination.</h1>
     <p class="nomination-muted" data-payment-status-message role="status" aria-live="polite">
@@ -51,7 +55,7 @@ const content = await getNominationContent();
     <h2 id="nomination-success-title">{content.successTitle}</h2>
     <p class="nomination-muted">{content.successMessage}</p>
     <div class="nomination-status__actions">
-      <a href="/contact#nomination-form" class="contact-form__submit" data-another-nomination
+      <a href="/contact#nomination-form" class="contact-form__submit" data-another-nomination hidden
         >Submit another website</a
       ><button type="button" data-close-success>View confirmation</button>
     </div>

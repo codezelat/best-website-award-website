@@ -66,30 +66,18 @@ describe('nomination endpoint boundaries', () => {
       cookies: { get: () => ({ value: 'ab'.repeat(32) }) }
     } as never;
   };
-  it('captures a lead without creating a payment', async () => {
-    vi.mocked(leads.captureLead).mockResolvedValue({ captured: true });
-    const response = await POST(formContext('lead'));
-    expect(response.status).toBe(200);
-    expect(await response.json()).toEqual({ ok: true, captured: true });
-    expect(leads.captureLead).toHaveBeenCalledTimes(1);
-    expect(payments.beginPayment).not.toHaveBeenCalled();
-  });
-  it('does not capture a lead without privacy acceptance', async () => {
-    expect((await POST(formContext('lead', false))).status).toBe(400);
+  it('closes all public nomination intake actions for the completed 2026 programme', async () => {
+    for (const action of ['session', 'lead', 'start']) {
+      const response = await POST(formContext(action));
+      expect(response.status, action).toBe(410);
+      expect(await response.json()).toMatchObject({
+        ok: false,
+        message: 'Nominations for 2026 are closed.'
+      });
+    }
     expect(leads.captureLead).not.toHaveBeenCalled();
-  });
-  it('does not consume the single-use token again after exact lead verification', async () => {
-    vi.mocked(store.findPayment).mockResolvedValue(undefined);
-    vi.mocked(leads.verifiedLead).mockResolvedValue(true);
-    expect((await POST(formContext('start'))).status).toBe(200);
+    expect(payments.beginPayment).not.toHaveBeenCalled();
     expect(delivery.verifyTurnstile).not.toHaveBeenCalled();
-    expect(payments.beginPayment).toHaveBeenCalledTimes(1);
-  });
-  it('requires fresh verification when a saved lead does not match', async () => {
-    vi.mocked(store.findPayment).mockResolvedValue(undefined);
-    vi.mocked(leads.verifiedLead).mockResolvedValue(false);
-    expect((await POST(formContext('start'))).status).toBe(200);
-    expect(delivery.verifyTurnstile).toHaveBeenCalledTimes(1);
   });
   it('rejects unsigned callbacks without querying the database or provider', async () => {
     vi.mocked(genie.validWebhookSignature).mockReturnValue(false);

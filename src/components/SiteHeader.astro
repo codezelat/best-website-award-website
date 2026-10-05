@@ -14,6 +14,10 @@ const homeHref = currentPath === '/' ? '#top' : '/';
 const headerNavigation = navigation.filter((item) => item.showInHeader !== false);
 ---
 
+<p class="site-announcement" role="status">
+  <span>2026 nominations closed</span>
+  <span>Congratulations to our winners.</span>
+</p>
 <header class="site-header" data-site-header>
   <div class="container site-header__inner">
     <a class="site-header__brand" href={homeHref} aria-label="Best Website Awards home">
@@ -39,7 +43,12 @@ const headerNavigation = navigation.filter((item) => item.showInHeader !== false
       }
     </nav>
 
-    <ButtonLink class="site-header__cta" href="/contact" label="Apply now" variant="primary" />
+    <ButtonLink
+      class="site-header__cta"
+      href="/awards"
+      label="Explore the awards"
+      variant="primary"
+    />
 
     <button
       class="menu-toggle"
@@ -67,7 +76,7 @@ const headerNavigation = navigation.filter((item) => item.showInHeader !== false
           </a>
         ))
       }
-      <ButtonLink href="/contact" label="Apply now" variant="primary" />
+      <ButtonLink href="/awards" label="Explore the awards" variant="primary" />
     </nav>
   </div>
 </header>

@@ -138,16 +138,14 @@ describe('public page content contract', () => {
     expect(JSON.stringify(utilityPages.faq)).toContain('Best Website Awards Sri Lanka');
     expect(editorialPages.standard.seo.title).toContain('Best Web 2026');
     expect(JSON.stringify(utilityPages.faq)).toContain(programmeDetails.date);
-    expect(utilityPages.faq.action).toEqual({
-      label: 'Nominate a website',
-      href: '/contact#nomination-form'
-    });
+    expect(utilityPages.faq.action).toBeUndefined();
   });
 
   it('publishes the confirmed 2026 programme state consistently', () => {
     const copy = JSON.stringify({ homepageDate: programmeDetails, editorialPages, utilityPages });
 
-    expect(programmeDetails.status).toBe('Entries now open');
+    expect(programmeDetails.status).toBe('Nominations are closed');
+    expect(programmeDetails.acceptingNominations).toBe(false);
     expect(programmeDetails.date).toBe('2026');
     expect(programmeDetails.whatsappHref).toBe('https://wa.link/qnfbkz');
     expect(copy).toContain('live, functional website');

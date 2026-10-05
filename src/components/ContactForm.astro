@@ -5,16 +5,16 @@ import SocialIcon from './SocialIcon.astro';
 import NominationPayment from './NominationPayment.astro';
 
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+const acceptingNominations = programmeDetails.acceptingNominations;
 ---
 
 <section class="contact-application" aria-labelledby="contact-form-title">
   <div class="container contact-application__grid">
     <aside class="contact-application__aside" data-reveal>
       <p class="contact-application__kicker">Official contact</p>
-      <h2>Present the website.<br />We’ll guide the next step.</h2>
+      <h2>Questions about the awards?</h2>
       <p class="contact-application__intro">
-        Share the essentials in a few minutes. The awards team will review your enquiry and reply
-        through the official channel.
+        Nominations for 2026 are closed. Contact the awards team for general programme enquiries.
       </p>
 
       <div class="contact-application__details">
@@ -39,7 +39,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
         rel="external noopener noreferrer"
       >
         <SocialIcon network="whatsapp" />
-        <span><small>2026 entry fee</small>Confirm on WhatsApp</span>
+        <span><small>General enquiries</small>Chat on WhatsApp</span>
         <ArrowUpRight aria-hidden="true" size={18} stroke-width={1.8} />
       </a>
 
@@ -70,161 +70,199 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
       </a>
     </aside>
 
-    <div id="nomination-form" class="contact-form-shell section-anchor" data-reveal>
-      <div class="contact-form-shell__heading">
-        <div>
-          <p>Website enquiry</p>
-          <h2 id="contact-form-title">Nominate your website.</h2>
-        </div>
-        <span>About 2 minutes</span>
-      </div>
-
-      <form class="contact-form" action="/api/contact" method="post" data-contact-form>
-        <input type="hidden" name="submissionId" data-submission-id />
-        <div class="contact-form__honeypot" aria-hidden="true">
-          <label for="website-confirmation">Leave this field empty</label>
-          <input
-            id="website-confirmation"
-            name="websiteConfirmation"
-            type="text"
-            tabindex="-1"
-            autocomplete="off"
-          />
-        </div>
-
-        <div class="contact-form__field contact-form__field--wide">
-          <label for="enquiry-type">How can we help?</label>
-          <select id="enquiry-type" name="enquiryType" data-enquiry-type>
-            <option value="present">I’d like to present a website</option>
-            <option value="eligibility">Eligibility or evaluation question</option>
-            <option value="programme">Programme information</option>
-            <option value="media">Media or partnership enquiry</option>
-            <option value="other">Something else</option>
-          </select>
-        </div>
-
-        <div class="contact-form__field">
-          <label for="contact-name">Your name <span aria-hidden="true">*</span></label>
-          <input
-            id="contact-name"
-            name="name"
-            type="text"
-            required
-            autocomplete="name"
-            maxlength="100"
-            placeholder="Full name"
-          />
-        </div>
-
-        <div class="contact-form__field">
-          <label for="contact-email">Work email <span aria-hidden="true">*</span></label>
-          <input
-            id="contact-email"
-            name="email"
-            type="email"
-            required
-            autocomplete="email"
-            maxlength="254"
-            placeholder="name@organisation.com"
-          />
-        </div>
-
-        <div class="contact-form__field">
-          <label for="contact-organisation">Organisation <span aria-hidden="true">*</span></label>
-          <input
-            id="contact-organisation"
-            name="organisation"
-            type="text"
-            required
-            autocomplete="organization"
-            maxlength="140"
-            placeholder="Organisation or studio"
-          />
-        </div>
-
-        <div class="contact-form__field">
-          <label for="contact-phone">Phone <span>Optional</span></label>
-          <input
-            id="contact-phone"
-            name="phone"
-            type="tel"
-            autocomplete="tel"
-            inputmode="tel"
-            maxlength="40"
-            placeholder="Country code + number"
-          />
-        </div>
-
-        <div class="contact-form__field contact-form__field--wide" data-website-field>
-          <label for="contact-website">Website address <span aria-hidden="true">*</span></label>
-          <input
-            id="contact-website"
-            name="website"
-            type="url"
-            required
-            inputmode="url"
-            autocomplete="url"
-            maxlength="500"
-            placeholder="https://example.com"
-          />
-        </div>
-
-        <div class="contact-form__field contact-form__field--wide">
-          <label for="contact-message">What should we know? <span>Optional</span></label>
-          <textarea
-            id="contact-message"
-            name="message"
-            rows="4"
-            maxlength="2000"
-            placeholder="A brief note about the website, its purpose or your question"></textarea>
-        </div>
-
-        <label class="contact-form__consent">
-          <input type="checkbox" name="privacyAccepted" value="yes" required />
-          <span>
-            I agree that the awards team may use these details to respond to my enquiry. See the
-            <a href="/privacy-policy">privacy policy</a>.
-          </span>
-        </label>
-
-        <div class="contact-form__verification">
-          <div>
-            <ShieldCheck aria-hidden="true" size={19} stroke-width={1.7} />
-            <span>Secure verification</span>
+    {
+      acceptingNominations ? (
+        <div id="nomination-form" class="contact-form-shell section-anchor" data-reveal>
+          <div class="contact-form-shell__heading">
+            <div>
+              <p>Website enquiry</p>
+              <h2 id="contact-form-title">Nominate your website.</h2>
+            </div>
+            <span>About 2 minutes</span>
           </div>
-          {
-            turnstileSiteKey ? (
-              <div
-                class="cf-turnstile"
-                data-sitekey={turnstileSiteKey}
-                data-theme="light"
-                data-size="flexible"
-                data-action="contact_form"
-                data-error-callback="bwaVerificationError"
-                data-expired-callback="bwaVerificationExpired"
-                data-timeout-callback="bwaVerificationExpired"
-                data-callback="bwaVerificationComplete"
+
+          <form class="contact-form" action="/api/contact" method="post" data-contact-form>
+            <input type="hidden" name="submissionId" data-submission-id />
+            <div class="contact-form__honeypot" aria-hidden="true">
+              <label for="website-confirmation">Leave this field empty</label>
+              <input
+                id="website-confirmation"
+                name="websiteConfirmation"
+                type="text"
+                tabindex="-1"
+                autocomplete="off"
               />
-            ) : (
-              <p class="contact-form__unavailable">Verification is temporarily unavailable.</p>
-            )
-          }
-        </div>
+            </div>
 
-        <div class="contact-form__submit-row">
-          <button type="submit" class="contact-form__submit" disabled={!turnstileSiteKey}>
-            <span data-submit-label>Continue nomination</span>
-            <ArrowUpRight aria-hidden="true" size={19} stroke-width={1.8} />
-          </button>
-          <p data-fee-notice>Nomination fee: Rs. 2,850. Pay securely in the next step.</p>
-        </div>
+            <div class="contact-form__field contact-form__field--wide">
+              <label for="enquiry-type">How can we help?</label>
+              <select id="enquiry-type" name="enquiryType" data-enquiry-type>
+                <option value="present">I’d like to present a website</option>
+                <option value="eligibility">Eligibility or evaluation question</option>
+                <option value="programme">Programme information</option>
+                <option value="media">Media or partnership enquiry</option>
+                <option value="other">Something else</option>
+              </select>
+            </div>
 
-        <div class="contact-form__status" data-form-status role="status" aria-live="polite" hidden>
-          <Check aria-hidden="true" size={22} stroke-width={2} />
-          <p></p>
+            <div class="contact-form__field">
+              <label for="contact-name">
+                Your name <span aria-hidden="true">*</span>
+              </label>
+              <input
+                id="contact-name"
+                name="name"
+                type="text"
+                required
+                autocomplete="name"
+                maxlength="100"
+                placeholder="Full name"
+              />
+            </div>
+
+            <div class="contact-form__field">
+              <label for="contact-email">
+                Work email <span aria-hidden="true">*</span>
+              </label>
+              <input
+                id="contact-email"
+                name="email"
+                type="email"
+                required
+                autocomplete="email"
+                maxlength="254"
+                placeholder="name@organisation.com"
+              />
+            </div>
+
+            <div class="contact-form__field">
+              <label for="contact-organisation">
+                Organisation <span aria-hidden="true">*</span>
+              </label>
+              <input
+                id="contact-organisation"
+                name="organisation"
+                type="text"
+                required
+                autocomplete="organization"
+                maxlength="140"
+                placeholder="Organisation or studio"
+              />
+            </div>
+
+            <div class="contact-form__field">
+              <label for="contact-phone">
+                Phone <span>Optional</span>
+              </label>
+              <input
+                id="contact-phone"
+                name="phone"
+                type="tel"
+                autocomplete="tel"
+                inputmode="tel"
+                maxlength="40"
+                placeholder="Country code + number"
+              />
+            </div>
+
+            <div class="contact-form__field contact-form__field--wide" data-website-field>
+              <label for="contact-website">
+                Website address <span aria-hidden="true">*</span>
+              </label>
+              <input
+                id="contact-website"
+                name="website"
+                type="url"
+                required
+                inputmode="url"
+                autocomplete="url"
+                maxlength="500"
+                placeholder="https://example.com"
+              />
+            </div>
+
+            <div class="contact-form__field contact-form__field--wide">
+              <label for="contact-message">
+                What should we know? <span>Optional</span>
+              </label>
+              <textarea
+                id="contact-message"
+                name="message"
+                rows="4"
+                maxlength="2000"
+                placeholder="A brief note about the website, its purpose or your question"
+              />
+            </div>
+
+            <label class="contact-form__consent">
+              <input type="checkbox" name="privacyAccepted" value="yes" required />
+              <span>
+                I agree that the awards team may use these details to respond to my enquiry. See the
+                <a href="/privacy-policy">privacy policy</a>.
+              </span>
+            </label>
+
+            <div class="contact-form__verification">
+              <div>
+                <ShieldCheck aria-hidden="true" size={19} stroke-width={1.7} />
+                <span>Secure verification</span>
+              </div>
+              {turnstileSiteKey ? (
+                <div
+                  class="cf-turnstile"
+                  data-sitekey={turnstileSiteKey}
+                  data-theme="light"
+                  data-size="flexible"
+                  data-action="contact_form"
+                  data-error-callback="bwaVerificationError"
+                  data-expired-callback="bwaVerificationExpired"
+                  data-timeout-callback="bwaVerificationExpired"
+                  data-callback="bwaVerificationComplete"
+                />
+              ) : (
+                <p class="contact-form__unavailable">Verification is temporarily unavailable.</p>
+              )}
+            </div>
+
+            <div class="contact-form__submit-row">
+              <button type="submit" class="contact-form__submit" disabled={!turnstileSiteKey}>
+                <span data-submit-label>Continue nomination</span>
+                <ArrowUpRight aria-hidden="true" size={19} stroke-width={1.8} />
+              </button>
+              <p data-fee-notice>Nomination fee: Rs. 2,850. Pay securely in the next step.</p>
+            </div>
+
+            <div
+              class="contact-form__status"
+              data-form-status
+              role="status"
+              aria-live="polite"
+              hidden
+            >
+              <Check aria-hidden="true" size={22} stroke-width={2} />
+              <p />
+            </div>
+          </form>
         </div>
-      </form>
-    </div>
+      ) : (
+        <div
+          id="nomination-form"
+          class="contact-form-shell contact-closed-state section-anchor"
+          data-reveal
+          role="status"
+        >
+          <p class="contact-closed-state__label">Best Website Awards 2026</p>
+          <h2 id="contact-form-title">Nominations are closed.</h2>
+          <p>
+            Congratulations to this year’s winners. The nomination form is no longer accepting
+            entries.
+          </p>
+          <a class="contact-form__submit" href="mailto:info@gbeaward.com">
+            Contact the awards team
+          </a>
+        </div>
+      )
+    }
   </div>
 </section>
 
@@ -259,12 +297,12 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 </script>
 
 {
-  turnstileSiteKey && (
+  acceptingNominations && turnstileSiteKey && (
     <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js" />
   )
 }
 
-<NominationPayment />
+{acceptingNominations && <NominationPayment />}
 <script>
   import '../scripts/contact-form';
 </script>
